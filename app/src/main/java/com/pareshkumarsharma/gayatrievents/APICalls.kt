@@ -9,8 +9,13 @@ import java.net.URL
 
 class APICalls {
     companion object {
-        private const val LOGIN_URL = "http://192.168.1.2/GayatriEvents/api/MobileApp/Login"
-        private const val REGISTER_URL = "http://192.168.1.2/GayatriEvents/api/MobileApp/Register"
+        private const val LOGIN_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Login"
+        private const val REGISTER_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Register"
+        private const val PANCHANG_DOWNLOAD_URL = "http://10.0.2.2/GayatriEvents/api/Panchang"
+        private const val PASSWORD_RESET_REQUEST =
+            "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordResetRequest"
+        private const val PASSWORD_RESET =
+            "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordReset"
 
         var lastCallMessage = ""
 
@@ -34,16 +39,18 @@ class APICalls {
                 outPutStream.close()
                 val responseCode = urlConnection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    val bufferedIn = BufferedReader(InputStreamReader(urlConnection.inputStream))
+                    val bufferedIn = InputStreamReader(urlConnection.inputStream)
                     val respo = bufferedIn.readText()
                     val regModel =
                         Gson().fromJson<UserRegisterModel>(respo, UserRegisterModel::class.java)
                     lastCallMessage = regModel.User_Name
                     MainActivity.UserName = lastCallMessage
                     isSuccess = true
-                }
-                else{
-                    lastCallMessage = BufferedReader(InputStreamReader(urlConnection.errorStream)).readText()
+                    bufferedIn.close()
+                } else {
+                    val inp = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = inp.readText()
+                    inp.close()
                 }
             } catch (ex: Exception) {
                 Log.d("API Call", ex.message.toString())
@@ -79,12 +86,117 @@ class APICalls {
                 outPutStream.close()
                 val responseCode = urlConnection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    val bufferedIn = BufferedReader(InputStreamReader(urlConnection.inputStream))
+                    val bufferedIn = InputStreamReader(urlConnection.inputStream)
                     isSuccess = true
                     lastCallMessage = bufferedIn.readText()
+                    bufferedIn.close()
+                } else {
+                    val inp = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = inp.readText()
+                    inp.close()
                 }
-                else
-                    lastCallMessage = BufferedReader(InputStreamReader(urlConnection.errorStream)).readText()
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        fun downloadPanchang(): ByteArray {
+
+            var bytes: ByteArray = ByteArray(1, { 0 })
+
+            val url = URL(PANCHANG_DOWNLOAD_URL)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET")
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    bytes = urlConnection.inputStream.readBytes()
+                } else {
+                    val inp = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = inp.readText()
+                    inp.close()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return bytes
+        }
+
+        fun requestForPasswordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
+            var isSuccess = false
+
+            val url = URL(PASSWORD_RESET_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(passwordResetModel, PasswordResetRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        fun passwordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
+            var isSuccess = false
+
+            val url = URL(PASSWORD_RESET)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(passwordResetModel, PasswordResetRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
             } catch (ex: Exception) {
                 Log.d("API Call", ex.message.toString())
             } finally {

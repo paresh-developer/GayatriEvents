@@ -25,24 +25,50 @@ class SignUpActivity : AppCompatActivity() {
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
 
         btnSignUp.setOnClickListener {
-            runOnUiThread {
-                Thread {
-                    if (APICalls.register(
-                            edTName.text.toString().trim(),
-                            edTMobile.text.toString().trim(),
-                            edTEmail.text.toString().trim(),
-                            edTPassword.text.toString().trim()
-                        )
-                    ) {
+            var errorstr = ""
+            if(edTName.toString().trim().length == 0)
+                errorstr += "Invalid Name\n"
+            if(edTMobile.text.toString().trim().length == 0)
+                errorstr += "Invalid Mobile\n"
+            if(edTEmail.toString().trim().length == 0)
+                errorstr += "Invalid Email\n"
+            if(edTPassword.toString().trim().length == 0)
+                errorstr += "Invalid Password\n"
+
+            if(errorstr.trim().length != 0)
+            {
+                Snackbar.make(
+                    findViewById(R.id.mainSignUpLayout),
+                    errorstr,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            Thread {
+                if (APICalls.register(
+                        edTName.text.toString().trim(),
+                        edTMobile.text.toString().trim(),
+                        edTEmail.text.toString().trim(),
+                        edTPassword.text.toString().trim()
+                    )
+                ) {
+                    MainActivity.IsLoginDone = 4
+                    runOnUiThread {
                         MainActivity.UserName = edTName.text.toString()
-                        MainActivity.IsLoginDone = 4
                         finish()
                     }
-                    else{
-                        Snackbar.make(findViewById(R.id.mainSignUpLayout),APICalls.lastCallMessage,Snackbar.LENGTH_LONG).show()
+                }
+                else{
+                    runOnUiThread {
+                        Snackbar.make(
+                            findViewById(R.id.mainSignUpLayout),
+                            APICalls.lastCallMessage,
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
-                }.start();
-            }
+                }
+            }.start();
         }
     }
 }

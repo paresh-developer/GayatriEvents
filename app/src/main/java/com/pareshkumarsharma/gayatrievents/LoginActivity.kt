@@ -16,14 +16,13 @@ class LoginActivity : AppCompatActivity() {
     lateinit var editTextEmailMobile: EditText
     lateinit var editTextPassword: EditText
 
-    lateinit var loginThread : Thread
+    lateinit var loginThread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         MainActivity.IsLoginDone = 1
-
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnSignUp = findViewById<Button>(R.id.btnSignUp)
@@ -34,35 +33,58 @@ class LoginActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editPassword)
 
         btnLogin.setOnClickListener {
-            runOnUiThread {
-                loginThread = Thread {
-                    if (APICalls.login(
-                            editTextEmailMobile.text.toString().trim(),
-                            editTextEmailMobile.text.toString().trim(),
-                            editTextPassword.text.toString().trim()
-                        )
-                    ) {
-                        MainActivity.IsLoginDone = 2
-                        finish()
+            var errorstr = ""
+            if (editTextEmailMobile.text.toString().trim().length==0)
+                errorstr += "Invalid Email or Mobile\n"
+            if(editTextPassword.toString().trim().length == 0)
+                errorstr += "Invalid password\n"
+
+            if(errorstr.trim().length!=0){
+                Snackbar.make(
+                    findViewById(R.id.mainLoginActivity), errorstr,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            loginThread = Thread {
+                if (APICalls.login(
+                        editTextEmailMobile.text.toString().trim(),
+                        editTextEmailMobile.text.toString().trim(),
+                        editTextPassword.text.toString().trim()
+                    )
+                ) {
+                    MainActivity.IsLoginDone = 2
+                    finish()
+                } else {
+                    runOnUiThread {
+                        Snackbar.make(
+                            findViewById(R.id.mainLoginActivity), APICalls.lastCallMessage,
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
-                    else{
-                        Snackbar.make(findViewById(R.id.mainLoginActivity),APICalls.lastCallMessage,
-                            Snackbar.LENGTH_LONG).show()
-                    }
-                    runOnUiThread { btnLogin.isEnabled = true
-                        btnSignUp.isEnabled = true
-                        txtProcessing.visibility = View.GONE}
                 }
-                loginThread.start()
+                runOnUiThread {
+                    btnLogin.isEnabled = true
+                    btnSignUp.isEnabled = true
+                    txtProcessing.visibility = View.GONE
+                }
+            }
+            loginThread.start()
+
+            runOnUiThread {
                 btnLogin.isEnabled = false
                 btnSignUp.isEnabled = false
                 txtProcessing.visibility = View.VISIBLE
             }
         }
 
-
         btnSignUp.setOnClickListener {
-            startActivity(Intent(this,SignUpActivity::class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
+
+        findViewById<TextView>(R.id.txtForgotPassword).setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
 

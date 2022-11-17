@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GayatriEvents</string>
+    <string-array name="listItems">
+        <item>Email</item>
+        <item>Mobile</item>
+    </string-array>
 </resources>

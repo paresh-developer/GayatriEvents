@@ -1,23 +1,30 @@
 package com.pareshkumarsharma.gayatrievents
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import java.io.BufferedInputStream
+import java.io.File
 import java.io.InputStream
+import java.io.RandomAccessFile
 import java.net.URL
 import java.net.HttpURLConnection
+import java.nio.file.Path
+import java.security.MessageDigest
 
 
 class MainActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
         /**
          * 0 when no login
          * 1 when on Login screen
@@ -27,6 +34,8 @@ class MainActivity : AppCompatActivity() {
          */
         var IsLoginDone = 0
         var UserName = ""
+        lateinit var Toastmain:Toast
+        lateinit var btnDashboard:Button
     }
 
     lateinit var txtHellow: TextView
@@ -47,28 +56,59 @@ class MainActivity : AppCompatActivity() {
         txtHellow.movementMethod = ScrollingMovementMethod()
         btnLogout.setOnClickListener {
             IsLoginDone = 0
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }
+
+        val btnSetting = findViewById<Button>(R.id.btnSetting)
+        btnDashboard = findViewById<Button>(R.id.btnDashboard)
+
+        btnSetting.setOnClickListener {
+            startActivity(Intent(this, Setting::class.java))
+        }
+        val packapath = this.packageName
+        btnDashboard.setOnClickListener {
+            startActivity(Intent(this,Dashboard::class.java))
+//            val T = Thread{
+//                val data = APICalls.downloadPanchang()
+//                val f = File("/data/data/" + packapath + "/Panchang.db")
+//                if (f.exists())
+//                    f.delete()
+//                f.createNewFile()
+//                f.writeBytes(data)
+//                runOnUiThread {
+//                    Toastmain.show()
+//                    btnDashboard.isEnabled = true
+//                }
+//            }
+//            runOnUiThread {
+//                T.start()
+//                Toastmain = Toast.makeText(this, "File Downloaded successfully", Toast.LENGTH_LONG)
+//                btnDashboard.isEnabled = false
+//            }
+        }
+
+        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
+            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {
         super.onResume()
 
-        if(IsLoginDone != 1) {
+        if (IsLoginDone != 1) {
             var snakmsg = ""
             if (IsLoginDone == 0)
                 snakmsg = "Welcome back! 😎"
-            else if(IsLoginDone == 2)
+            else if (IsLoginDone == 2)
                 snakmsg = "Login Done!...👍"
-            else if(IsLoginDone == 4)
+            else if (IsLoginDone == 4)
                 snakmsg = "Sign Up Done!...👍"
 
-            if(IsLoginDone != 0)
-                Snackbar.make(findViewById(R.id.mainActivityLayout),snakmsg, Snackbar.LENGTH_LONG).show()
+            if (IsLoginDone != 0)
+                Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
+                    .show()
 
             txtHellow.text = "Hellow! $UserName"
-        }
-        else{
+        } else {
             finish()
         }
     }
