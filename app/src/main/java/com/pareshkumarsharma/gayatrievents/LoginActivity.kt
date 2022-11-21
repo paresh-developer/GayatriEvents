@@ -34,12 +34,12 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener {
             var errorstr = ""
-            if (editTextEmailMobile.text.toString().trim().length==0)
+            if (editTextEmailMobile.text.toString().trim().length == 0)
                 errorstr += "Invalid Email or Mobile\n"
-            if(editTextPassword.toString().trim().length == 0)
+            if (editTextPassword.toString().trim().length == 0)
                 errorstr += "Invalid password\n"
 
-            if(errorstr.trim().length!=0){
+            if (errorstr.trim().length != 0) {
                 Snackbar.make(
                     findViewById(R.id.mainLoginActivity), errorstr,
                     Snackbar.LENGTH_LONG
@@ -54,6 +54,22 @@ class LoginActivity : AppCompatActivity() {
                         editTextPassword.text.toString().trim()
                     )
                 ) {
+                    val userModel = APICalls.lastCallObject as UserRegisterModel
+                    val string_array = userModel.User_Password.trim('#').split('#')
+                    val newPassStr = ByteArray(string_array.size)
+                    for (i in 0..string_array.size - 1)
+                        newPassStr[i] =
+                            Math.round((((string_array[i].toDouble() + 90.0) / 34.0) - 88) * 55)
+                                .toInt().toByte()
+                    userModel.User_Password = newPassStr.decodeToString()
+
+                    if (APICalls.cookies.containsKey("token"))
+                        getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+                            .edit()
+                            .putString("token", APICalls.cookies["token"])
+                            .putString("expires", APICalls.cookies["expires"])
+                            .apply()
+
                     MainActivity.IsLoginDone = 2
                     finish()
                 } else {

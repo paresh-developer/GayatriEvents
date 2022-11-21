@@ -6,6 +6,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Dictionary
 
 class APICalls {
     companion object {
@@ -17,7 +18,9 @@ class APICalls {
         private const val PASSWORD_RESET =
             "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordReset"
 
-        var lastCallMessage = ""
+        internal lateinit var cookies : Map<String,String>
+        internal var lastCallMessage = ""
+        internal lateinit var lastCallObject: Any
 
         fun login(userEmail: String, userMobile: String, userPass: String): Boolean {
             var isSuccess = false
@@ -43,7 +46,21 @@ class APICalls {
                     val respo = bufferedIn.readText()
                     val regModel =
                         Gson().fromJson<UserRegisterModel>(respo, UserRegisterModel::class.java)
+
+                    if(urlConnection.headerFields["Set-Cookie"] != null)
+                        if(urlConnection.headerFields["Set-Cookie"]?.size!!.compareTo(0)>0) {
+                            val cks = urlConnection.headerFields["Set-Cookie"]?.get(0)?.split(';')
+                            cookies = mapOf<String,String>(Pair("token",
+                                cks?.get(0)!!.split('=')[1]),
+                                Pair("expires",
+                                    cks?.get(1)!!.split('=')[1])
+                            )
+                        }
+
+
                     lastCallMessage = regModel.User_Name
+                    if (regModel != null)
+                        lastCallObject = regModel
                     MainActivity.UserName = lastCallMessage
                     isSuccess = true
                     bufferedIn.close()

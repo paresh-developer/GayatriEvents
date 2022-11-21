@@ -2,9 +2,12 @@ package com.pareshkumarsharma.gayatrievents
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.method.ScrollingMovementMethod
+import android.util.Base64
+import android.util.Base64.encodeToString
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
@@ -16,10 +19,12 @@ import java.io.BufferedInputStream
 import java.io.File
 import java.io.InputStream
 import java.io.RandomAccessFile
+import java.io.StringReader
 import java.net.URL
 import java.net.HttpURLConnection
 import java.nio.file.Path
 import java.security.MessageDigest
+import java.util.Base64.Encoder
 
 
 class MainActivity : AppCompatActivity() {
