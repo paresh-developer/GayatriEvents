@@ -1,15 +1,13 @@
 package com.pareshkumarsharma.gayatrievents
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import java.net.HttpURLConnection
-import java.net.URL
 
 class LoginActivity : AppCompatActivity() {
 
@@ -48,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             loginThread = Thread {
+                APICalls.setContext(applicationContext)
                 if (APICalls.login(
                         editTextEmailMobile.text.toString().trim(),
                         editTextEmailMobile.text.toString().trim(),
@@ -83,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
                 runOnUiThread {
                     btnLogin.isEnabled = true
                     btnSignUp.isEnabled = true
+                    findViewById<TextView>(R.id.txtForgotPassword).visibility = View.VISIBLE
                     txtProcessing.visibility = View.GONE
                 }
             }
@@ -91,6 +91,7 @@ class LoginActivity : AppCompatActivity() {
             runOnUiThread {
                 btnLogin.isEnabled = false
                 btnSignUp.isEnabled = false
+                findViewById<TextView>(R.id.txtForgotPassword).visibility = View.INVISIBLE
                 txtProcessing.visibility = View.VISIBLE
             }
         }
@@ -103,6 +104,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
+
+
 
     override fun onBackPressed() {
         finish()

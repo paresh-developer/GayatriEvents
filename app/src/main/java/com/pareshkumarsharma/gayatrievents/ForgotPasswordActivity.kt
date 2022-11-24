@@ -53,6 +53,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     runOnUiThread {
                         Toast.makeText(this, "OTP sent", Toast.LENGTH_LONG)
                             .show()
+                        APICalls.setContext(applicationContext)
                         resetRequestId = APICalls.lastCallMessage.trim('\"').toInt()
                         startActivity(Intent(this,PasswordResetActivity::class.java))
                         finish()

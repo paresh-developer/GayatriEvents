@@ -1,5 +1,9 @@
 package com.pareshkumarsharma.gayatrievents
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -9,7 +13,7 @@ import java.net.URL
 import java.util.Dictionary
 
 class APICalls {
-    companion object {
+    companion object  {
         private const val LOGIN_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Login"
         private const val REGISTER_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Register"
         private const val PANCHANG_DOWNLOAD_URL = "http://10.0.2.2/GayatriEvents/api/Panchang"
@@ -18,12 +22,25 @@ class APICalls {
         private const val PASSWORD_RESET =
             "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordReset"
 
+        private const val NO_INTERNTET_MSG = "Internet required!"
+
         internal lateinit var cookies : Map<String,String>
         internal var lastCallMessage = ""
         internal lateinit var lastCallObject: Any
 
-        fun login(userEmail: String, userMobile: String, userPass: String): Boolean {
+        private lateinit var Cont:Context
+
+        internal fun setContext(c:Context){
+                Cont = c
+        }
+
+        internal fun login(userEmail: String, userMobile: String, userPass: String): Boolean {
             var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return false
+            }
 
             val url = URL(LOGIN_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -78,13 +95,18 @@ class APICalls {
             return isSuccess
         }
 
-        fun register(
+        internal fun register(
             userName: String,
             userMobile: String,
             userEmail: String,
             userPass: String
         ): Boolean {
             var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return false
+            }
 
             val url = URL(REGISTER_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -121,7 +143,13 @@ class APICalls {
             return isSuccess
         }
 
-        fun downloadPanchang(): ByteArray {
+        internal fun downloadPanchang(): Boolean {
+            var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
 
             var bytes: ByteArray = ByteArray(1, { 0 })
 
@@ -133,22 +161,29 @@ class APICalls {
                 val responseCode = urlConnection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     bytes = urlConnection.inputStream.readBytes()
+                    isSuccess = true
+                    lastCallObject = bytes
                 } else {
                     val inp = InputStreamReader(urlConnection.errorStream)
                     lastCallMessage = inp.readText()
                     inp.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
             }
 
-            return bytes
+            return isSuccess
         }
 
-        fun requestForPasswordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
+        internal fun requestForPasswordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
             var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
 
             val url = URL(PASSWORD_RESET_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -177,7 +212,7 @@ class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
             }
@@ -185,8 +220,13 @@ class APICalls {
             return isSuccess
         }
 
-        fun passwordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
+        internal fun passwordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
             var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
 
             val url = URL(PASSWORD_RESET)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -215,13 +255,60 @@ class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
             }
 
             return isSuccess
         }
-    }
 
+        internal fun decodeString(intString:String):String{
+            val string_array = intString.trim('#').split('#')
+            val newPassStr = ByteArray(string_array.size)
+            for (i in 0..string_array.size - 1)
+                newPassStr[i] =
+                    Math.round((((string_array[i].toDouble() + 90.0) / 34.0) - 88) * 55)
+                        .toInt().toByte()
+            return newPassStr.decodeToString()
+        }
+
+        internal fun encodeString(intString: String):String{
+            var encodedStr = "#"
+            val byteA = intString.toByteArray(Charsets.UTF_8)
+            for (i in 0..byteA.size-1)
+                encodedStr += ((((byteA[i].toDouble()/55.0)+88.0)*34.0)-90.0).toString()+"#"
+            return encodedStr
+        }
+
+        internal fun isOnline(context: Context): Boolean {
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if (connectivityManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val capabilities =
+                        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+
+                    if (capabilities != null) {
+                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                            Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                            Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                            return true
+                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                            Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                            return true
+                        }
+                    }
+                } else {
+                    val activeNetworkInfo = connectivityManager.activeNetworkInfo
+                    if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+    }
 }

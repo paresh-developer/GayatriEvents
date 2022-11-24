@@ -46,6 +46,7 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             Thread {
+                APICalls.setContext(applicationContext)
                 if (APICalls.register(
                         edTName.text.toString().trim(),
                         edTMobile.text.toString().trim(),

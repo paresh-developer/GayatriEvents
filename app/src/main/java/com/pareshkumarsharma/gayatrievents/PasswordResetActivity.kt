@@ -53,6 +53,7 @@ class PasswordResetActivity : AppCompatActivity() {
                     edt.text.toString(),
                     ForgotPasswordActivity.resetRequestId
                 )
+                APICalls.setContext(applicationContext)
                 if (APICalls.passwordReset(model)) {
                     runOnUiThread {
                         Toast.makeText(this, "Password Updated successfully", Toast.LENGTH_LONG)
