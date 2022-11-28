@@ -1,5 +1,6 @@
 package com.pareshkumarsharma.gayatrievents
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -50,24 +51,33 @@ class LoginActivity : AppCompatActivity() {
                 if (APICalls.login(
                         editTextEmailMobile.text.toString().trim(),
                         editTextEmailMobile.text.toString().trim(),
-                        editTextPassword.text.toString().trim()
+                        APICalls.encodeString(editTextPassword.text.toString().trim())
                     )
                 ) {
                     val userModel = APICalls.lastCallObject as UserRegisterModel
                     val string_array = userModel.User_Password.trim('#').split('#')
-                    val newPassStr = ByteArray(string_array.size)
-                    for (i in 0..string_array.size - 1)
-                        newPassStr[i] =
-                            Math.round((((string_array[i].toDouble() + 90.0) / 34.0) - 88) * 55)
-                                .toInt().toByte()
-                    userModel.User_Password = newPassStr.decodeToString()
 
                     if (APICalls.cookies.containsKey("token"))
                         getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
                             .edit()
                             .putString("token", APICalls.cookies["token"])
                             .putString("expires", APICalls.cookies["expires"])
+                            .putString("LLUname",userModel.User_Email)
+                            .putString("LLMobile",userModel.User_Mobile)
+                            .putString("LLPassword",userModel.User_Password)
+                            .putBoolean("LLDone",true)
                             .apply()
+
+                    val values = ContentValues()
+                    values.put("Uname",userModel.User_Name)
+                    values.put("Email",userModel.User_Email)
+                    values.put("Mobile",userModel.User_Mobile)
+                    values.put("User_Password",userModel.User_Password)
+                    values.put("User_Type",1)
+
+                    if(Database.query("Select * From USERS where EMAIL = '${userModel.User_Email}' Or Mobile = '${userModel.User_Mobile}'").Rows.size==0) {
+                        Database.insertTo("USERS", values, "Id")
+                    }
 
                     MainActivity.IsLoginDone = 2
                     finish()
@@ -104,8 +114,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
     }
-
-
 
     override fun onBackPressed() {
         finish()

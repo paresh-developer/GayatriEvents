@@ -64,10 +64,10 @@
             android:orientation="horizontal"
             >
             <Button
-                android:id="@+id/btnDashboard"
+                android:id="@+id/btnPanchang"
                 android:layout_width="140dp"
                 android:layout_height="60dp"
-                android:text="Dashboard"
+                android:text="Panchang"
                 android:layout_margin="10dp"
                 android:textSize="15dp"
                 />

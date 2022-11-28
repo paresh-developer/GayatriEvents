@@ -21,6 +21,11 @@ class APICalls {
             "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordResetRequest"
         private const val PASSWORD_RESET =
             "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordReset"
+        private const val CHECK_MESSAGER_REQUEST =
+            "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageRequest"
+        private const val CHECK_MESSAGER_UPDATE =
+            "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageUpdate"
+
 
         private const val NO_INTERNTET_MSG = "Internet required!"
 
@@ -118,7 +123,7 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val loginModel = UserRegisterModel(userName, userMobile, userEmail, userPass)
+                val loginModel = UserRegisterModel(userName, userMobile, userEmail, userPass,0)
                 val model = Gson().toJson(loginModel, loginModel.javaClass)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
@@ -255,6 +260,90 @@ class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun messageRequestUpdate(messageModel: MessageModel): Boolean {
+            var isSuccess = false
+
+            val url = URL(CHECK_MESSAGER_UPDATE)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(messageModel, messageModel.javaClass)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val respo = InputStreamReader(urlConnection.inputStream).readText()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    lastCallMessage = InputStreamReader(urlConnection.errorStream).readText()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun downloadMessageRequests(): Boolean {
+
+            var isSuccess = false
+
+            val url = URL(CHECK_MESSAGER_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET")
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val res = InputStreamReader(urlConnection.inputStream).readText()
+                    lastCallObject = Gson().fromJson(res, Array<MessageModel>::class.java)
+                    isSuccess = true
+                } else {
+                    lastCallMessage =
+                        BufferedReader(InputStreamReader(urlConnection.errorStream)).readText()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()

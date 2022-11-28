@@ -12,7 +12,7 @@ class Database {
         private lateinit var cur: Cursor
         internal var lastError = ""
 
-        internal val SHAREDFILE = "shared_pref.xml"
+        internal val SHAREDFILE = "shared_pref"
 
         internal fun openConnection(){
             sqlite = SQLiteDatabase.openOrCreateDatabase(DBPATH, null)
@@ -75,7 +75,7 @@ class Database {
                     sqlite.execSQL(
                         "Create table USERS (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                "UName text,"+
+                                "Uname text,"+
                                 "Email text," +
                                 "Mobile text," +
                                 "User_Password text," +
@@ -93,17 +93,17 @@ class Database {
                                 ");"
                     )
                     sqlite.execSQL("Insert into USER_TYPE (Type_Name) Values ('Client'),('Brahman'),('Service Provider')")
-                    var c = ContentValues()
-                    c.put("Type_Name","Client")
-                    sqlite.insert("USER_TYPE","Id",c)
-                    c.clear()
-                    c = ContentValues()
-                    c.put("Type_Name","Brahman")
-                    sqlite.insert("USER_TYPE","Id",c)
-                    c.clear()
-                    c = ContentValues()
-                    c.put("Type_Name","Service Provider")
-                    sqlite.insert("USER_TYPE","Id",c)
+//                    var c = ContentValues()
+//                    c.put("Type_Name","Client")
+//                    sqlite.insert("USER_TYPE","Id",c)
+//                    c.clear()
+//                    c = ContentValues()
+//                    c.put("Type_Name","Brahman")
+//                    sqlite.insert("USER_TYPE","Id",c)
+//                    c.clear()
+//                    c = ContentValues()
+//                    c.put("Type_Name","Service Provider")
+//                    sqlite.insert("USER_TYPE","Id",c)
                 }
             }
             catch (ex:java.lang.Exception){
@@ -112,7 +112,6 @@ class Database {
             finally {
                 closeConnection()
             }
-
         }
 
         internal fun insertTo(tableName:String,values:ContentValues,colmnHack:String){

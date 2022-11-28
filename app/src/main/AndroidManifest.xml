@@ -17,6 +17,13 @@
         android:theme="@style/Theme.GayatriEvents"
         tools:targetApi="31">
         <activity
+            android:name=".Processing_Display"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PasswordResetActivity"
             android:exported="false">
             <meta-data
@@ -31,7 +38,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Dashboard"
+            android:name=".Panchang"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

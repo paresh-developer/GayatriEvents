@@ -51,7 +51,7 @@ class SignUpActivity : AppCompatActivity() {
                         edTName.text.toString().trim(),
                         edTMobile.text.toString().trim(),
                         edTEmail.text.toString().trim(),
-                        edTPassword.text.toString().trim()
+                       APICalls.encodeString(edTPassword.text.toString().trim())
                     )
                 ) {
                     MainActivity.IsLoginDone = 4
@@ -69,7 +69,7 @@ class SignUpActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-            }.start();
+            }.start()
         }
     }
 }

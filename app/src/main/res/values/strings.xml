@@ -4,4 +4,9 @@
         <item>Email</item>
         <item>Mobile</item>
     </string-array>
+
+    <string-array name="strArr">
+        <item>Email</item>
+        <item>Mobile</item>
+    </string-array>
 </resources>

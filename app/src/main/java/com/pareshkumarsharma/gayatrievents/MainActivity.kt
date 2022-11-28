@@ -1,30 +1,13 @@
 package com.pareshkumarsharma.gayatrievents
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.method.ScrollingMovementMethod
-import android.util.Base64
-import android.util.Base64.encodeToString
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import java.io.BufferedInputStream
-import java.io.File
-import java.io.InputStream
-import java.io.RandomAccessFile
-import java.io.StringReader
-import java.net.URL
-import java.net.HttpURLConnection
-import java.nio.file.Path
-import java.security.MessageDigest
-import java.util.Base64.Encoder
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         var IsLoginDone = 0
         var UserName = ""
         lateinit var Toastmain:Toast
-        lateinit var btnDashboard:Button
+        lateinit var btnPanchang:Button
     }
 
     lateinit var txtHellow: TextView
@@ -49,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this,LoginActivity::class.java))
-//        runOnUiThread {
-//            val m: ConnectionThread = ConnectionThread("PareshSharma")
-//            m.start()
-//        }
-
+        if(!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone",false))
+            startActivity(Intent(this, LoginActivity::class.java))
+        else {
+            IsLoginDone = 5
+            UserName = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("Uname","").toString()
+        }
         txtHellow = findViewById(R.id.txtHellow)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
@@ -65,35 +48,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         val btnSetting = findViewById<Button>(R.id.btnSetting)
-        btnDashboard = findViewById<Button>(R.id.btnDashboard)
+        btnPanchang = findViewById<Button>(R.id.btnPanchang)
 
         btnSetting.setOnClickListener {
             startActivity(Intent(this, Setting::class.java))
         }
         val packapath = this.packageName
-        btnDashboard.setOnClickListener {
-            startActivity(Intent(this,Dashboard::class.java))
-//            val T = Thread{
-//                val data = APICalls.downloadPanchang()
-//                val f = File("/data/data/" + packapath + "/Panchang.db")
-//                if (f.exists())
-//                    f.delete()
-//                f.createNewFile()
-//                f.writeBytes(data)
-//                runOnUiThread {
-//                    Toastmain.show()
-//                    btnDashboard.isEnabled = true
-//                }
-//            }
-//            runOnUiThread {
-//                T.start()
-//                Toastmain = Toast.makeText(this, "File Downloaded successfully", Toast.LENGTH_LONG)
-//                btnDashboard.isEnabled = false
-//            }
+        btnPanchang.setOnClickListener {
+            startActivity(Intent(this,Panchang::class.java))
+            IsLoginDone = 5
         }
 
-        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
-            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
+        val DatabaseSetup = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001",false)
+        if(!DatabaseSetup)
+        {
+            Database.checkDatabaseSetup()
+            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+                .edit()
+                .putBoolean("F001",true)
+                .apply()
+        }
+
+//        startActivity(Intent(this,Processing_Display::class.java))
+
+//        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
+//            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -103,16 +82,16 @@ class MainActivity : AppCompatActivity() {
             var snakmsg = ""
             if (IsLoginDone == 0)
                 snakmsg = "Welcome back! 😎"
-            else if (IsLoginDone == 2)
+            else if (IsLoginDone == 2) {
                 snakmsg = "Login Done!...👍"
-            else if (IsLoginDone == 4)
+                txtHellow.text = "Hellow! $UserName"
+            }
+            else if (IsLoginDone == 4) {
                 snakmsg = "Sign Up Done!...👍"
-
-            if (IsLoginDone != 0)
+            }
+            if (IsLoginDone != 0 && snakmsg.trim().length>0)
                 Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
                     .show()
-
-            txtHellow.text = "Hellow! $UserName"
         } else {
             finish()
         }

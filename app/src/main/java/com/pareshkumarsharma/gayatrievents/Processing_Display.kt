@@ -1,0 +1,36 @@
+package com.pareshkumarsharma.gayatrievents
+
+import android.media.MediaPlayer.OnPreparedListener
+import android.net.Uri
+import android.os.Bundle
+import android.view.View
+import android.widget.MediaController
+import android.widget.VideoView
+import androidx.appcompat.app.AppCompatActivity
+
+
+class Processing_Display : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_processing_display)
+
+//        val VideoView = findViewById<VideoView>(R.id.imageView)
+//        val controller = MediaController(this)
+//        VideoView.setMediaController(controller)
+
+//        controller.setAnchorView(VideoView)
+//
+//        VideoView.setVideoURI(
+//            Uri.parse("android.resource://"
+//                + packageName + "/" + R.raw.loading_circle_bars)
+//        )
+//
+//        VideoView.setOnPreparedListener(OnPreparedListener { mediaPlayer ->
+//            mediaPlayer.isLooping = true
+//        })
+//
+//        VideoView.start()
+//        controller.visibility = View.GONE
+
+    }
+}
