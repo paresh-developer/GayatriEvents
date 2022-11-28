@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 
 
 class PSBSArrayAdapter(val c:Context,
@@ -30,11 +31,18 @@ class PSBSArrayAdapter(val c:Context,
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                R.layout.,
+                com.pareshkumarsharma.gayatrievents.R.layout.listview_item,
                 parent,
                 false
             )
         }
+
+        val r = data[position]
+        val txt1 = currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt1OfListViewItem)
+        val txt2 = currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
+
+
+
         return super.getView(position, convertView, parent)
     }
 }
