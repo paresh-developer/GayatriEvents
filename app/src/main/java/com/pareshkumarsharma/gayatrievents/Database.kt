@@ -131,11 +131,12 @@ class Database {
             }
         }
 
-        internal fun getPanchangOf(dt:String,yr:Int):DataTable?{
+        internal fun getPanchangOf(dt:String,yr:Int):DataTable{
             var tbl: DataTable? = null
             try {
                 openConnection(1)
-                val c = sqlite.rawQuery("Select * from DKP$yr where EventDate = \"${dt}\"",null)
+                val c = sqlite.rawQuery("Select Tithi,Paksha,AmantMonth,Festivals,Nakshatra,Moonsign,Sunsign,VikramSamvat,ShakSamvat,Yoga,Karan,Sunrise,SunSet,Moonrise,Moonset,Weekday " +
+                        "from DKP$yr where EventDate = \"${dt}\"",null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             }
@@ -145,10 +146,12 @@ class Database {
             finally {
                 closeConnection()
             }
+            if(tbl==null)
+                tbl = DataTable(listOf("Error"),listOf<List<String>>(listOf("Error")),"Error")
             return tbl
         }
 
-        internal fun getDataTableFromCursor(c:Cursor):DataTable{
+        private fun getDataTableFromCursor(c:Cursor):DataTable{
             val columns = ArrayList<String>()
             val data = ArrayList<String>()
             val row = ArrayList<ArrayList<String>>()

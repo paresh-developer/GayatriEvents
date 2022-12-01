@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 .apply()
         }
 
-//        startActivity(Intent(this,Processing_Display::class.java))
+//        startActivity(Intent(this,Panchang::class.java))
 
 //        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
 //            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
