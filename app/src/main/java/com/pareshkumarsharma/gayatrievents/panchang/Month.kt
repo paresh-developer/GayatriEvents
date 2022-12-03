@@ -17,9 +17,14 @@ internal enum class Month(val m:Int) {
     companion object {
         fun get(obj: Int): String {
             var str = ""
+            var nObj = obj
+            if(obj > 12) {
+                str = "Adik "
+                nObj = obj - 12
+            }
             for(v in Month.values()){
-                if(v.m == obj){
-                    str = v.name
+                if(v.m == nObj){
+                    str += v.name
                     break
                 }
             }

@@ -2,6 +2,6 @@ package com.pareshkumarsharma.gayatrievents
 
 data class DataTable(
     val Columns: List<String>,
-    val Rows: List<List<String>>,
+    var Rows: MutableList<MutableList<String>>,
     val Error: String
 )

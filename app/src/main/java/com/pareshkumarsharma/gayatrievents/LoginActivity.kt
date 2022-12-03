@@ -79,6 +79,8 @@ class LoginActivity : AppCompatActivity() {
                         Database.insertTo("USERS", values, "Id")
                     }
 
+                    if(!MainActivity.IsRunning)
+                        startActivity(Intent(applicationContext,MainActivity::class.java))
                     MainActivity.IsLoginDone = 2
                     finish()
                 } else {

@@ -1,97 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainPanchangActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Panchang"
     android:orientation="vertical"
-    android:id="@+id/mainPanchangActivity"
-    >
+    tools:context=".Panchang">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="horizontal"
-        >
 
-        <TextView
-            android:id="@+id/txtNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Panchang"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_weight="20"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            />
-
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="150dp"
-            android:layout_weight="1"
-            android:text="Logout"
-            android:textSize="15dp"
-
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="top"
-        android:orientation="horizontal"
-        >
-        <NumberPicker
-            android:id="@+id/nmDay"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusedByDefault="false"
-            />
-        <NumberPicker
-            android:id="@+id/nmMonth"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <NumberPicker
-            android:id="@+id/nmYear"
-            android:layout_width="wrap_content"
-            android:layout_weight="3"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:orientation="horizontal"
-        >
-
-        <CalendarView
-            android:id="@+id/calendarView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusedByDefault="true" />
+            android:gravity="top"
+            android:orientation="horizontal">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+            <TextView
+                android:id="@+id/txtNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="20"
+                android:gravity="center"
+                android:text="Panchang"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/panchangListView"
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minWidth="150dp"
+                android:text="Logout"
+                android:textSize="15dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="800dp" />
+            android:layout_height="100dp"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/nmDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:focusedByDefault="false" />
+
+            <NumberPicker
+                android:id="@+id/nmMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <NumberPicker
+                android:id="@+id/nmYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:scrollbars="vertical">
+
+                        <CalendarView
+                            android:id="@+id/calendarView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ListView
+                                android:id="@+id/panchangListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="900dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="5dp"
+                    android:text=">\nF\nE\nS\nT\nI\nV\nA\nL\nS\n>"
+                    android:textColor="@color/black"
+                    android:textSize="25dp" />
+
+                <ListView
+                    android:id="@+id/monthFestivalList"
+                    android:layout_width="330dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

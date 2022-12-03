@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
+    internal companion object {
         /**
          * 0 when no login
          * 1 when on Login screen
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         var UserName = ""
         lateinit var Toastmain:Toast
         lateinit var btnPanchang:Button
+        var IsRunning = false
     }
 
     lateinit var txtHellow: TextView
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        IsRunning = true
 
         if(!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone",false))
             startActivity(Intent(this, LoginActivity::class.java))
@@ -44,7 +47,19 @@ class MainActivity : AppCompatActivity() {
         txtHellow.movementMethod = ScrollingMovementMethod()
         btnLogout.setOnClickListener {
             IsLoginDone = 0
+
+            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+                .edit()
+                .putString("token", "")
+                .putString("expires", "")
+                .putString("LLUname","")
+                .putString("LLMobile","")
+                .putString("LLPassword","")
+                .putBoolean("LLDone",false)
+                .apply()
+
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
 
         val btnSetting = findViewById<Button>(R.id.btnSetting)
@@ -95,5 +110,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             finish()
         }
+    }
+
+    override fun onDestroy() {
+        IsRunning = false
+        super.onDestroy()
     }
 }

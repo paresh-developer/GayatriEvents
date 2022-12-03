@@ -9,23 +9,21 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapter(
+class PSBSFestivalArrayAdapter(
     val c: Context,
     val r: Int,
     var data: Array<List<String>>, var colNames: List<String>,
-    val Identity: Int = 0
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
 
     override fun isEmpty(): Boolean {
-        return data[0].isEmpty()
+        return data.isEmpty()
     }
 
     override fun getCount(): Int {
-        return data[0].size
+        return data.size
     }
 
     internal fun UpdateData(d: Array<List<String>>, cols: List<String>) {
@@ -54,18 +52,8 @@ class PSBSArrayAdapter(
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
 
-        txt1?.text = colNames[position] + ": "
-        txt2?.text = data[0][position].toString().replace("#~#", "\n").replace(", "," ")
-
-        if (txt2?.text.toString().trim().length == 0)
-            txt2?.text = "no data"
-
-        when (colNames[position]) {
-            "Paksha" -> txt2?.text = Paksha.get(txt2?.text.toString().toInt())
-            "AmantMonth" -> txt2?.text = Month.get(txt2?.text.toString().toInt())
-            "Weekday" -> txt2?.text = WeekDay.get(txt2?.text.toString().toInt())
-            "Festivals" -> txt2?.text = txt2?.text.toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("//","")
-        }
+        txt1?.text = data[position][0].toString().substring(0,2)+" "
+        txt2?.text = data[position][1].toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("#~#", "\n").replace("//","")
 
         return currentItemView!!
     }

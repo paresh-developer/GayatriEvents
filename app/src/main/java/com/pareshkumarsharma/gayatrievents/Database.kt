@@ -9,20 +9,20 @@ class Database {
     internal companion object {
         internal val DBPATH = "/data/data/com.pareshkumarsharma.gayatrievents/main.db"
         internal val DBPATH_PANCHANG = "/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db"
-        private lateinit var sqlite : SQLiteDatabase
+        private lateinit var sqlite: SQLiteDatabase
         private lateinit var cur: Cursor
         internal var lastError = ""
 
         internal val SHAREDFILE = "shared_pref"
 
-        internal fun openConnection(default:Int = 0){
-            if(default==0)
+        internal fun openConnection(default: Int = 0) {
+            if (default == 0)
                 sqlite = SQLiteDatabase.openOrCreateDatabase(DBPATH, null)
             else
                 sqlite = SQLiteDatabase.openOrCreateDatabase(DBPATH_PANCHANG, null)
         }
 
-        internal fun closeConnection(){
+        internal fun closeConnection() {
             sqlite.close()
         }
 
@@ -30,7 +30,7 @@ class Database {
             var errorstr = ""
             val columns = ArrayList<String>()
             val data = ArrayList<String>()
-            val row = ArrayList<ArrayList<String>>()
+            val row = mutableListOf<MutableList<String>>()
             try {
                 openConnection()
                 cur = sqlite.rawQuery(query, null)
@@ -79,7 +79,7 @@ class Database {
                     sqlite.execSQL(
                         "Create table USERS (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                "Uname text,"+
+                                "Uname text," +
                                 "Email text," +
                                 "Mobile text," +
                                 "User_Password text," +
@@ -96,7 +96,7 @@ class Database {
                                 "Type_Name text" +
                                 ");"
                     )
-                    sqlite.execSQL("Insert into USER_TYPE (Type_Name) Values ('Client'),('Brahman'),('Service Provider')")
+                    sqlite.execSQL("Insert into USER_TYPE (Type_Name) Values ('Client'),('Service Provider')")
 //                    var c = ContentValues()
 //                    c.put("Type_Name","Client")
 //                    sqlite.insert("USER_TYPE","Id",c)
@@ -109,55 +109,95 @@ class Database {
 //                    c.put("Type_Name","Service Provider")
 //                    sqlite.insert("USER_TYPE","Id",c)
                 }
-            }
-            catch (ex:java.lang.Exception){
+            } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
-            }
-            finally {
+            } finally {
                 closeConnection()
             }
         }
 
-        internal fun insertTo(tableName:String,values:ContentValues,colmnHack:String){
+        internal fun insertTo(tableName: String, values: ContentValues, colmnHack: String) {
             try {
                 openConnection()
-                sqlite.insert(tableName,colmnHack,values)
-            }
-            catch (ex:Exception){
+                sqlite.insert(tableName, colmnHack, values)
+            } catch (ex: Exception) {
                 lastError = ex.message.toString()
-            }
-            finally {
+            } finally {
                 closeConnection()
             }
         }
 
-        internal fun getPanchangOf(dt:String,yr:Int):DataTable{
+        internal fun getPanchangOf(dt: String, yr: Int): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection(1)
-                val c = sqlite.rawQuery("Select Tithi,Paksha,AmantMonth,Festivals,Nakshatra,Moonsign,Sunsign,VikramSamvat,ShakSamvat,Yoga,Karan,Sunrise,SunSet,Moonrise,Moonset,Weekday " +
-                        "from DKP$yr where EventDate = \"${dt}\"",null)
+                var c = sqlite.rawQuery(
+                    "Select Weekday,Tithi,Paksha,AmantMonth,Festivals,Sunrise,SunSet,Nakshatra,Moonsign,Sunsign,Yoga,Karan,Moonrise,Moonset,VikramSamvat,ShakSamvat " +
+                            "from DKP$yr where EventDate = \"${dt}\"", null
+                )
                 tbl = getDataTableFromCursor(c)
+
+                // check for adik mas
+                if (tbl.Rows.size > 0 && tbl.Rows[0][tbl.Columns.indexOf("AmantMonth")].toString()
+                        .toInt() == 0
+                ) {
+                    c = sqlite.rawQuery("select distinct AmantMonth from dkp$yr", null)
+                    val tmpTbl = getDataTableFromCursor(c)
+                    c.close()
+                    var adikmas = -1
+                    for (rCnt in 0..tmpTbl.Rows.size - 1) {
+                        if (tmpTbl.Rows[rCnt][0].toString().toInt() == 0) {
+                            adikmas = rCnt; break
+                        }
+                    }
+                    if(adikmas == -1 || adikmas == tmpTbl.Rows.size - 1){
+                         adikmas = tmpTbl.Rows.first()[0].toString().toInt()
+                    }
+                    else{
+                        adikmas = tmpTbl.Rows[adikmas+1][0].toString().toInt()
+                    }
+                    tbl.Rows[0][tbl.Columns.indexOf("AmantMonth")] = (adikmas+12).toString()
+                }
+
                 c.close()
-            }
-            catch (ex:Exception){
+            } catch (ex: Exception) {
                 lastError = ex.message.toString()
-            }
-            finally {
+            } finally {
                 closeConnection()
             }
-            if(tbl==null)
-                tbl = DataTable(listOf("Error"),listOf<List<String>>(listOf("Error")),"Error")
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             return tbl
         }
 
-        private fun getDataTableFromCursor(c:Cursor):DataTable{
+        internal fun getPanchangFestivalOf(dt: String, yr: Int): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection(1)
+                val c = sqlite.rawQuery(
+                    "Select EventDate,Festivals " +
+                            "from DKP$yr where EventDate like \"${dt}\" and length(trim(Festivals))>0",
+                    null
+                )
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            return tbl
+        }
+
+        private fun getDataTableFromCursor(c: Cursor): DataTable {
             val columns = ArrayList<String>()
-            val data = ArrayList<String>()
-            val row = ArrayList<ArrayList<String>>()
+            val row = mutableListOf<MutableList<String>>()
             for (col in c.columnNames)
                 columns.add(col)
             while (c.moveToNext()) {
+                val data = ArrayList<String>()
                 for (i in 0..columns.size - 1)
                     data.add(c.getString(i))
                 row.add(data)
