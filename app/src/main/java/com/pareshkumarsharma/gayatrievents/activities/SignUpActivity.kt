@@ -1,11 +1,12 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.R
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var edTName: EditText
@@ -51,7 +52,7 @@ class SignUpActivity : AppCompatActivity() {
                         edTName.text.toString().trim(),
                         edTMobile.text.toString().trim(),
                         edTEmail.text.toString().trim(),
-                       APICalls.encodeString(edTPassword.text.toString().trim())
+                        APICalls.encodeString(edTPassword.text.toString().trim())
                     )
                 ) {
                     MainActivity.IsLoginDone = 4

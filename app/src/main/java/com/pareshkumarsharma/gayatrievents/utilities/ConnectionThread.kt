@@ -1,14 +1,13 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.utilities
 
 import android.util.Log
 import com.google.gson.Gson
+import com.pareshkumarsharma.gayatrievents.api.model.UserRegisterModel
 import java.io.BufferedInputStream
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.reflect.typeOf
 
 class ConnectionThread(name: String) : Thread(name) {
     override fun run() {
@@ -39,7 +38,7 @@ class ConnectionThread(name: String) : Thread(name) {
                 val bufferedIn = BufferedReader(InputStreamReader(urlConnection.inputStream))
                 val respo = bufferedIn.readLine()
 
-                val UsrModel = Gson().fromJson<UserRegisterModel>(respo,UserRegisterModel::class.java)
+                val UsrModel = Gson().fromJson<UserRegisterModel>(respo, UserRegisterModel::class.java)
             }
         } catch (ex: Exception) {
             Log.d("API Call", ex.message.toString())

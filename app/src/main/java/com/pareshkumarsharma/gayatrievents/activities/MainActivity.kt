@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -70,8 +72,16 @@ class MainActivity : AppCompatActivity() {
         }
         val packapath = this.packageName
         btnPanchang.setOnClickListener {
-            startActivity(Intent(this,Panchang::class.java))
+            startActivity(Intent(this, Panchang::class.java))
             IsLoginDone = 5
+        }
+
+        findViewById<Button>(R.id.btnService).setOnClickListener {
+            if(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)==2) {
+                startActivity(Intent(this, ServiceEdit::class.java))
+            }
+            else
+                Toast.makeText(applicationContext,"You cannot access Services",Toast.LENGTH_LONG).show()
         }
 
         val DatabaseSetup = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001",false)

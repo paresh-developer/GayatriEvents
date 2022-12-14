@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.utilities
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,11 +6,12 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
+import com.pareshkumarsharma.gayatrievents.activities.MainActivity
+import com.pareshkumarsharma.gayatrievents.api.model.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.Dictionary
 
 class APICalls {
     companion object  {
@@ -25,6 +26,9 @@ class APICalls {
             "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageRequest"
         private const val CHECK_MESSAGER_UPDATE =
             "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageUpdate"
+        private const val USER_TYPE_CHANGE_REQUEST =
+            "http://10.0.2.2/GayatriEvents/api/MobileApp/UserTypeChangeRequest"
+
 
 
         private const val NO_INTERNTET_MSG = "Internet required!"
@@ -344,6 +348,49 @@ class APICalls {
                 }
             } catch (ex: Exception) {
                 Log.d("API Call", ex.message.toString())
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun requestUserTypeChange(UTCModel: UserTypeChangeRequestModel): Boolean {
+            var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(USER_TYPE_CHANGE_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(UTCModel, UserTypeChangeRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()

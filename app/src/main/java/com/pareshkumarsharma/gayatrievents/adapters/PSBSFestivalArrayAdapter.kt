@@ -1,14 +1,11 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.adapters
 
-import android.R
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 
 
 class PSBSFestivalArrayAdapter(
@@ -41,7 +38,7 @@ class PSBSFestivalArrayAdapter(
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                com.pareshkumarsharma.gayatrievents.R.layout.listview_item,
+                com.pareshkumarsharma.gayatrievents.R.layout.listview_festival_item,
                 parent,
                 false
             )
@@ -52,7 +49,7 @@ class PSBSFestivalArrayAdapter(
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
 
-        txt1?.text = data[position][0].toString().substring(0,2)+" "
+        txt1?.text = data[position][0].toString().substring(0,2)
         txt2?.text = data[position][1].toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("#~#", "\n").replace("//","")
 
         return currentItemView!!

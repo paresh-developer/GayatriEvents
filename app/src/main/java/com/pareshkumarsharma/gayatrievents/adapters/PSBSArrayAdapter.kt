@@ -1,6 +1,5 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.adapters
 
-import android.R
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View

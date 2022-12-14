@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.api.model
 
 data class MessageModel(
     val Id:Int,

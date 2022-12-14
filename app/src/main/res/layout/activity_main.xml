@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".activities.MainActivity"
     android:id="@+id/mainActivityLayout"
     android:orientation="vertical"
     android:layout_margin="5dp"
@@ -20,6 +20,7 @@
         >
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -77,6 +78,20 @@
                 android:layout_width="120dp"
                 android:layout_height="60dp"
                 android:text="Setting"
+                android:layout_margin="10dp"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/btnService"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:text="Service"
                 android:layout_margin="10dp"
                 android:textSize="15dp"
                 />

@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
 import android.content.Intent
@@ -9,6 +9,10 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.pareshkumarsharma.gayatrievents.*
+import com.pareshkumarsharma.gayatrievents.api.model.UserRegisterModel
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 class LoginActivity : AppCompatActivity() {
 
@@ -65,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
                             .putString("LLUname",userModel.User_Email)
                             .putString("LLMobile",userModel.User_Mobile)
                             .putString("LLPassword",userModel.User_Password)
+                            .putInt("LLUType",userModel.User_Type)
                             .putBoolean("LLDone",true)
                             .apply()
 
@@ -80,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     if(!MainActivity.IsRunning)
-                        startActivity(Intent(applicationContext,MainActivity::class.java))
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
                     MainActivity.IsLoginDone = 2
                     finish()
                 } else {

@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.utilities
 
 data class DataTable(
     val Columns: List<String>,

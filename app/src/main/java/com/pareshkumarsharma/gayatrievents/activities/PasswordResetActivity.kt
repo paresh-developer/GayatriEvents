@@ -1,9 +1,11 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
+import com.pareshkumarsharma.gayatrievents.R
 
 class PasswordResetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

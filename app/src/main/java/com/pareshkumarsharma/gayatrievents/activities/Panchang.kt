@@ -1,18 +1,16 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.format.DateUtils
-import android.view.View
 import android.widget.*
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSFestivalArrayAdapter
 import com.pareshkumarsharma.gayatrievents.panchang.Month
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.temporal.ChronoField
 import java.util.Calendar
 import java.util.Date
 
@@ -25,6 +23,7 @@ class Panchang : AppCompatActivity() {
 
     lateinit var psbArrayAdadaper : PSBSArrayAdapter
     lateinit var psbFestivalArrayAdadaper : PSBSFestivalArrayAdapter
+    lateinit var monthStr:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,24 +72,28 @@ class Panchang : AppCompatActivity() {
                         nmYear.isEnabled = true
                         calendar.isEnabled = true
 
-                        val PanchangData =Database.getPanchangOf(
+                        val PanchangData = Database.getPanchangOf(
                             SimpleDateFormat("dd-MM-yyyy").format(Date()).toString(),
-                            SimpleDateFormat("yyyy").format(Date()).toInt())
+                            SimpleDateFormat("yyyy").format(Date()).toInt()
+                        )
 
                         val FestivalPanchangData = Database.getPanchangFestivalOf(
                             SimpleDateFormat("%-MM-yyyy").format(Date()).toString(),
-                            SimpleDateFormat("yyyy").format(Date()).toInt())
+                            SimpleDateFormat("yyyy").format(Date()).toInt()
+                        )
 
                         val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-                        val monthStr = Month.get(monthInt)
+                        monthStr = Month.get(monthInt)
 
                         findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
 
-                        psbArrayAdadaper = PSBSArrayAdapter(applicationContext,R.layout.listview_item
+                        psbArrayAdadaper = PSBSArrayAdapter(applicationContext,
+                            R.layout.listview_item
                             ,PanchangData.Rows.toTypedArray(),PanchangData.Columns)
 
-                        psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,R.layout.listview_item
+                        psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,
+                            R.layout.listview_item
                             ,FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
 
                         listView.adapter = psbArrayAdadaper
@@ -101,24 +104,27 @@ class Panchang : AppCompatActivity() {
         } else {
             downloadComplete = true
 
-            val PanchangData =Database.getPanchangOf(
+            val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(Date()).toString(),
-                SimpleDateFormat("yyyy").format(Date()).toInt())
+                SimpleDateFormat("yyyy").format(Date()).toInt()
+            )
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(Date()).toString(),
-                SimpleDateFormat("yyyy").format(Date()).toInt())
+                SimpleDateFormat("yyyy").format(Date()).toInt()
+            )
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            val monthStr = Month.get(monthInt)
+            monthStr = Month.get(monthInt)
 
             findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
 
-            psbArrayAdadaper = PSBSArrayAdapter(applicationContext,R.layout.listview_item
+            psbArrayAdadaper = PSBSArrayAdapter(applicationContext, R.layout.listview_item
                 ,PanchangData.Rows.toTypedArray(),PanchangData.Columns)
 
-            psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,R.layout.listview_item
+            psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,
+                R.layout.listview_item
                 ,FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
 
             listView.adapter = psbArrayAdadaper
@@ -148,9 +154,10 @@ class Panchang : AppCompatActivity() {
             calendar.date = c.time.time
             nmDay.value = SimpleDateFormat("d").format(c.time).toInt()
 
-            val PanchangData =Database.getPanchangOf(
+            val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(c.time),
-                nmYear.value)
+                nmYear.value
+            )
 
             psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
@@ -166,19 +173,21 @@ class Panchang : AppCompatActivity() {
                 nmDay.maxValue = 31
             nmDay.value = SimpleDateFormat("d").format(c.time).toInt()
 
-            val PanchangData =Database.getPanchangOf(
+            val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(c.time),
-                nmYear.value)
+                nmYear.value
+            )
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            val monthStr = Month.get(monthInt)
+            monthStr = Month.get(monthInt)
 
             findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(c.time).toString(),
-                SimpleDateFormat("yyyy").format(c.time).toInt())
+                SimpleDateFormat("yyyy").format(c.time).toInt()
+            )
 
             psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
@@ -194,17 +203,19 @@ class Panchang : AppCompatActivity() {
             calendar.date = c.time.time
             nmDay.value = SimpleDateFormat("d").format(c.time).toInt()
 
-            val PanchangData =Database.getPanchangOf(
+            val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(c.time),
-                i2)
+                i2
+            )
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(c.time).toString(),
-                i2)
+                i2
+            )
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            val monthStr = Month.get(monthInt)
+            monthStr = Month.get(monthInt)
 
             findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
 
@@ -220,17 +231,19 @@ class Panchang : AppCompatActivity() {
         calendar.setDate(System.currentTimeMillis())
         calendar.setOnDateChangeListener { calendarView, i, i2, i3 ->
             c.set(i,i2,i3)
-            val PanchangData =Database.getPanchangOf(
+            val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(c.time),
-                i)
+                i
+            )
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(c.time).toString(),
-                SimpleDateFormat("yyyy").format(c.time).toInt())
+                SimpleDateFormat("yyyy").format(c.time).toInt()
+            )
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            val monthStr = Month.get(monthInt)
+            monthStr = Month.get(monthInt)
 
             findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
 
@@ -260,7 +273,7 @@ class Panchang : AppCompatActivity() {
                     countDot++
                 }
                 runOnUiThread {
-                    findViewById<TextView>(R.id.txtNavigation).text = "Panchang"
+                    findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
                 }
             }.start()
     }

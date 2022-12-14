@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Processing_Display">
+    tools:context=".activities.Processing_Display">
 
     <VideoView
         android:id="@+id/imageView"

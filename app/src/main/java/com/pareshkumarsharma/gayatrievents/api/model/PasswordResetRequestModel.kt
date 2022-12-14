@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.api.model
 
 data class PasswordResetRequestModel(
     val User_Email: String,

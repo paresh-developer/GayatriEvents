@@ -1,7 +1,6 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.utilities
 
 import android.content.ContentValues
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 
@@ -109,6 +108,17 @@ class Database {
 //                    c.put("Type_Name","Service Provider")
 //                    sqlite.insert("USER_TYPE","Id",c)
                 }
+
+                if (!checkTableExists("SERVICE_TYPE")) {
+                    //User type table not exists
+                    sqlite.execSQL(
+                        "Create table SERVICE_TYPE (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "Service_Type_Name text" +
+                                ");"
+                    )
+                    sqlite.execSQL("Insert into Service_TYPE (Service_Type_Name) Values ('Brahman'),('Hall_Booking'),('Kariyana'),('Catering'),('Delivery'),('Photo_VIdeo_Studio'),('Decoration');")
+                }
             } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -179,6 +189,42 @@ class Database {
                             "from DKP$yr where EventDate like \"${dt}\" and length(trim(Festivals))>0",
                     null
                 )
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            return tbl
+        }
+
+        internal fun getServiceTypes(): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select  * from Service_type", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            return tbl
+        }
+
+        internal fun getCities(): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection(1)
+//                val c = sqlite.query("Cities","Select id,name,state_code,country_code from Cities where country_code='IN' and state_code='GJ' order by id", null)
+                val c = sqlite.query("Cities", listOf("id","name","state_code","country_code").toTypedArray(),"country_code=? and state_code=?",
+                    listOf("IN","GJ").toTypedArray(),null,null,"id")
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

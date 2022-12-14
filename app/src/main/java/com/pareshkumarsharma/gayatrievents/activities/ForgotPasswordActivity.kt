@@ -1,12 +1,13 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.Intent
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.recyclerview.widget.ListAdapter
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
+import com.pareshkumarsharma.gayatrievents.R
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
@@ -55,7 +56,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                             .show()
                         APICalls.setContext(applicationContext)
                         resetRequestId = APICalls.lastCallMessage.trim('\"').toInt()
-                        startActivity(Intent(this,PasswordResetActivity::class.java))
+                        startActivity(Intent(this, PasswordResetActivity::class.java))
                         finish()
                     }
                 } else {
