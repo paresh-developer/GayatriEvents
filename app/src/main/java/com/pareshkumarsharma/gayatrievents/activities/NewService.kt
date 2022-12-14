@@ -5,6 +5,8 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterSpinner
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 class NewService : AppCompatActivity() {
@@ -20,23 +22,22 @@ class NewService : AppCompatActivity() {
         val spinerServiceType = findViewById<Spinner>(R.id.spinner_ServiceTypelist)
         val spinerCity = findViewById<Spinner>(R.id.spinner_City)
 
-        var DataServiceType = Database.getServiceTypes()
-        var arr_serviceType = mutableListOf<String>()
-        for(rr in DataServiceType.Rows){
-            arr_serviceType.add(rr[1])
+        val DataForList = Database.getServiceTypes()
+        val arrOfList = mutableListOf<String>()
+        for(row in DataForList.Rows){
+            arrOfList.add(row[1])
         }
 
-        val adapterServiceType = ArrayAdapter<String>(applicationContext, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,arr_serviceType.toTypedArray())
+        val adapterServiceType = PSBSArrayAdapterSpinner(this,R.layout.spinnerview_item,arrOfList)
 
         spinerServiceType.adapter = adapterServiceType
 
-        DataServiceType = Database.getCities()
-        arr_serviceType = mutableListOf<String>()
-        for(rr in DataServiceType.Rows){
-            arr_serviceType.add(rr[1]+", "+rr[2]+" ,"+rr[3])
+        var DataForList1 = Database.getCities()
+        var arrOfList1 = mutableListOf<String>()
+        for(row in DataForList1.Rows){
+            arrOfList1.add(row[1]+", "+row[2]+", "+row[3])
         }
-
-        val adapterCity = ArrayAdapter<String>(applicationContext, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,arr_serviceType.toTypedArray())
+        val adapterCity = PSBSArrayAdapterSpinner(this,R.layout.spinnerview_item,arrOfList1)
 
         spinerCity.adapter = adapterCity
     }
