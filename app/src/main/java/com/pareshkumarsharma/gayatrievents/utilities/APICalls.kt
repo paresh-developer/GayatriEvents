@@ -15,23 +15,35 @@ import java.net.URL
 
 class APICalls {
     companion object  {
-        private const val LOGIN_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Login"
-        private const val REGISTER_URL = "http://10.0.2.2/GayatriEvents/api/MobileApp/Register"
-        private const val PANCHANG_DOWNLOAD_URL = "http://10.0.2.2/GayatriEvents/api/Panchang"
+
+        // region URLS
+
+        private const val HOST = "http://10.0.2.2/GayatriEvents/api/"
+
+        private const val LOGIN_URL = "$HOST/MobileApp/Login"
+        private const val REGISTER_URL = "$HOST/MobileApp/Register"
+        private const val PANCHANG_DOWNLOAD_URL = "$HOST/Panchang"
         private const val PASSWORD_RESET_REQUEST =
-            "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordResetRequest"
+            "$HOST/MobileApp/PasswordResetRequest"
         private const val PASSWORD_RESET =
-            "http://10.0.2.2/GayatriEvents/api/MobileApp/PasswordReset"
+            "$HOST/MobileApp/PasswordReset"
         private const val CHECK_MESSAGER_REQUEST =
-            "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageRequest"
+            "$HOST/MobileApp/MobileMessageRequest"
         private const val CHECK_MESSAGER_UPDATE =
-            "http://10.0.2.2/GayatriEvents/api/MobileApp/MobileMessageUpdate"
+            "$HOST/MobileApp/MobileMessageUpdate"
         private const val USER_TYPE_CHANGE_REQUEST =
-            "http://10.0.2.2/GayatriEvents/api/MobileApp/UserTypeChangeRequest"
+            "$HOST/MobileApp/UserTypeChangeRequest"
+        private const val VIEW_EXISTING_SERVICE_OF_CURRENT_USER =
+            "$HOST/Service/"
+        private const val SERVICE_REGISTRATION_REQUEST =
+            "$HOST/Service/New"
 
+        // endregion
 
-
+        // region RESPONSE MESSAGES
         private const val NO_INTERNTET_MSG = "Internet required!"
+        // endregion
+
 
         internal lateinit var cookies : Map<String,String>
         internal var lastCallMessage = ""
@@ -39,10 +51,7 @@ class APICalls {
 
         private lateinit var Cont:Context
 
-        internal fun setContext(c:Context){
-                Cont = c
-        }
-
+        // region Calls
         internal fun login(userEmail: String, userMobile: String, userPass: String): Boolean {
             var isSuccess = false
 
@@ -166,6 +175,18 @@ class APICalls {
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET")
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
             try {
                 val responseCode = urlConnection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -370,6 +391,17 @@ class APICalls {
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
             urlConnection.setRequestProperty("Content-Type", "application/json");
 
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
             urlConnection.doOutput = true
 
             try {
@@ -397,6 +429,117 @@ class APICalls {
             }
 
             return isSuccess
+        }
+
+        internal fun requestNewServiceRegistration(ServiceModel: ServiceRegistrationRequestModel): Boolean {
+            var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_REGISTRATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceModel, ServiceRegistrationRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getExistingServiceOfCurrentUser(): Boolean {
+            var isSuccess = false
+
+            if(!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson<Array<ServiceDisplayModel>>(respo, Array<ServiceDisplayModel>::class.java)
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        // endregion
+
+        // region Utility
+        internal fun setContext(c:Context){
+            Cont = c
         }
 
         internal fun decodeString(intString:String):String{
@@ -446,5 +589,6 @@ class APICalls {
             }
             return false
         }
+        // endregion
     }
 }

@@ -27,6 +27,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -60,21 +61,18 @@
                 android:id="@+id/edt_ServiceTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
                 android:hint="Service Title" />
 
             <EditText
                 android:id="@+id/edt_ServiceDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
                 android:hint="Service\nDescription" />
 
             <EditText
                 android:id="@+id/edt_ServiceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
                 android:hint="Service\nAddress" />
 
             <TextView

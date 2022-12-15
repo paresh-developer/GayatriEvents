@@ -2,6 +2,7 @@ package com.pareshkumarsharma.gayatrievents.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
@@ -49,9 +50,25 @@ class Panchang : AppCompatActivity() {
             nmDay.isEnabled = false
             nmMonth.isEnabled = false
             nmYear.isEnabled = false
-            calendar.isEnabled = false
+            calendar.visibility = View.GONE
             Thread {
                 APICalls.setContext(applicationContext)
+                APICalls.cookies = mapOf<String, String>(
+                    Pair(
+                        "token",
+                        getSharedPreferences(
+                            Database.SHAREDFILE,
+                            MODE_PRIVATE
+                        ).getString("token", "").toString()
+                    ),
+                    Pair(
+                        "expires",
+                        getSharedPreferences(
+                            Database.SHAREDFILE,
+                            MODE_PRIVATE
+                        ).getString("expires", "").toString()
+                    )
+                )
                 if (APICalls.downloadPanchang()) {
                     val data = APICalls.lastCallObject as ByteArray
                     val f = File("/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db")
@@ -70,7 +87,7 @@ class Panchang : AppCompatActivity() {
                         nmDay.isEnabled = true
                         nmMonth.isEnabled = true
                         nmYear.isEnabled = true
-                        calendar.isEnabled = true
+                        calendar.visibility = View.VISIBLE
 
                         val PanchangData = Database.getPanchangOf(
                             SimpleDateFormat("dd-MM-yyyy").format(Date()).toString(),
@@ -98,6 +115,12 @@ class Panchang : AppCompatActivity() {
 
                         listView.adapter = psbArrayAdadaper
                         listView_festival.adapter = psbFestivalArrayAdadaper
+                    }
+                }
+                else{
+                    downloadComplete = true
+                    runOnUiThread {
+                        Toast.makeText(this,APICalls.lastCallMessage,Toast.LENGTH_LONG).show()
                     }
                 }
             }.start()

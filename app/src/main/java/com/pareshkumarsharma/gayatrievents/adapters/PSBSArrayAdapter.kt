@@ -52,7 +52,7 @@ class PSBSArrayAdapter(
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
 
-        txt1?.text = colNames[1] + ": "
+        txt1?.text = colNames[position] + ": "
         txt2?.text = data[0][position].toString().replace("#~#", "\n").replace(", "," ")
 
         if (txt2?.text.toString().trim().length == 0)

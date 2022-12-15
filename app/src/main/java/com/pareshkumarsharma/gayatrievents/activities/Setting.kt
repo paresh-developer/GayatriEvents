@@ -15,42 +15,70 @@ class Setting : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        if(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)==2){
+        if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
             findViewById<Button>(R.id.btnChangeRequest_UserType).visibility = View.GONE
         }
 
         findViewById<Button>(R.id.btnChangeRequest_UserType).setOnClickListener {
-            val UserOldType = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)
-            if(UserOldType < 1) {
+            val UserOldType =
+                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0)
+            if (UserOldType < 1) {
                 Toast.makeText(
                     applicationContext,
                     "You can't change the user type",
                     Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
-            }
-            else if(UserOldType != 1){
+            } else if (UserOldType != 1) {
                 Toast.makeText(
                     applicationContext,
                     "You are already changed your user type",
                     Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
-            }
-            else if(UserOldType == 1) {
-                if (APICalls.requestUserTypeChange(UserTypeChangeRequestModel(UserOldType, 2))){
-                    Toast.makeText(
-                        applicationContext,
-                        APICalls.lastCallMessage,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }else{
-                    Toast.makeText(
-                        applicationContext,
-                        APICalls.lastCallMessage,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+            } else if (UserOldType == 1) {
+                Thread(Runnable {
+                    APICalls.setContext(this)
+                    APICalls.cookies = mapOf<String, String>(
+                        Pair(
+                            "token",
+                            getSharedPreferences(
+                                Database.SHAREDFILE,
+                                MODE_PRIVATE
+                            ).getString("token", "").toString()
+                        ),
+                        Pair(
+                            "expires",
+                            getSharedPreferences(
+                                Database.SHAREDFILE,
+                                MODE_PRIVATE
+                            ).getString("expires", "").toString()
+                        )
+                    )
+                    if (APICalls.requestUserTypeChange(
+                            UserTypeChangeRequestModel(
+                                UserOldType,
+                                2
+                            )
+                        )
+                    ) {
+                        runOnUiThread(Runnable {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        })
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }).start()
             }
         }
     }

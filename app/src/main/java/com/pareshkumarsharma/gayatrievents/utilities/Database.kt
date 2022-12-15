@@ -119,6 +119,23 @@ class Database {
                     )
                     sqlite.execSQL("Insert into Service_TYPE (Service_Type_Name) Values ('Brahman'),('Hall_Booking'),('Kariyana'),('Catering'),('Delivery'),('Photo_VIdeo_Studio'),('Decoration');")
                 }
+
+                if (!checkTableExists("SERVICE")) {
+                    //User type table not exists
+                    sqlite.execSQL(
+                        "Create table SERVICE (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "Owner text," +
+                                "Title text," +
+                                "SmallDesc text," +
+                                "ServiceType int," +
+                                "SAddress text," +
+                                "City int," +
+                                "ApprovalTime datetime"+
+                                ");"
+                    )
+                }
             } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -237,6 +254,25 @@ class Database {
             return tbl
         }
 
+        internal fun getServices(): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select * from Service", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            return tbl
+        }
+
+        // region Utility
+
         private fun getDataTableFromCursor(c: Cursor): DataTable {
             val columns = ArrayList<String>()
             val row = mutableListOf<MutableList<String>>()
@@ -250,5 +286,37 @@ class Database {
             }
             return DataTable(columns, row, "")
         }
+
+        internal fun getRowCount(tbl:String,col:String,con:String): Int{
+            var rowCount = 0
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Count(id) from Service Where $col = '$con'", null)
+                rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return rowCount
+        }
+
+        internal fun getRowCount(tbl:String,col:String,con:Int): Int{
+            var rowCount = 0
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Count(id) from Service Where $col = $con", null)
+                rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return rowCount
+        }
+
+        // endregion
     }
 }
