@@ -1,15 +1,12 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
@@ -18,10 +15,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 
-class ServiceProductEdit : AppCompatActivity() {
-
-
-    internal val CurrentActivity = this
+class ServiceProductDetailsEdit : AppCompatActivity() {
 
     internal companion object{
         var selectedServiceId:Int = 0
@@ -29,7 +23,7 @@ class ServiceProductEdit : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_service_product_edit)
+        setContentView(R.layout.activity_service_product_details_edit)
 
         if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
             onBackPressed()
@@ -47,25 +41,6 @@ class ServiceProductEdit : AppCompatActivity() {
         val adapterService =
             PSBSArrayAdapterServiceProduct(this, R.layout.listview_item_service_product, exitingServices.Rows)
         listView.adapter = adapterService
-
-        listView.setOnItemClickListener { adapterView, view, i, l ->
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Title")
-            builder.setMessage("Desc")
-            builder.setPositiveButton(
-                "Edit",
-                DialogInterface.OnClickListener { dialogInterface, j -> })
-            builder.setNeutralButton(
-                "Products",
-                DialogInterface.OnClickListener { dialogInterface, j ->
-                    val inn = Intent(CurrentActivity, ServiceProductDetailsEdit::class.java)
-                    CurrentActivity.startActivity(inn)
-                })
-            builder.setNegativeButton(
-                "Cancel",
-                DialogInterface.OnClickListener { dialogInterface, j -> })
-            builder.show()
-        }
     }
 
     override fun onResume() {

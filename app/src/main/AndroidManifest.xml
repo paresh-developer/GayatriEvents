@@ -17,6 +17,20 @@
         android:theme="@style/Theme.GayatriEvents"
         tools:targetApi="31">
         <activity
+            android:name=".activities.NewServiceProductDetails"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.ServiceProductDetailsEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.NewServiceProduct"
             android:exported="false">
             <meta-data
