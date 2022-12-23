@@ -14,7 +14,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class APICalls {
-    companion object  {
+    companion object {
 
         // region URLS
 
@@ -37,7 +37,14 @@ class APICalls {
             "$HOST/Service/"
         private const val SERVICE_REGISTRATION_REQUEST =
             "$HOST/Service/New"
-
+        private const val SERVICE_PRODUCT_REGISTRATION_REQUEST =
+            "$HOST/Service/NewProduct"
+        private const val SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST =
+            "$HOST/Service/NewProductDetails"
+        private const val VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER =
+            "$HOST/Service/Product"
+        private const val VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER =
+            "$HOST/Service/ProductDetails"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -45,17 +52,17 @@ class APICalls {
         // endregion
 
 
-        internal lateinit var cookies : Map<String,String>
+        internal lateinit var cookies: Map<String, String>
         internal var lastCallMessage = ""
         internal lateinit var lastCallObject: Any
 
-        private lateinit var Cont:Context
+        private lateinit var Cont: Context
 
         // region Calls
         internal fun login(userEmail: String, userMobile: String, userPass: String): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return false
             }
@@ -82,13 +89,18 @@ class APICalls {
                     val regModel =
                         Gson().fromJson<UserRegisterModel>(respo, UserRegisterModel::class.java)
 
-                    if(urlConnection.headerFields["Set-Cookie"] != null)
-                        if(urlConnection.headerFields["Set-Cookie"]?.size!!.compareTo(0)>0) {
+                    if (urlConnection.headerFields["Set-Cookie"] != null)
+                        if (urlConnection.headerFields["Set-Cookie"]?.size!!.compareTo(0) > 0) {
                             val cks = urlConnection.headerFields["Set-Cookie"]?.get(0)?.split(';')
-                            cookies = mapOf<String,String>(Pair("token",
-                                cks?.get(0)!!.split('=')[1]),
-                                Pair("expires",
-                                    cks?.get(1)!!.split('=')[1])
+                            cookies = mapOf<String, String>(
+                                Pair(
+                                    "token",
+                                    cks?.get(0)!!.split('=')[1]
+                                ),
+                                Pair(
+                                    "expires",
+                                    cks?.get(1)!!.split('=')[1]
+                                )
                             )
                         }
 
@@ -121,7 +133,7 @@ class APICalls {
         ): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return false
             }
@@ -136,7 +148,7 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val loginModel = UserRegisterModel(userName, userMobile, userEmail, userPass,0)
+                val loginModel = UserRegisterModel(userName, userMobile, userEmail, userPass, 0)
                 val model = Gson().toJson(loginModel, loginModel.javaClass)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
@@ -164,7 +176,7 @@ class APICalls {
         internal fun downloadPanchang(): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -210,7 +222,7 @@ class APICalls {
         internal fun requestForPasswordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -253,7 +265,7 @@ class APICalls {
         internal fun passwordReset(passwordResetModel: PasswordResetRequestModel): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -295,6 +307,11 @@ class APICalls {
 
         internal fun messageRequestUpdate(messageModel: MessageModel): Boolean {
             var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
 
             val url = URL(CHECK_MESSAGER_UPDATE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
@@ -342,6 +359,11 @@ class APICalls {
 
             var isSuccess = false
 
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
             val url = URL(CHECK_MESSAGER_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET")
@@ -380,7 +402,7 @@ class APICalls {
         internal fun requestUserTypeChange(UTCModel: UserTypeChangeRequestModel): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -434,7 +456,7 @@ class APICalls {
         internal fun requestNewServiceRegistration(ServiceModel: ServiceRegistrationRequestModel): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -485,10 +507,118 @@ class APICalls {
             return isSuccess
         }
 
+        internal fun requestNewServiceProductRegistration(ServiceProductModel: ServiceProductRegistrationModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_PRODUCT_REGISTRATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceProductModel, ServiceProductRegistrationModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun requestNewServiceProductDetailsRegistration(ServiceProductDetailsModel: ServiceProductDetailsRegistrationModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceProductDetailsModel, ServiceProductDetailsRegistrationModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         internal fun getExistingServiceOfCurrentUser(): Boolean {
             var isSuccess = false
 
-            if(!isOnline(Cont)) {
+            if (!isOnline(Cont)) {
                 lastCallMessage = NO_INTERNTET_MSG
                 return isSuccess
             }
@@ -516,7 +646,114 @@ class APICalls {
                     val inp = InputStreamReader(urlConnection.inputStream)
                     val respo = inp.readText()
                     val model =
-                        Gson().fromJson<Array<ServiceDisplayModel>>(respo, Array<ServiceDisplayModel>::class.java)
+                        Gson().fromJson<Array<ServiceDisplayModel>>(
+                            respo,
+                            Array<ServiceDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getExistingServiceProductOfCurrentUser(selectedService: Int): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER+"?serviceGlobalId=$selectedService")
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson<Array<ServiceProductDisplayModel>>(
+                            respo,
+                            Array<ServiceProductDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getExistingServiceProductDetailOfCurrentUser(selectedServiceProduct: Int): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER+"?serviceProductGlobalId=$selectedServiceProduct")
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson<Array<ServiceProductDetailDisplayModel>>(
+                            respo,
+                            Array<ServiceDisplayModel>::class.java
+                        )
                     lastCallObject = model
                     inp.close()
                     lastCallMessage = "Ok"
@@ -538,11 +775,11 @@ class APICalls {
         // endregion
 
         // region Utility
-        internal fun setContext(c:Context){
+        internal fun setContext(c: Context) {
             Cont = c
         }
 
-        internal fun decodeString(intString:String):String{
+        internal fun decodeString(intString: String): String {
             val string_array = intString.trim('#').split('#')
             val newPassStr = ByteArray(string_array.size)
             for (i in 0..string_array.size - 1)
@@ -552,11 +789,11 @@ class APICalls {
             return newPassStr.decodeToString()
         }
 
-        internal fun encodeString(intString: String):String{
+        internal fun encodeString(intString: String): String {
             var encodedStr = "#"
             val byteA = intString.toByteArray(Charsets.UTF_8)
-            for (i in 0..byteA.size-1)
-                encodedStr += ((((byteA[i].toDouble()/55.0)+88.0)*34.0)-90.0).toString()+"#"
+            for (i in 0..byteA.size - 1)
+                encodedStr += ((((byteA[i].toDouble() / 55.0) + 88.0) * 34.0) - 90.0).toString() + "#"
             return encodedStr
         }
 

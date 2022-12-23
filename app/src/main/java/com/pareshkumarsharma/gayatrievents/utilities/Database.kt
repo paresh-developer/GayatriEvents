@@ -136,6 +136,38 @@ class Database {
                                 ");"
                     )
                 }
+
+                if (!checkTableExists("SERVICE_PRODUCT")) {
+                    //User type table not exists
+                    sqlite.execSQL(
+                        "Create table SERVICE_PRODUCT (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "ServiceGlobalId int," +
+                                "ServiceId int," +
+                                "Title text," +
+                                "SmallDesc text," +
+                                "Price Numeric," +
+                                "CreationDate datetime"+
+                                ");"
+                    )
+                }
+
+                if (!checkTableExists("SERVICE_PRODUCT_DETAIL")) {
+                    //User type table not exists
+                    sqlite.execSQL(
+                        "Create table SERVICE_PRODUCT (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "ServiceProductGlobalId int," +
+                                "ServiceProductId int," +
+                                "Title text," +
+                                "SmallDesc text," +
+                                "Type Integer," +
+                                "CreationDate datetime"+
+                                ");"
+                    )
+                }
             } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -258,7 +290,7 @@ class Database {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select * from Service", null)
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City from Service", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -268,7 +300,53 @@ class Database {
             }
             if (tbl == null)
                 tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            else
+            {
+                for (row in tbl.Rows){
+                    row[tbl.Columns.indexOf("City")] = getCityOf(row[tbl.Columns.indexOf("City")].toInt())
+                }
+            }
             return tbl
+        }
+
+        internal fun getServicesProduct(serviceId:Int): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceId=$serviceId", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if(tbl==null){
+                tbl = DataTable(listOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            }
+            return tbl
+        }
+
+        internal fun getCityOf(id:Int):String{
+            var tbl: DataTable? = null
+            try {
+                openConnection(1)
+                val c = sqlite.rawQuery("Select name || ', ' || state_code || ', ' || country_code  from cities where id = $id", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+
+            var CityName = ""
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            else
+                CityName = tbl.Rows[0][0]
+
+            return CityName
         }
 
         // region Utility
@@ -291,7 +369,7 @@ class Database {
             var rowCount = 0
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Count(id) from Service Where $col = '$con'", null)
+                val c = sqlite.rawQuery("Select Count(id) from $tbl Where $col = '$con'", null)
                 rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
                 c.close()
             } catch (ex: Exception) {
@@ -306,7 +384,7 @@ class Database {
             var rowCount = 0
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Count(id) from Service Where $col = $con", null)
+                val c = sqlite.rawQuery("Select Count(id) from $tbl Where $col = $con", null)
                 rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
                 c.close()
             } catch (ex: Exception) {

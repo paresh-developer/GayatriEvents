@@ -1,20 +1,31 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ListView
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.appcompat.app.AlertDialog
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterSpinner
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
 class ServiceEdit : AppCompatActivity() {
+
+    private val CurrentActivity:ServiceEdit = this
+
+    private lateinit var adapterService: PSBSArrayAdapterService
+    private lateinit var listViewService: ListView
+    private lateinit var existingServices : DataTable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_edit)
@@ -29,6 +40,27 @@ class ServiceEdit : AppCompatActivity() {
             startActivity(Intent(this, NewService::class.java))
         }
 
+        existingServices = Database.getServices()
+        listViewService = findViewById<ListView>(R.id.listview_ExistingServices)
+        adapterService =
+            PSBSArrayAdapterService(this, R.layout.listview_item_service, existingServices.Rows)
+        listViewService.adapter = adapterService
+        listViewService.setOnItemClickListener { adapterView, view, i, l ->
+            ServiceProductEdit.selectedServiceId = existingServices.Rows[i][existingServices.Columns.indexOf("Id")].toInt()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(existingServices.Rows[i][2])
+            builder.setMessage(existingServices.Rows[i][3])
+            builder.setPositiveButton("Edit", DialogInterface.OnClickListener { dialogInterface, j ->  })
+            builder.setNeutralButton("Products", DialogInterface.OnClickListener { dialogInterface, j ->
+                val inn = Intent(CurrentActivity,ServiceProductEdit::class.java)
+                CurrentActivity.startActivity(inn)
+            })
+            builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, j ->  })
+            builder.show()
+        }
+    }
+
+    override fun onResume() {
         Thread(Runnable {
             APICalls.setContext(this)
             APICalls.cookies = mapOf<String, String>(
@@ -49,7 +81,7 @@ class ServiceEdit : AppCompatActivity() {
             )
             if (APICalls.getExistingServiceOfCurrentUser()) {
                 val res = APICalls.lastCallObject as Array<ServiceDisplayModel>
-                for (i in 0..res.size-1) {
+                for (i in 0..res.size - 1) {
                     val c = ContentValues()
                     c.put("GlobalId", res[i].GlobalId)
                     c.put("ServiceType", res[i].ServiceType)
@@ -67,15 +99,12 @@ class ServiceEdit : AppCompatActivity() {
                     )
                         Database.insertTo("Service", c, "Id")
                 }
-                val exitingServices = Database.getServices()
-                val arrOfServiceList = mutableListOf<String>()
-                for (v in exitingServices.Rows) {
-                    arrOfServiceList.add(v[2]+", "+v[3]+", "+v[4])
-                }
+                existingServices = Database.getServices()
+
                 runOnUiThread {
-                    val listView = findViewById<ListView>(R.id.listview_ExistingServices)
-                    val adapterService = PSBSArrayAdapterSpinner(this, R.layout.spinnerview_item,arrOfServiceList)
-                    listView.adapter = adapterService
+                    adapterService.updateData(existingServices.Rows)
+                    adapterService.notifyDataSetChanged()
+                    listViewService.deferNotifyDataSetChanged()
                 }
             } else {
                 runOnUiThread {
@@ -87,5 +116,7 @@ class ServiceEdit : AppCompatActivity() {
                 }
             }
         }).start()
+
+        super.onResume()
     }
 }

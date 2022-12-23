@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.NewService">
+    tools:context=".activities.NewServiceProduct">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_margin="5dp"
             android:layout_weight="20"
             android:gravity="center"
-            android:text="New Service Request"
+            android:text="New Service Product"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -37,49 +37,27 @@
             android:gravity="left"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Service Type: "
-                android:textAlignment="textStart"
-                android:textColor="@color/black" />
-
-            <Spinner
-                android:id="@+id/spinner_ServiceTypelist"
+            <EditText
+                android:id="@+id/edt_ServiceProductTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Service Product Title" />
 
             <EditText
-                android:id="@+id/edt_ServiceTitle"
+                android:id="@+id/edt_ServiceProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Service Title" />
+                android:hint="Service Product\nDescription" />
 
             <EditText
-                android:id="@+id/edt_ServiceDescription"
+                android:id="@+id/edt_ServiceProductPrise"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Service\nDescription" />
-
-            <EditText
-                android:id="@+id/edt_ServiceAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Service\nAddress" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="City: "
-                android:textColor="@color/black" />
-
-            <Spinner
-                android:id="@+id/spinner_City"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:hint="Price 101.00" />
 
             <Button
-                android:id="@+id/btnNewServiceRequestSubmit"
+                android:id="@+id/btnNewServiceProductSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
