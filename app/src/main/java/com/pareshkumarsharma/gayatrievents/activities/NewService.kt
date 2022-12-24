@@ -8,14 +8,30 @@ import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterSpinner
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceRegistrationRequestModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 class NewService : AppCompatActivity() {
+
+    internal companion object {
+        var operation: Char = 'I'
+        var ST: String = ""
+        var STL: String = ""
+        var SD: String = ""
+        var SA: String = ""
+        var SC: String = ""
+    }
+
+    lateinit var cities:DataTable
+    lateinit var serviceTypes:DataTable
+    lateinit var city_arr:MutableList<String>
+    lateinit var serviceType_arr:MutableList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_service)
 
-        if(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)!=2){
+        if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
             onBackPressed()
             finish()
         }
@@ -23,35 +39,44 @@ class NewService : AppCompatActivity() {
         val spinerServiceType = findViewById<Spinner>(R.id.spinner_ServiceTypelist)
         val spinerCity = findViewById<Spinner>(R.id.spinner_City)
 
-        val DataForList = Database.getServiceTypes()
-        val arrOfList = mutableListOf<String>()
-        for(row in DataForList.Rows){
-            arrOfList.add(row[1])
+        serviceTypes = Database.getServiceTypes()
+        serviceType_arr = mutableListOf<String>()
+        for (row in serviceTypes.Rows) {
+            serviceType_arr.add(row[1])
         }
 
-        val adapterServiceType = PSBSArrayAdapterSpinner(this,R.layout.spinnerview_item,arrOfList)
+        val adapterServiceType = PSBSArrayAdapterSpinner(this, R.layout.spinnerview_item, serviceType_arr)
 
         spinerServiceType.adapter = adapterServiceType
 
-        val DataForList1 = Database.getCities()
-        val arrOfList1 = mutableListOf<String>()
-        for(row in DataForList1.Rows){
-            arrOfList1.add(row[1]+", "+row[2]+", "+row[3])
+        cities = Database.getCities()
+        city_arr = mutableListOf<String>()
+        for (row in cities.Rows) {
+            city_arr.add(row[1] + ", " + row[2] + ", " + row[3])
         }
-        val adapterCity = PSBSArrayAdapterSpinner(this,R.layout.spinnerview_item,arrOfList1)
+        val adapterCity = PSBSArrayAdapterSpinner(this, R.layout.spinnerview_item, city_arr)
 
         spinerCity.adapter = adapterCity
-        spinerCity.setSelection(arrOfList1.indexOf("Bhavnagar, GJ, IN"))
+        spinerCity.setSelection(city_arr.indexOf("Bhavnagar, GJ, IN"))
+
+        if(operation == 'U'){
+            findViewById<Button>(R.id.btnNewServiceRequestSubmit).text = "Update"
+            spinerServiceType.setSelection(serviceType_arr.indexOf(ST))
+            spinerCity.setSelection(city_arr.indexOf(SC))
+            findViewById<EditText>(R.id.edt_ServiceTitle).setText(STL)
+            findViewById<EditText>(R.id.edt_ServiceDescription).setText(SD)
+            findViewById<EditText>(R.id.edt_ServiceAddress).setText(SA)
+        }
 
         findViewById<Button>(R.id.btnNewServiceRequestSubmit).setOnClickListener {
             findViewById<Button>(R.id.btnNewServiceRequestSubmit).isEnabled = false
-            val ServiceType = spinerServiceType.selectedItemPosition+1
+            val ServiceType = spinerServiceType.selectedItemPosition + 1
             val ServiceTitle = findViewById<EditText>(R.id.edt_ServiceTitle).text.toString()
             val ServiceDesc = findViewById<EditText>(R.id.edt_ServiceDescription).text.toString()
             val ServiceAdd = findViewById<EditText>(R.id.edt_ServiceAddress).text.toString()
             val selectedCity = spinerCity.selectedItem.toString()
-            val selectedId = arrOfList1.indexOf(selectedCity)
-            val selectedInDb = DataForList1.Rows[selectedId][0].toString().toInt()
+            val selectedId = city_arr.indexOf(selectedCity)
+            val selectedInDb = cities.Rows[selectedId][0].toString().toInt()
             val ServiceCity = selectedInDb
             Thread(Runnable {
                 APICalls.setContext(this)
@@ -71,28 +96,65 @@ class NewService : AppCompatActivity() {
                         ).getString("expires", "").toString()
                     )
                 )
-                if(APICalls.requestNewServiceRegistration(ServiceRegistrationRequestModel(
-                     ServiceTitle, ServiceDesc,ServiceType,ServiceAdd,ServiceCity
-                ))){
-                    runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            APICalls.lastCallMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+
+                // region Insert On Web
+                if (operation == 'I') {
+                    if (APICalls.requestNewServiceRegistration(
+                            ServiceRegistrationRequestModel(
+                                ServiceTitle, ServiceDesc, ServiceType, ServiceAdd, ServiceCity
+                            )
+                        )
+                    ) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            findViewById<Button>(R.id.btnNewServiceRequestSubmit).isEnabled = true
+                        }
                     }
                 }
-                else{
-                    runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            APICalls.lastCallMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        findViewById<Button>(R.id.btnNewServiceRequestSubmit).isEnabled = true
+                // endregion
+
+                // region Update On Web
+                else if (operation == 'U') {
+                    // TODO: Update request will come here
+                    if (APICalls.requestNewServiceRegistration(
+                            ServiceRegistrationRequestModel(
+                                ServiceTitle, ServiceDesc, ServiceType, ServiceAdd, ServiceCity
+                            )
+                        )
+                    ) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            findViewById<Button>(R.id.btnNewServiceRequestSubmit).isEnabled = true
+                        }
                     }
                 }
+                // endregion
             }).start()
         }
     }

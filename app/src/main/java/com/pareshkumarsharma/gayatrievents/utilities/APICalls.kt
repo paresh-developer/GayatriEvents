@@ -752,7 +752,7 @@ class APICalls {
                     val model =
                         Gson().fromJson<Array<ServiceProductDetailDisplayModel>>(
                             respo,
-                            Array<ServiceDisplayModel>::class.java
+                            Array<ServiceProductDetailDisplayModel>::class.java
                         )
                     lastCallObject = model
                     inp.close()

@@ -18,7 +18,7 @@
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Service Products Details"
+            android:text="Ser. Prod. Details"
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_weight="20"

@@ -36,7 +36,6 @@ class ServiceEdit : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnCreateNewService).setOnClickListener {
-            // TODO: Create new service
             startActivity(Intent(this, NewService::class.java))
         }
 
@@ -50,12 +49,20 @@ class ServiceEdit : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServices.Rows[i][2])
             builder.setMessage(existingServices.Rows[i][3])
-            builder.setPositiveButton("Edit", DialogInterface.OnClickListener { dialogInterface, j ->  })
-            builder.setNeutralButton("Products", DialogInterface.OnClickListener { dialogInterface, j ->
+            builder.setNegativeButton("Edit", DialogInterface.OnClickListener { dialogInterface, j ->
+                NewService.ST = existingServices.Rows[i][6]
+                NewService.STL = existingServices.Rows[i][2]
+                NewService.SD = existingServices.Rows[i][3]
+                NewService.SC = existingServices.Rows[i][7]
+                NewService.SA = existingServices.Rows[i][8]
+                NewService.operation = 'U'
+                CurrentActivity.startActivity(Intent(CurrentActivity,NewService::class.java))
+            })
+            builder.setPositiveButton("Products", DialogInterface.OnClickListener { dialogInterface, j ->
                 val inn = Intent(CurrentActivity,ServiceProductEdit::class.java)
                 CurrentActivity.startActivity(inn)
             })
-            builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, j ->  })
+            builder.setNeutralButton("Cancel", DialogInterface.OnClickListener { dialogInterface, j ->  })
             builder.show()
         }
     }

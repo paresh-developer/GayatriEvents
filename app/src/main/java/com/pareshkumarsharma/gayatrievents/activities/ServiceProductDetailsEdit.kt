@@ -11,15 +11,22 @@ import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProduct
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProductDetails
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
+import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
 class ServiceProductDetailsEdit : AppCompatActivity() {
 
     internal companion object{
-        var selectedServiceId:Int = 0
+        var selectedServiceProductId:Int = 0
     }
+
+    private lateinit var adapterServiceProductDetails: PSBSArrayAdapterServiceProductDetails
+    private lateinit var listViewServiceProductDetail: ListView
+    private lateinit var existingServiceProductDetails : DataTable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +37,16 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
             finish()
         }
 
-        findViewById<Button>(R.id.btnCreateNewServiceProduct).setOnClickListener {
-            // TODO: Create new service
-            NewServiceProduct.selectedServiceId = selectedServiceId
-            startActivity(Intent(this, NewServiceProduct::class.java))
+        findViewById<Button>(R.id.btnCreateNewServiceProductDetails).setOnClickListener {
+            NewServiceProductDetails.selectedServiceProductId = selectedServiceProductId
+            startActivity(Intent(this, NewServiceProductDetails::class.java))
         }
 
-        val exitingServices = Database.getServices()
-        val listView = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
+        existingServiceProductDetails = Database.getServicesProductDetails(selectedServiceProductId)
+        listViewServiceProductDetail = findViewById<ListView>(R.id.listview_ExistingServicesProductDetails)
         val adapterService =
-            PSBSArrayAdapterServiceProduct(this, R.layout.listview_item_service_product, exitingServices.Rows)
-        listView.adapter = adapterService
+            PSBSArrayAdapterServiceProductDetails(this, R.layout.listview_item_service_product_details, existingServiceProductDetails.Rows)
+        listViewServiceProductDetail.adapter = adapterService
     }
 
     override fun onResume() {
@@ -62,34 +68,34 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
                     ).getString("expires", "").toString()
                 )
             )
-            if (APICalls.getExistingServiceProductOfCurrentUser(selectedServiceId)) {
-                val res = APICalls.lastCallObject as Array<ServiceProductDisplayModel>
+            if (APICalls.getExistingServiceProductDetailOfCurrentUser(selectedServiceProductId)) {
+                val res = APICalls.lastCallObject as Array<ServiceProductDetailDisplayModel>
                 for (i in 0..res.size - 1) {
                     val c = ContentValues()
                     c.put("GlobalId", res[i].GlobalId)
-                    c.put("ServiceGlobalId", res[i].ServiceGlobalId)
+                    c.put("ServiceProductGlobalId", res[i].ServiceProductGlobalId)
                     c.put("Title", res[i].Title)
                     c.put("SmallDesc", res[i].Desc)
-                    c.put("Price", res[i].Price)
+                    c.put("Type", res[i].Type)
                     c.put("CreationDate", res[i].CreationDate)
-                    c.put("ServiceId", selectedServiceId)
+                    c.put("ServiceProductId", selectedServiceProductId)
                     if (Database.getRowCount(
-                            "Service_Product",
+                            "Service_Product_Detail",
                             "GlobalId",
                             c.getAsString("GlobalId").toString()
                         ) == 0
                     )
-                        Database.insertTo("Service_Product", c, "Id")
+                        Database.insertTo("Service_Product_Detail", c, "Id")
                 }
-                val exitingServices = Database.getServicesProduct(selectedServiceId)
+                existingServiceProductDetails = Database.getServicesProductDetails(selectedServiceProductId)
                 runOnUiThread {
-                    val listView = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
-                    val adapterService = PSBSArrayAdapterServiceProduct(
+                    listViewServiceProductDetail = findViewById<ListView>(R.id.listview_ExistingServicesProductDetails)
+                    adapterServiceProductDetails = PSBSArrayAdapterServiceProductDetails(
                         this,
-                        R.layout.listview_item_service_product,
-                        exitingServices.Rows
+                        R.layout.listview_item_service_product_details,
+                        existingServiceProductDetails.Rows
                     )
-                    listView.adapter = adapterService
+                    listViewServiceProductDetail.adapter = adapterServiceProductDetails
                 }
             } else {
                 runOnUiThread {

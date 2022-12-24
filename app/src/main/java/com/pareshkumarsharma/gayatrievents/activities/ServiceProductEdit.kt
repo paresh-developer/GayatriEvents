@@ -17,11 +17,16 @@ import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProdu
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
 class ServiceProductEdit : AppCompatActivity() {
 
 
     internal val CurrentActivity = this
+
+    private lateinit var adapterService: PSBSArrayAdapterServiceProduct
+    private lateinit var listViewServiceProduct: ListView
+    private lateinit var existingServiceProducts : DataTable
 
     internal companion object{
         var selectedServiceId:Int = 0
@@ -37,26 +42,26 @@ class ServiceProductEdit : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnCreateNewServiceProduct).setOnClickListener {
-            // TODO: Create new service
             NewServiceProduct.selectedServiceId = selectedServiceId
             startActivity(Intent(this, NewServiceProduct::class.java))
         }
 
-        val exitingServices = Database.getServices()
-        val listView = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
-        val adapterService =
-            PSBSArrayAdapterServiceProduct(this, R.layout.listview_item_service_product, exitingServices.Rows)
-        listView.adapter = adapterService
+        existingServiceProducts = Database.getServicesProduct(selectedServiceId)
+        listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
+        adapterService =
+            PSBSArrayAdapterServiceProduct(this, R.layout.listview_item_service_product, existingServiceProducts.Rows)
+        listViewServiceProduct.adapter = adapterService
 
-        listView.setOnItemClickListener { adapterView, view, i, l ->
+        listViewServiceProduct.setOnItemClickListener { adapterView, view, i, l ->
+            ServiceProductDetailsEdit.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("Id")].toInt()
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Title")
-            builder.setMessage("Desc")
+            builder.setTitle(existingServiceProducts.Rows[i][2].toString())
+            builder.setMessage(existingServiceProducts.Rows[i][3].toString())
             builder.setPositiveButton(
                 "Edit",
                 DialogInterface.OnClickListener { dialogInterface, j -> })
             builder.setNeutralButton(
-                "Products",
+                "Details",
                 DialogInterface.OnClickListener { dialogInterface, j ->
                     val inn = Intent(CurrentActivity, ServiceProductDetailsEdit::class.java)
                     CurrentActivity.startActivity(inn)
@@ -106,15 +111,15 @@ class ServiceProductEdit : AppCompatActivity() {
                     )
                         Database.insertTo("Service_Product", c, "Id")
                 }
-                val exitingServices = Database.getServicesProduct(selectedServiceId)
+                existingServiceProducts = Database.getServicesProduct(selectedServiceId)
                 runOnUiThread {
-                    val listView = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
-                    val adapterService = PSBSArrayAdapterServiceProduct(
+                    listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
+                    adapterService = PSBSArrayAdapterServiceProduct(
                         this,
                         R.layout.listview_item_service_product,
-                        exitingServices.Rows
+                        existingServiceProducts.Rows
                     )
-                    listView.adapter = adapterService
+                    listViewServiceProduct.adapter = adapterService
                 }
             } else {
                 runOnUiThread {

@@ -4,5 +4,5 @@ data class ServiceProductDetailsRegistrationModel(
     val Title:String,
     val Desc:String,
     val DetailType: Int,
-    val ServiceId:Int
+    val ServiceProductId:Int
 )

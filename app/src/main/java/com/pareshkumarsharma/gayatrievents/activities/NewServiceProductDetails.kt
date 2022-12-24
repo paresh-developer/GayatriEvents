@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailsRegistrationModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductRegistrationModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 class NewServiceProductDetails : AppCompatActivity() {
-
     internal companion object{
-        var selectedServiceId:Int = 0
+        var selectedServiceProductId:Int = 0
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_service_product_details)
@@ -25,9 +24,13 @@ class NewServiceProductDetails : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnNewServiceProductSubmit).setOnClickListener {
             findViewById<Button>(R.id.btnNewServiceProductSubmit).isEnabled = false
-            val ServiceProductTitle = findViewById<EditText>(R.id.edt_ServiceProductTitle).text.toString()
-            val ServiceProductDesc = findViewById<EditText>(R.id.edt_ServiceProductDescription).text.toString()
-            val ServiceProductPrice = findViewById<EditText>(R.id.edt_ServiceProductPrise).text.toString().toFloat()
+            val Title = findViewById<EditText>(R.id.edt_ServiceProductTitle).text.toString()
+            val Desc = findViewById<EditText>(R.id.edt_ServiceProductDescription).text.toString()
+            var Type = 1
+            if(findViewById<RadioButton>(R.id.chk_ParagraphType).isChecked)
+                Type = 1
+            else if (findViewById<RadioButton>(R.id.chk_ListviewType).isChecked)
+                Type = 2
 
             Thread(Runnable {
                 APICalls.setContext(this)
@@ -47,8 +50,9 @@ class NewServiceProductDetails : AppCompatActivity() {
                         ).getString("expires", "").toString()
                     )
                 )
-                if(APICalls.requestNewServiceProductRegistration
-                        (ServiceProductRegistrationModel(ServiceProductTitle,ServiceProductDesc,ServiceProductPrice, selectedServiceId))
+                if(APICalls.requestNewServiceProductDetailsRegistration
+                        (ServiceProductDetailsRegistrationModel(Title,Desc,Type,
+                        selectedServiceProductId))
                 ){
                     runOnUiThread {
                         Toast.makeText(

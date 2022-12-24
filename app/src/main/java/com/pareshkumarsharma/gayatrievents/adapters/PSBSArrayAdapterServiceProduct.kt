@@ -47,16 +47,20 @@ class PSBSArrayAdapterServiceProduct(
         }
 
         val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceTitle)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductTitle)
         val txtDesc =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceDescription)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDescription)
         val txtOwnerAt =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceAt)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductAt)
+
+        val txtPrice =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductPrice)
 
         try {
             txtTitle?.text = data[position][2]
             txtDesc?.text = data[position][3]
             txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
+            txtPrice?.text = "Price: ₹ "+data[position][4].toFloat()
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

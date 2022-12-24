@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
 import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.panchang.Paksha
@@ -40,23 +41,32 @@ class PSBSArrayAdapterServiceProductDetails(
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                com.pareshkumarsharma.gayatrievents.R.layout.listview_item_service_product,
+                com.pareshkumarsharma.gayatrievents.R.layout.listview_item_service_product_details,
                 parent,
                 false
             )
         }
 
         val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceTitle)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDetailTitle)
         val txtDesc =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceDescription)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDetailsDescription)
         val txtOwnerAt =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceAt)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDetailAt)
+
+        val listViewDesc = currentItemView?.findViewById<ListView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDetailsDescriptionListView)
 
         try {
             txtTitle?.text = data[position][2]
-            txtDesc?.text = data[position][3]
             txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
+
+            if(data[position][4].toInt()==1){
+                txtDesc?.text = data[position][3]
+            }
+            else if(data[position][4].toInt()==2) {
+                txtDesc?.text = "> "+data[position][3].replace("\n","\n> ")
+            }
+
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

@@ -41,20 +41,32 @@
                 android:id="@+id/edt_ServiceProductTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Service Product Title" />
+                android:hint="Title" />
 
             <EditText
                 android:id="@+id/edt_ServiceProductDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Service Product\nDescription" />
+                android:hint="Service Product\nDetails" />
 
-            <EditText
-                android:id="@+id/edt_ServiceProductPrise"
-                android:inputType="numberDecimal"
-                android:layout_width="match_parent"
+            <RadioGroup
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Price 101.00" />
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/chk_ParagraphType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Paragraph"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/chk_ListviewType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="List"
+                    />
+            </RadioGroup>
 
             <Button
                 android:id="@+id/btnNewServiceProductSubmit"
