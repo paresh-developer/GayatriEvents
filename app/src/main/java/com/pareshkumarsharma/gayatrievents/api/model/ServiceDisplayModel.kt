@@ -8,5 +8,7 @@ data class ServiceDisplayModel(
     val ServiceType:Int,
     val Address: String,
     val City: Int,
-    val ApprovalTime: String
+    val Approved: Boolean,
+    val ApprovalTime: String,
+    val RequestStatus: Boolean
 )

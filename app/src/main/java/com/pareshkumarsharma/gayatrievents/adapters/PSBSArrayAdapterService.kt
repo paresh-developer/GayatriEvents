@@ -1,6 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,13 +55,31 @@ class PSBSArrayAdapterService(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceCity)
         val txtType =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceType)
-        val txtOwnerAt =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceOwnerAndAt)
+        val txtOwner =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceOwner)
+        val txtApprov =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceAp)
 
         try {
             txtTitle?.text = data[position][2]
             txtDesc?.text = data[position][3]
-            txtOwnerAt?.text = "By: "+data[position][4]+" On "+data[position][5].replace('T',' ')
+            txtOwner?.text = "By: "+data[position][4]
+            var dtime = ""
+            if(data[position][9].toInt()==1) {
+                txtApprov?.setTextColor(Color.rgb(0,100,0))
+                dtime = " Approved On "+data[position][5].replace('T',' ')
+            }
+            else {
+                if(data[position][10].toInt()==1) {
+                    txtApprov?.setTextColor(Color.RED)
+                    dtime = " Rejected"
+                }
+                else{
+                    txtApprov?.setTextColor(Color.BLUE)
+                    dtime = " Pending"
+                }
+            }
+            txtApprov?.text = " "+dtime
             txtType?.text = "Type: "+data[position][6]
             txtCity?.text = " City: "+data[position][7]
         }

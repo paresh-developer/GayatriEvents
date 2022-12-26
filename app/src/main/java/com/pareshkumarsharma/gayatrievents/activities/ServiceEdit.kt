@@ -89,6 +89,7 @@ class ServiceEdit : AppCompatActivity() {
             if (APICalls.getExistingServiceOfCurrentUser()) {
                 val res = APICalls.lastCallObject as Array<ServiceDisplayModel>
                 for (i in 0..res.size - 1) {
+                    var nul_field = "Id"
                     val c = ContentValues()
                     c.put("GlobalId", res[i].GlobalId)
                     c.put("ServiceType", res[i].ServiceType)
@@ -97,14 +98,25 @@ class ServiceEdit : AppCompatActivity() {
                     c.put("SmallDesc", res[i].Desc)
                     c.put("SAddress", res[i].Address)
                     c.put("Owner", res[i].Owner)
-                    c.put("ApprovalTime", res[i].ApprovalTime)
+                    c.put("Approved", res[i].Approved)
+                    c.put("RequestStatus", res[i].RequestStatus)
+                    if(res[i].Approved)
+                        c.put("ApprovalTime", res[i].ApprovalTime)
+                    else
+                        nul_field += ",ApprovalTime"
+
                     if (Database.getRowCount(
                             "Service",
                             "GlobalId",
                             c.getAsString("GlobalId").toString()
                         ) == 0
                     )
-                        Database.insertTo("Service", c, "Id")
+                        Database.insertTo("Service", c, nul_field)
+                    else
+                    {
+                        Database.updateTo("Service", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
+                    }
+
                 }
                 existingServices = Database.getServices()
 

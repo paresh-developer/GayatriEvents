@@ -132,7 +132,9 @@ class Database {
                                 "ServiceType int," +
                                 "SAddress text," +
                                 "City int," +
-                                "ApprovalTime datetime"+
+                                "Approved int," +
+                                "ApprovalTime datetime," +
+                                "RequestStatus int"+
                                 ");"
                     )
                 }
@@ -179,6 +181,17 @@ class Database {
             try {
                 openConnection()
                 sqlite.insert(tableName, colmnHack, values)
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+        }
+
+        internal fun updateTo(tableName: String, values: ContentValues, whereStr: String,whereArg:Array<String>) {
+            try {
+                openConnection()
+                sqlite.update(tableName, values,whereStr,whereArg)
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -290,7 +303,7 @@ class Database {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress from Service", null)
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

@@ -86,6 +86,8 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
                         ) == 0
                     )
                         Database.insertTo("Service_Product_Detail", c, "Id")
+                    else
+                        Database.updateTo("Service_Product_Detail", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
                 }
                 existingServiceProductDetails = Database.getServicesProductDetails(selectedServiceProductId)
                 runOnUiThread {

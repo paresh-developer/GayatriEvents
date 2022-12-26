@@ -23,12 +23,21 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id="@+id/txtServiceOwnerAndAt"
+            android:id="@+id/txtServiceOwner"
+            android:textSize="10dp"
+            android:textColor="#535353"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By: Owner "
+            />
+        <TextView
+            android:id="@+id/txtServiceAp"
             android:textSize="10dp"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="By: Owner At: "
+            android:textAlignment="textEnd"
             />
     </LinearLayout>
     <LinearLayout
@@ -57,15 +66,16 @@
             android:layout_height="wrap_content"
             android:text="Type: ... "
             android:textSize="10dp"
-            android:textColor="@color/black"
+            android:textColor="#535353"
             />
         <TextView
             android:id="@+id/txtServiceCity"
             android:textSize="10dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
+            android:textColor="#535353"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="City: ... "
+            android:textAlignment="textEnd"
             />
     </LinearLayout>
 </LinearLayout>

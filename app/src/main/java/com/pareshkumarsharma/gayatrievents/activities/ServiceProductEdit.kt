@@ -110,6 +110,8 @@ class ServiceProductEdit : AppCompatActivity() {
                         ) == 0
                     )
                         Database.insertTo("Service_Product", c, "Id")
+                    else
+                        Database.updateTo("Service_Product", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
                 }
                 existingServiceProducts = Database.getServicesProduct(selectedServiceId)
                 runOnUiThread {
