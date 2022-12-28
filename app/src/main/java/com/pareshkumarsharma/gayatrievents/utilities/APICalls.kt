@@ -12,9 +12,15 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.Key
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 class APICalls {
     companion object {
+
+        internal val key = "abcdefghijklmnopqrstuvwxyz012345"
 
         // region URLS
 
@@ -825,6 +831,77 @@ class APICalls {
                 }
             }
             return false
+        }
+
+        internal fun encodeStringComplex(str:String):String{
+            var encodedStr = ""
+            var key_Array = ByteArray(0)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                key_Array = java.util.Base64.getDecoder().decode(key)
+            }
+            else
+                key_Array = android.util.Base64.decode(key,key.length)
+
+            try {
+                //Cipher _Cipher = Cipher.getInstance("AES");
+                //Cipher _Cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+                val _Cipher: Cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
+
+                // Initialization vector.
+                // It could be any value or generated using a random number generator.
+                val iv = byteArrayOf(1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 7, 7, 7, 7)
+                val ivspec = IvParameterSpec(iv)
+                val SecretKey: Key = SecretKeySpec(key_Array, "AES")
+                _Cipher.init(Cipher.ENCRYPT_MODE, SecretKey, ivspec)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    encodedStr = java.util.Base64.getEncoder().encodeToString(_Cipher.doFinal(str.toByteArray()))
+                }
+                else {
+                    val crpstrbyt = _Cipher.doFinal(str.toByteArray())
+                    encodedStr = android.util.Base64.encodeToString(crpstrbyt, crpstrbyt.size)
+                }
+            } catch (e: java.lang.Exception) {
+                android.util.Log.d(" Encry ",e.message.toString())
+            }
+
+            return encodedStr
+        }
+
+        internal fun decodeStringComplex(str:String):String{
+            var encodedStr = ""
+            var key_Array = ByteArray(0)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                key_Array = java.util.Base64.getDecoder().decode(key)
+            }
+            else
+                key_Array = android.util.Base64.decode(key,key.length)
+
+            try {
+                //Cipher _Cipher = Cipher.getInstance("AES");
+                //Cipher _Cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+                val _Cipher: Cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
+
+                // Initialization vector.
+                // It could be any value or generated using a random number generator.
+                val iv = byteArrayOf(1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 7, 7, 7, 7)
+                val ivspec = IvParameterSpec(iv)
+                val SecretKey: Key = SecretKeySpec(key_Array, "AES")
+                _Cipher.init(Cipher.DECRYPT_MODE, SecretKey, ivspec)
+                var DecodedMessage = ByteArray(0)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    DecodedMessage = java.util.Base64.getDecoder().decode(str);
+                }
+                else {
+                    DecodedMessage = android.util.Base64.decode(str, str.length)
+                }
+                encodedStr = String(_Cipher.doFinal(DecodedMessage))
+            } catch (e: java.lang.Exception) {
+                android.util.Log.d(" Decryp ",e.message.toString())
+            }
+
+            return encodedStr
         }
         // endregion
     }

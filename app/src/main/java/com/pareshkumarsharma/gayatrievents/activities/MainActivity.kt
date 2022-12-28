@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 
 
 class MainActivity : AppCompatActivity() {
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        startActivity(Intent(this,Panchang::class.java))
-
+        APICalls.decodeStringComplex(APICalls.encodeStringComplex("Pwd"))
 //        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
 //            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
     }
