@@ -50,6 +50,7 @@ class ServiceEdit : AppCompatActivity() {
             builder.setTitle(existingServices.Rows[i][2])
             builder.setMessage(existingServices.Rows[i][3])
             builder.setNegativeButton("Edit", DialogInterface.OnClickListener { dialogInterface, j ->
+                NewService.SGLB = existingServices.Rows[i][1]
                 NewService.ST = existingServices.Rows[i][6]
                 NewService.STL = existingServices.Rows[i][2]
                 NewService.SD = existingServices.Rows[i][3]

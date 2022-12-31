@@ -7,6 +7,7 @@ import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterSpinner
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceRegistrationRequestModel
+import com.pareshkumarsharma.gayatrievents.api.model.ServiceUpdationRequestModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
@@ -20,6 +21,7 @@ class NewService : AppCompatActivity() {
         var SD: String = ""
         var SA: String = ""
         var SC: String = ""
+        var SGLB:String = ""
     }
 
     lateinit var cities:DataTable
@@ -128,10 +130,9 @@ class NewService : AppCompatActivity() {
 
                 // region Update On Web
                 else if (operation == 'U') {
-                    // TODO: Update request will come here
-                    if (APICalls.requestNewServiceRegistration(
-                            ServiceRegistrationRequestModel(
-                                ServiceTitle, ServiceDesc, ServiceType, ServiceAdd, ServiceCity
+                    if (APICalls.requestNewServiceUpdation(
+                            ServiceUpdationRequestModel(
+                                SGLB,ServiceTitle, ServiceDesc, ServiceType, ServiceAdd, ServiceCity
                             )
                         )
                     ) {

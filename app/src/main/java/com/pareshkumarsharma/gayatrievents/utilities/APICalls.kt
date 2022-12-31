@@ -20,7 +20,7 @@ import javax.crypto.spec.SecretKeySpec
 class APICalls {
     companion object {
 
-        internal val key = "abcdefghijklmnopqrstuvwxyz012345"
+        private val key = "KLJFIQACWDMBYTVURZONSHXPEG298573"
 
         // region URLS
 
@@ -43,6 +43,8 @@ class APICalls {
             "$HOST/Service/"
         private const val SERVICE_REGISTRATION_REQUEST =
             "$HOST/Service/New"
+        private const val SERVICE_UPDATION_REQUEST =
+            "$HOST/Service/Update"
         private const val SERVICE_PRODUCT_REGISTRATION_REQUEST =
             "$HOST/Service/NewProduct"
         private const val SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST =
@@ -513,6 +515,60 @@ class APICalls {
             return isSuccess
         }
 
+        internal fun requestNewServiceUpdation(ServiceModel: ServiceUpdationRequestModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_UPDATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceModel, ServiceUpdationRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         internal fun requestNewServiceProductRegistration(ServiceProductModel: ServiceProductRegistrationModel): Boolean {
             var isSuccess = false
 
@@ -850,16 +906,16 @@ class APICalls {
 
                 // Initialization vector.
                 // It could be any value or generated using a random number generator.
-                val iv = byteArrayOf(1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 7, 7, 7, 7)
+                val iv = byteArrayOf(40, 154.toByte(), 57, 248.toByte(), 183.toByte(), 219.toByte(), 50, 105, 117, 8, 162.toByte(), 59, 104, 160.toByte(), 200.toByte(), 31)
                 val ivspec = IvParameterSpec(iv)
                 val SecretKey: Key = SecretKeySpec(key_Array, "AES")
                 _Cipher.init(Cipher.ENCRYPT_MODE, SecretKey, ivspec)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    encodedStr = java.util.Base64.getEncoder().encodeToString(_Cipher.doFinal(str.toByteArray()))
+                    encodedStr = java.util.Base64.getEncoder().encodeToString(_Cipher.doFinal(str.toByteArray())).trim()
                 }
                 else {
                     val crpstrbyt = _Cipher.doFinal(str.toByteArray())
-                    encodedStr = android.util.Base64.encodeToString(crpstrbyt, crpstrbyt.size)
+                    encodedStr = android.util.Base64.encodeToString(crpstrbyt, crpstrbyt.size).trim()
                 }
             } catch (e: java.lang.Exception) {
                 android.util.Log.d(" Encry ",e.message.toString())
@@ -885,7 +941,7 @@ class APICalls {
 
                 // Initialization vector.
                 // It could be any value or generated using a random number generator.
-                val iv = byteArrayOf(1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 7, 7, 7, 7)
+                val iv = byteArrayOf(40, 154.toByte(), 57, 248.toByte(), 183.toByte(), 219.toByte() , 50, 105, 117, 8, 162.toByte(), 59, 104, 160.toByte(), 200.toByte(), 31)
                 val ivspec = IvParameterSpec(iv)
                 val SecretKey: Key = SecretKeySpec(key_Array, "AES")
                 _Cipher.init(Cipher.DECRYPT_MODE, SecretKey, ivspec)
@@ -896,7 +952,7 @@ class APICalls {
                 else {
                     DecodedMessage = android.util.Base64.decode(str, str.length)
                 }
-                encodedStr = String(_Cipher.doFinal(DecodedMessage))
+                encodedStr = String(_Cipher.doFinal(DecodedMessage)).trim()
             } catch (e: java.lang.Exception) {
                 android.util.Log.d(" Decryp ",e.message.toString())
             }

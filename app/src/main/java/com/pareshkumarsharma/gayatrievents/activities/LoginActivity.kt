@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
                 if (APICalls.login(
                         editTextEmailMobile.text.toString().trim(),
                         editTextEmailMobile.text.toString().trim(),
-                        APICalls.encodeString(editTextPassword.text.toString().trim())
+                        APICalls.encodeStringComplex(editTextPassword.text.toString().trim())
                     )
                 ) {
                     val userModel = APICalls.lastCallObject as UserRegisterModel
