@@ -47,8 +47,12 @@ class APICalls {
             "$HOST/Service/Update"
         private const val SERVICE_PRODUCT_REGISTRATION_REQUEST =
             "$HOST/Service/NewProduct"
+        private const val SERVICE_PRODUCT_UPDATION_REQUEST =
+            "$HOST/Service/Update/ServiceProduct"
         private const val SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST =
             "$HOST/Service/NewProductDetails"
+        private const val SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST =
+            "$HOST/Service/Update/ServiceProductDetail"
         private const val VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER =
             "$HOST/Service/Product"
         private const val VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER =
@@ -623,6 +627,60 @@ class APICalls {
             return isSuccess
         }
 
+        internal fun requestServiceProductUpdation(ServiceProductModel: ServiceProductUpdationModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_PRODUCT_UPDATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceProductModel, ServiceProductUpdationModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         internal fun requestNewServiceProductDetailsRegistration(ServiceProductDetailsModel: ServiceProductDetailsRegistrationModel): Boolean {
             var isSuccess = false
 
@@ -653,6 +711,60 @@ class APICalls {
             try {
                 val outPutStream = urlConnection.outputStream
                 val model = Gson().toJson(ServiceProductDetailsModel, ServiceProductDetailsRegistrationModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun requestServiceProductDetailsUpdation(ServiceProductDetailsModel: ServiceProductDetailsUpdationModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(ServiceProductDetailsModel, ServiceProductDetailsUpdationModel::class.java)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
                 outPutStream.close()

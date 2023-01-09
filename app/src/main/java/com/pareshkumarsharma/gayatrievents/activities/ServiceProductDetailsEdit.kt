@@ -1,12 +1,14 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
@@ -23,6 +25,8 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
     internal companion object{
         var selectedServiceProductId:Int = 0
     }
+
+    private val CurrentActivity = this
 
     private lateinit var adapterServiceProductDetails: PSBSArrayAdapterServiceProductDetails
     private lateinit var listViewServiceProductDetail: ListView
@@ -47,6 +51,37 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
         val adapterService =
             PSBSArrayAdapterServiceProductDetails(this, R.layout.listview_item_service_product_details, existingServiceProductDetails.Rows)
         listViewServiceProductDetail.adapter = adapterService
+
+        listViewServiceProductDetail.setOnItemClickListener { adapterView, view, i, l ->
+            NewServiceProductDetails.selectedServiceProductId = selectedServiceProductId
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(existingServiceProductDetails.Rows[i][2].toString())
+            builder.setMessage(existingServiceProductDetails.Rows[i][3].toString())
+            builder.setPositiveButton(
+                "Edit",
+                DialogInterface.OnClickListener { dialogInterface, j ->
+                    NewServiceProductDetails.operation = 'U'
+                    NewServiceProductDetails.GlobalId =existingServiceProductDetails.Rows[i][1]
+                    NewServiceProductDetails.SPDT = existingServiceProductDetails.Rows[i][2]
+                    NewServiceProductDetails.SPDD = existingServiceProductDetails.Rows[i][3]
+                    NewServiceProductDetails.SPDTP = existingServiceProductDetails.Rows[i][4].toInt()
+//                    NewServiceProduct.GlobalId = existingServiceProducts.Rows[i][1]
+//                    NewServiceProduct.SPT = existingServiceProducts.Rows[i][2]
+//                    NewServiceProduct.SPD = existingServiceProducts.Rows[i][3]
+//                    NewServiceProduct.SPP = existingServiceProducts.Rows[i][4].toFloat()
+//                    CurrentActivity.startActivity(Intent(CurrentActivity,NewServiceProduct::class.java))
+                })
+            builder.setNeutralButton(
+                "Details",
+                DialogInterface.OnClickListener { dialogInterface, j ->
+                    val inn = Intent(CurrentActivity, ServiceProductDetailsEdit::class.java)
+                    CurrentActivity.startActivity(inn)
+                })
+            builder.setNegativeButton(
+                "Cancel",
+                DialogInterface.OnClickListener { dialogInterface, j -> })
+            builder.show()
+        }
     }
 
     override fun onResume() {

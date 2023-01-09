@@ -159,4 +159,9 @@ class NewService : AppCompatActivity() {
             }).start()
         }
     }
+
+    override fun onDestroy() {
+        operation = 'I'
+        super.onDestroy()
+    }
 }

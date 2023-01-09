@@ -5,6 +5,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductRegistrationModel
+import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductUpdationModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
@@ -12,6 +13,11 @@ class NewServiceProduct : AppCompatActivity() {
 
     internal companion object{
         var selectedServiceId:Int = 0
+        var operation: Char = 'I'
+        var SPT = ""
+        var SPD = ""
+        var SPP:Float = 0.0f
+        var GlobalId = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +27,13 @@ class NewServiceProduct : AppCompatActivity() {
         if(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)!=2){
             onBackPressed()
             finish()
+        }
+
+        if(operation == 'U'){
+            findViewById<Button>(R.id.btnNewServiceProductSubmit).text = "Update"
+            findViewById<EditText>(R.id.edt_ServiceProductTitle).setText(SPT)
+            findViewById<EditText>(R.id.edt_ServiceProductDescription).setText(SPD)
+            findViewById<EditText>(R.id.edt_ServiceProductPrise).setText(SPP.toString())
         }
 
         findViewById<Button>(R.id.btnNewServiceProductSubmit).setOnClickListener {
@@ -47,29 +60,73 @@ class NewServiceProduct : AppCompatActivity() {
                         ).getString("expires", "").toString()
                     )
                 )
-                if(APICalls.requestNewServiceProductRegistration
-                        (ServiceProductRegistrationModel(ServiceProductTitle,ServiceProductDesc,ServiceProductPrice, selectedServiceId))
-                ){
-                    runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            APICalls.lastCallMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                if(operation=='I') {
+                    if (APICalls.requestNewServiceProductRegistration
+                            (
+                            ServiceProductRegistrationModel(
+                                ServiceProductTitle,
+                                ServiceProductDesc,
+                                ServiceProductPrice,
+                                selectedServiceId
+                            )
+                        )
+                    ) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            findViewById<Button>(R.id.btnNewServiceProductSubmit).isEnabled = true
+                        }
                     }
                 }
-                else{
-                    runOnUiThread {
-                        Toast.makeText(
-                            applicationContext,
-                            APICalls.lastCallMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
-                        findViewById<Button>(R.id.btnNewServiceProductSubmit).isEnabled = true
+                else if(operation == 'U'){
+                    if (APICalls.requestServiceProductUpdation
+                            (
+                            ServiceProductUpdationModel(
+                                GlobalId,
+                                ServiceProductTitle,
+                                ServiceProductDesc,
+                                ServiceProductPrice,
+                                selectedServiceId
+                            )
+                        )
+                    ) {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            finish()
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                applicationContext,
+                                APICalls.lastCallMessage,
+                                Toast.LENGTH_LONG
+                            ).show()
+                            findViewById<Button>(R.id.btnNewServiceProductSubmit).isEnabled = true
+                        }
                     }
                 }
             }).start()
         }
+    }
+
+    override fun onDestroy() {
+        operation = 'I'
+        super.onDestroy()
     }
 }

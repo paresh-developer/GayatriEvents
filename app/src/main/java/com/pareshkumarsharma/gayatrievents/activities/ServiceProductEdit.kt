@@ -59,7 +59,15 @@ class ServiceProductEdit : AppCompatActivity() {
             builder.setMessage(existingServiceProducts.Rows[i][3].toString())
             builder.setPositiveButton(
                 "Edit",
-                DialogInterface.OnClickListener { dialogInterface, j -> })
+                DialogInterface.OnClickListener { dialogInterface, j ->
+                    NewServiceProduct.selectedServiceId = selectedServiceId
+                    NewServiceProduct.operation = 'U'
+                    NewServiceProduct.GlobalId = existingServiceProducts.Rows[i][1]
+                    NewServiceProduct.SPT = existingServiceProducts.Rows[i][2]
+                    NewServiceProduct.SPD = existingServiceProducts.Rows[i][3]
+                    NewServiceProduct.SPP = existingServiceProducts.Rows[i][4].toFloat()
+                    CurrentActivity.startActivity(Intent(CurrentActivity,NewServiceProduct::class.java))
+                })
             builder.setNeutralButton(
                 "Details",
                 DialogInterface.OnClickListener { dialogInterface, j ->
