@@ -37,7 +37,6 @@ class NewServiceProductDetails : AppCompatActivity() {
                 findViewById<RadioButton>(R.id.chk_ParagraphType).isChecked = true
             else
                 findViewById<RadioButton>(R.id.chk_ListviewType).isChecked = true
-
         }
 
         findViewById<Button>(R.id.btnNewServiceProductSubmit).setOnClickListener {

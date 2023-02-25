@@ -14,7 +14,7 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterService(
+class PSBSArrayAdapterClientRequest(
     val c: Context,
     val r: Int,
     var data: List<List<String>>
@@ -50,40 +50,31 @@ class PSBSArrayAdapterService(
         }
 
         val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceTitle)
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventTitle)
         val txtDesc =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceDescription)
-        val txtCity =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceCity)
-        val txtType =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceType)
-        val txtOwner =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceOwner)
-        val txtApprov =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceAp)
-
+        val txtDateStartEnd =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtDateStart_End)
+        val txtEventRegisteredOn =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventRegisteredOn)
+        val txtApproval =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtApproved)
         try {
-            txtTitle?.text = data[position][2]
-            txtDesc?.text = data[position][3]
-            txtOwner?.text = "By: "+data[position][4]
-            var dtime = ""
-            if(data[position][9].toInt()==1) {
-                txtApprov?.setTextColor(Color.rgb(0,100,0))
-                dtime = " Approved On "+data[position][5].replace('T',' ')
-            }
-            else {
-                if(data[position][10].toInt()==1) {
-                    txtApprov?.setTextColor(Color.RED)
-                    dtime = " Rejected"
-                }
-                else{
-                    txtApprov?.setTextColor(Color.BLUE)
-                    dtime = " Pending"
-                }
-            }
-            txtApprov?.text = " "+dtime
-            txtType?.text = "Type: "+data[position][6]
-            txtCity?.text = " City: "+data[position][7]
+            txtTitle?.text = data[position][6]
+            txtDesc?.text = data[position][7]
+            if(data[position][8]=="0")
+                txtDateStartEnd?.text = "Date Fixed :- "+data[position][9].substring(0,10)
+            else
+                txtDateStartEnd?.text = "Date From :- "+data[position][9].substring(0,10)+" to "+data[position][10].substring(0,10)
+            txtEventRegisteredOn?.text = data[position][16].replace('T',' ')
+
+            if((data[position][13]==null || data[position][13].startsWith("000")) && data[position][12]=="0")
+                txtApproval?.setText("Pending Approval")
+            else if(data[position][13]!=null && data[position][12]=="0")
+                txtApproval?.setText("Rejected")
+            else if(data[position][13]!=null && data[position][12]=="1")
+                txtApproval?.setText("Approved")
+
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,6 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GayatriEvents"
         tools:targetApi="31">
+
+        <activity
+            android:name=".activities.NewEvent"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+        <service
+            android:name=".services.PanchangNotification"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".activities.NewServiceProductDetails"
             android:exported="false">
@@ -25,6 +40,13 @@
         </activity>
         <activity
             android:name=".activities.ServiceProductDetailsEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.ServiceProductDetailsForEvent"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -45,6 +67,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activities.ServiceProductForEvent"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.NewService"
             android:exported="false">
             <meta-data
@@ -53,6 +82,27 @@
         </activity>
         <activity
             android:name=".activities.ServiceEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.ClientEventRequestEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.EventEdit"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.ServiceForEvent"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

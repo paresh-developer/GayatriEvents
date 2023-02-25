@@ -79,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
                     values.put("Mobile",userModel.User_Mobile)
                     values.put("User_Password",userModel.User_Password)
                     values.put("User_Type",1)
+                    values.put("GlobalId",userModel.User_GlobalId)
 
                     if(Database.query("Select * From USERS where EMAIL = '${userModel.User_Email}' Or Mobile = '${userModel.User_Mobile}'").Rows.size==0) {
                         Database.insertTo("USERS", values, "Id")

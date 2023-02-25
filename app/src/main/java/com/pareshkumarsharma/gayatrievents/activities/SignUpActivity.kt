@@ -52,7 +52,7 @@ class SignUpActivity : AppCompatActivity() {
                         edTName.text.toString().trim(),
                         edTMobile.text.toString().trim(),
                         edTEmail.text.toString().trim(),
-                        APICalls.encodeStringComplex(edTPassword.text.toString().trim())
+                        edTPassword.text.toString().trim()
                     )
                 ) {
                     MainActivity.IsLoginDone = 4

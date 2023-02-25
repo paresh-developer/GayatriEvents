@@ -191,9 +191,11 @@ class Panchang : AppCompatActivity() {
             c.set(nmYear.value, i2 - 1, nmDay.value)
             calendar.date = c.time.time
             if (i2 == 2)
-                nmDay.maxValue = 29
-            else
+                nmDay.maxValue = if(nmYear.value%4==0) 29 else 28
+            else if(i2 == 1 || i2 == 3 || i2 == 5 || i2 == 7 || i2 == 8 || i2 == 10 || i2 == 12)
                 nmDay.maxValue = 31
+            else
+                nmDay.maxValue = 30
             nmDay.value = SimpleDateFormat("d").format(c.time).toInt()
 
             val PanchangData = Database.getPanchangOf(

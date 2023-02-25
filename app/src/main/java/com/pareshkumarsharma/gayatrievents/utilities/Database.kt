@@ -78,6 +78,7 @@ class Database {
                     sqlite.execSQL(
                         "Create table USERS (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
                                 "Uname text," +
                                 "Email text," +
                                 "Mobile text," +
@@ -167,6 +168,53 @@ class Database {
                                 "SmallDesc text," +
                                 "Type Integer," +
                                 "CreationDate datetime"+
+                                ");"
+                    )
+                }
+
+                if (!checkTableExists("EVENTS")) {
+                    sqlite.execSQL(
+                        "Create table EVENTS (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "ServiceProductGlobalId text," +
+                                "ServiceProductId int," +
+                                "ServiceGlobalId text," +
+                                "ServiceId int," +
+                                "Title text," +
+                                "Details text," +
+                                "DateFixed int," +
+                                "DateStart datetime," +
+                                "DateEnd datetime," +
+                                "Price Numeric," +
+                                "Approved int," +
+                                "Approval_Time datetime," +
+                                "UserId int," +
+                                "UserGlobalId text," +
+                                "CreationDate datetime" +
+                                ");"
+                    )
+                }
+                if (!checkTableExists("Client_EVENTS_Request")) {
+                    sqlite.execSQL(
+                        "Create table Client_EVENTS_Request (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "ServiceProductGlobalId text," +
+                                "ServiceProductId int," +
+                                "ServiceGlobalId text," +
+                                "ServiceId int," +
+                                "Title text," +
+                                "Details text," +
+                                "DateFixed int," +
+                                "DateStart datetime," +
+                                "DateEnd datetime," +
+                                "Price Numeric," +
+                                "Approved int," +
+                                "Approval_Time datetime," +
+                                "UserId int," +
+                                "UserGlobalId text," +
+                                "CreationDate datetime" +
                                 ");"
                     )
                 }
@@ -299,11 +347,64 @@ class Database {
             return tbl
         }
 
+        internal fun getEvents(): DataTable {
+            var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate from Events", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return tbl
+        }
+
+        internal fun getClientRequests(): DataTable {
+            var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate from Client_EVENTS_Request", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return tbl
+        }
+
         internal fun getServices(): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
                 val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+            else
+            {
+                for (row in tbl.Rows){
+                    row[tbl.Columns.indexOf("City")] = getCityOf(row[tbl.Columns.indexOf("City")].toInt())
+                }
+            }
+            return tbl
+        }
+
+        internal fun getServicesForEvent(): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service Where Approved = 1 and RequestStatus = 1", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

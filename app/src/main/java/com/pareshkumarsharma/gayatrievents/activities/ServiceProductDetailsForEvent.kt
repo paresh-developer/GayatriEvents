@@ -20,7 +20,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
-class ServiceProductDetailsEdit : AppCompatActivity() {
+class ServiceProductDetailsForEvent : AppCompatActivity() {
 
     internal companion object{
         var selectedServiceProductId:Int = 0
@@ -34,17 +34,17 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_service_product_details_edit)
+        setContentView(R.layout.activity_service_product_details_for_event)
 
         if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
             onBackPressed()
             finish()
         }
 
-        findViewById<Button>(R.id.btnCreateNewServiceProductDetails).setOnClickListener {
-            NewServiceProductDetails.selectedServiceProductId = selectedServiceProductId
-            startActivity(Intent(this, NewServiceProductDetails::class.java))
-        }
+//        findViewById<Button>(R.id.btnCreateNewServiceProductDetails).setOnClickListener {
+//            NewServiceProductDetails.selectedServiceProductId = selectedServiceProductId
+//            startActivity(Intent(this, NewServiceProductDetails::class.java))
+//        }
 
         existingServiceProductDetails = Database.getServicesProductDetails(selectedServiceProductId)
         listViewServiceProductDetail = findViewById<ListView>(R.id.listview_ExistingServicesProductDetails)
@@ -57,21 +57,21 @@ class ServiceProductDetailsEdit : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServiceProductDetails.Rows[i][2].toString())
             builder.setMessage(existingServiceProductDetails.Rows[i][3].toString())
-            builder.setPositiveButton(
-                "Edit",
-                DialogInterface.OnClickListener { dialogInterface, j ->
-
-                    NewServiceProductDetails.operation = 'U'
-                    NewServiceProductDetails.GlobalId =existingServiceProductDetails.Rows[i][1]
-                    NewServiceProductDetails.SPDT = existingServiceProductDetails.Rows[i][2]
-                    NewServiceProductDetails.SPDD = existingServiceProductDetails.Rows[i][3]
-                    NewServiceProductDetails.SPDTP = existingServiceProductDetails.Rows[i][4].toInt()
-
-                    CurrentActivity.startActivity(Intent(CurrentActivity,NewServiceProductDetails::class.java))
-                })
+//            builder.setPositiveButton(
+//                "Edit",
+//                DialogInterface.OnClickListener { dialogInterface, j ->
+//
+//                    NewServiceProductDetails.operation = 'U'
+//                    NewServiceProductDetails.GlobalId =existingServiceProductDetails.Rows[i][1]
+//                    NewServiceProductDetails.SPDT = existingServiceProductDetails.Rows[i][2]
+//                    NewServiceProductDetails.SPDD = existingServiceProductDetails.Rows[i][3]
+//                    NewServiceProductDetails.SPDTP = existingServiceProductDetails.Rows[i][4].toInt()
+//
+//                    CurrentActivity.startActivity(Intent(CurrentActivity,NewServiceProductDetails::class.java))
+//                })
             builder.setNegativeButton(
-                "Cancel",
-                DialogInterface.OnClickListener { dialogInterface, j -> })
+                "Ok",
+                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss()})
             builder.show()
         }
     }

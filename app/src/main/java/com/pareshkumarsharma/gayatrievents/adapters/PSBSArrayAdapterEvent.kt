@@ -6,21 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.activities.ServiceEdit
 import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterService(
+class PSBSArrayAdapterEvent(
     val c: Context,
     val r: Int,
     var data: List<List<String>>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
-    public var SelectedPosition = -1
+
     override fun isEmpty(): Boolean {
         return data.isEmpty()
     }
@@ -43,7 +42,7 @@ class PSBSArrayAdapterService(
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                r,
+                com.pareshkumarsharma.gayatrievents.R.layout.listview_item_event,
                 parent,
                 false
             )
@@ -63,16 +62,17 @@ class PSBSArrayAdapterService(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceAp)
 
         try {
-            txtTitle?.text = data[position][2]
-            txtDesc?.text = data[position][3]
+
+            txtTitle?.text = data[position][6]
+            txtDesc?.text = data[position][7]
             txtOwner?.text = "By: "+data[position][4]
             var dtime = ""
-            if(data[position][9].toInt()==1) {
+            if((data[position][13] != null || !data[position][13].startsWith("000")) && data[position][12].toInt()==1) {
                 txtApprov?.setTextColor(Color.rgb(0,100,0))
-                dtime = " Approved On "+data[position][5].replace('T',' ')
+                dtime = " Approved On "+data[position][13]?.replace('T',' ')
             }
             else {
-                if(data[position][10].toInt()==1) {
+                if((data[position][13] != null || !data[position][13].startsWith("000")) && data[position][12].toInt()==0) {
                     txtApprov?.setTextColor(Color.RED)
                     dtime = " Rejected"
                 }

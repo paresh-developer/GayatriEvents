@@ -13,11 +13,10 @@
     <TextView
         android:textColor="@color/black"
         android:id="@+id/txtServiceTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
         />
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

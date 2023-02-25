@@ -41,6 +41,8 @@ class APICalls {
             "$HOST/MobileApp/UserTypeChangeRequest"
         private const val VIEW_EXISTING_SERVICE_OF_CURRENT_USER =
             "$HOST/Service/"
+        private const val VIEW_EXISTING_SERVICE_FOR_EVENTS =
+            "$HOST/Service/ForEvent"
         private const val SERVICE_REGISTRATION_REQUEST =
             "$HOST/Service/New"
         private const val SERVICE_UPDATION_REQUEST =
@@ -57,6 +59,14 @@ class APICalls {
             "$HOST/Service/Product"
         private const val VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER =
             "$HOST/Service/ProductDetails"
+        private const val VIEW_EXISTING_EVENTS_OF_CURRENT_USER =
+            "$HOST/Event/UserEvents"
+        private const val CLIENT_EVENT_REQUEST =
+            "$HOST/Event/UserEventOrders"
+        private const val CLIENT_EVENT_REQUEST_RESPONSE =
+            "$HOST/Event/UserResponse"
+        private const val EVENT_REGISTRATION_REQUEST =
+            "$HOST/Event/New"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -519,6 +529,60 @@ class APICalls {
             return isSuccess
         }
 
+        internal fun requestNewEventRegistration(EventModel: EventRegistrationModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(EVENT_REGISTRATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(EventModel, EventRegistrationModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         internal fun requestNewServiceUpdation(ServiceModel: ServiceUpdationRequestModel): Boolean {
             var isSuccess = false
 
@@ -602,7 +666,8 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val model = Gson().toJson(ServiceProductModel, ServiceProductRegistrationModel::class.java)
+                val model =
+                    Gson().toJson(ServiceProductModel, ServiceProductRegistrationModel::class.java)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
                 outPutStream.close()
@@ -656,7 +721,8 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val model = Gson().toJson(ServiceProductModel, ServiceProductUpdationModel::class.java)
+                val model =
+                    Gson().toJson(ServiceProductModel, ServiceProductUpdationModel::class.java)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
                 outPutStream.close()
@@ -710,7 +776,10 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val model = Gson().toJson(ServiceProductDetailsModel, ServiceProductDetailsRegistrationModel::class.java)
+                val model = Gson().toJson(
+                    ServiceProductDetailsModel,
+                    ServiceProductDetailsRegistrationModel::class.java
+                )
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
                 outPutStream.close()
@@ -764,7 +833,10 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val model = Gson().toJson(ServiceProductDetailsModel, ServiceProductDetailsUpdationModel::class.java)
+                val model = Gson().toJson(
+                    ServiceProductDetailsModel,
+                    ServiceProductDetailsUpdationModel::class.java
+                )
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
                 outPutStream.close()
@@ -842,6 +914,59 @@ class APICalls {
             return isSuccess
         }
 
+        internal fun getExistingServiceForEvent(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(VIEW_EXISTING_SERVICE_FOR_EVENTS)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson<Array<ServiceDisplayModel>>(
+                            respo,
+                            Array<ServiceDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         internal fun getExistingServiceProductOfCurrentUser(selectedService: Int): Boolean {
             var isSuccess = false
 
@@ -850,7 +975,8 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER+"?serviceGlobalId=$selectedService")
+            val url =
+                URL(VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -902,7 +1028,8 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER+"?serviceProductGlobalId=$selectedServiceProduct")
+            val url =
+                URL(VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -939,6 +1066,167 @@ class APICalls {
                 }
             } catch (ex: Exception) {
                 lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getExistingEventsOfCurrentUser(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson(
+                            respo,
+                            Array<EventDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getClientEventRequestsOfCurrentUser(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(CLIENT_EVENT_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson(
+                            respo,
+                            Array<EventDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun sendClientEventRequestResponse(eventGlobalId:String, response:Int): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return false
+            }
+
+            val url = URL(CLIENT_EVENT_REQUEST_RESPONSE)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val loginModel = ClientEventRequestResponse(eventGlobalId,response)
+                val model = Gson().toJson(loginModel, loginModel.javaClass)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val bufferedIn = InputStreamReader(urlConnection.inputStream)
+                    val respo = bufferedIn.readText()
+                    bufferedIn.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val inp = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = inp.readText()
+                    inp.close()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
             } finally {
                 urlConnection.disconnect()
             }
@@ -1001,15 +1289,14 @@ class APICalls {
             return false
         }
 
-        internal fun encodeStringComplex(str:String):String{
+        internal fun encodeStringComplex(str: String): String {
             var encodedStr = ""
             var key_Array = ByteArray(0)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 key_Array = java.util.Base64.getDecoder().decode(key)
-            }
-            else
-                key_Array = android.util.Base64.decode(key,key.length)
+            } else
+                key_Array = android.util.Base64.decode(key, key.length)
 
             try {
                 //Cipher _Cipher = Cipher.getInstance("AES");
@@ -1018,33 +1305,50 @@ class APICalls {
 
                 // Initialization vector.
                 // It could be any value or generated using a random number generator.
-                val iv = byteArrayOf(40, 154.toByte(), 57, 248.toByte(), 183.toByte(), 219.toByte(), 50, 105, 117, 8, 162.toByte(), 59, 104, 160.toByte(), 200.toByte(), 31)
+                val iv = byteArrayOf(
+                    40,
+                    154.toByte(),
+                    57,
+                    248.toByte(),
+                    183.toByte(),
+                    219.toByte(),
+                    50,
+                    105,
+                    117,
+                    8,
+                    162.toByte(),
+                    59,
+                    104,
+                    160.toByte(),
+                    200.toByte(),
+                    31
+                )
                 val ivspec = IvParameterSpec(iv)
                 val SecretKey: Key = SecretKeySpec(key_Array, "AES")
                 _Cipher.init(Cipher.ENCRYPT_MODE, SecretKey, ivspec)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    encodedStr = java.util.Base64.getEncoder().encodeToString(_Cipher.doFinal(str.toByteArray())).trim()
-                }
-                else {
+                    encodedStr = java.util.Base64.getEncoder()
+                        .encodeToString(_Cipher.doFinal(str.toByteArray())).trim()
+                } else {
                     val crpstrbyt = _Cipher.doFinal(str.toByteArray())
-                    encodedStr = android.util.Base64.encodeToString(crpstrbyt, crpstrbyt.size).trim()
+                    encodedStr =
+                        android.util.Base64.encodeToString(crpstrbyt, crpstrbyt.size).trim()
                 }
             } catch (e: java.lang.Exception) {
-                android.util.Log.d(" Encry ",e.message.toString())
+                android.util.Log.d(" Encry ", e.message.toString())
             }
 
             return encodedStr
         }
 
-        internal fun decodeStringComplex(str:String):String{
+        internal fun decodeStringComplex(str: String): String {
             var encodedStr = ""
             var key_Array = ByteArray(0)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 key_Array = java.util.Base64.getDecoder().decode(key)
-            }
-            else
-                key_Array = android.util.Base64.decode(key,key.length)
+            } else
+                key_Array = android.util.Base64.decode(key, key.length)
 
             try {
                 //Cipher _Cipher = Cipher.getInstance("AES");
@@ -1053,20 +1357,36 @@ class APICalls {
 
                 // Initialization vector.
                 // It could be any value or generated using a random number generator.
-                val iv = byteArrayOf(40, 154.toByte(), 57, 248.toByte(), 183.toByte(), 219.toByte() , 50, 105, 117, 8, 162.toByte(), 59, 104, 160.toByte(), 200.toByte(), 31)
+                val iv = byteArrayOf(
+                    40,
+                    154.toByte(),
+                    57,
+                    248.toByte(),
+                    183.toByte(),
+                    219.toByte(),
+                    50,
+                    105,
+                    117,
+                    8,
+                    162.toByte(),
+                    59,
+                    104,
+                    160.toByte(),
+                    200.toByte(),
+                    31
+                )
                 val ivspec = IvParameterSpec(iv)
                 val SecretKey: Key = SecretKeySpec(key_Array, "AES")
                 _Cipher.init(Cipher.DECRYPT_MODE, SecretKey, ivspec)
                 var DecodedMessage = ByteArray(0)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     DecodedMessage = java.util.Base64.getDecoder().decode(str);
-                }
-                else {
+                } else {
                     DecodedMessage = android.util.Base64.decode(str, str.length)
                 }
                 encodedStr = String(_Cipher.doFinal(DecodedMessage)).trim()
             } catch (e: java.lang.Exception) {
-                android.util.Log.d(" Decryp ",e.message.toString())
+                android.util.Log.d(" Decryp ", e.message.toString())
             }
 
             return encodedStr

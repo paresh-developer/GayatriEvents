@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +11,7 @@
         >
     <TextView
         android:textColor="@color/black"
-        android:id="@+id/txtServiceTitle"
+        android:id="@+id/txtEventTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
@@ -25,22 +24,22 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id="@+id/txtServiceOwner"
+            android:id="@+id/txtDateStart_End"
             android:textSize="10dp"
             android:textColor="#535353"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="By: Owner "
+            android:text="Date not Fixed: 2021-11-31 From 2022-11-22"
             />
-        <TextView
-            android:id="@+id/txtServiceAp"
-            android:textSize="10dp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="By: Owner At: "
-            android:textAlignment="textEnd"
-            />
+<!--        <TextView-->
+<!--            android:id="@+id/txtServiceAp"-->
+<!--            android:textSize="10dp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="By: Owner At: "-->
+<!--            android:textAlignment="textEnd"-->
+<!--            />-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +47,7 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id="@+id/txtServiceDescription"
+            android:id="@+id/txtEventDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxHeight="30dp"
@@ -63,21 +62,38 @@
         android:orientation="horizontal"
         >
         <TextView
-            android:id="@+id/txtServiceType"
+            android:id="@+id/txtEventRegisteredOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Type: ... "
+            android:text="Requested On: 2023-02-25"
             android:textSize="10dp"
             android:textColor="#535353"
             />
         <TextView
             android:id="@+id/txtServiceCity"
             android:textSize="10dp"
-            android:textColor="#535353"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="City: ... "
+            android:text="Price: 1000 /- "
             android:textAlignment="textEnd"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+<!--        android:background="#303F9F"-->
+<!--        android:background="#D32F2F"-->
+        <TextView
+            android:id="@+id/txtApproved"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rejected"
+            android:textSize="10dp"
+            android:textStyle="bold"
             />
     </LinearLayout>
 </LinearLayout>

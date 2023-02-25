@@ -1,6 +1,12 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.icu.util.Calendar
+import android.icu.util.LocaleData
+import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.Button
@@ -10,7 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.services.PanchangNotification
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import java.text.SimpleDateFormat
+import java.time.DateTimeException
+import java.time.LocalDateTime
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,9 +36,10 @@ class MainActivity : AppCompatActivity() {
          */
         var IsLoginDone = 0
         var UserName = ""
-        lateinit var Toastmain:Toast
-        lateinit var btnPanchang:Button
+        lateinit var Toastmain: Toast
+        lateinit var btnPanchang: Button
         var IsRunning = false
+        var Instance = 1
     }
 
     lateinit var txtHellow: TextView
@@ -38,12 +50,15 @@ class MainActivity : AppCompatActivity() {
 
         IsRunning = true
 
-        if(!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone",false))
+        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone", false))
             startActivity(Intent(this, LoginActivity::class.java))
         else {
             IsLoginDone = 5
-            UserName = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("Uname","").toString()
+            UserName =
+                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("Uname", "")
+                    .toString()
         }
+
         txtHellow = findViewById(R.id.txtHellow)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
@@ -55,10 +70,10 @@ class MainActivity : AppCompatActivity() {
                 .edit()
                 .putString("token", "")
                 .putString("expires", "")
-                .putString("LLUname","")
-                .putString("LLMobile","")
-                .putString("LLPassword","")
-                .putBoolean("LLDone",false)
+                .putString("LLUname", "")
+                .putString("LLMobile", "")
+                .putString("LLPassword", "")
+                .putBoolean("LLDone", false)
                 .apply()
 
             startActivity(Intent(this, LoginActivity::class.java))
@@ -78,20 +93,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnService).setOnClickListener {
-            if(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType",0)==2) {
+            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
                 startActivity(Intent(this, ServiceEdit::class.java))
-            }
-            else
-                Toast.makeText(applicationContext,"You cannot access Services",Toast.LENGTH_LONG).show()
+            } else
+                Toast.makeText(applicationContext, "You cannot access Services", Toast.LENGTH_LONG)
+                    .show()
         }
 
-        val DatabaseSetup = getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001",false)
-        if(!DatabaseSetup)
-        {
+        val DatabaseSetup =
+            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001", false)
+        if (!DatabaseSetup) {
             Database.checkDatabaseSetup()
             getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
                 .edit()
-                .putBoolean("F001",true)
+                .putBoolean("F001", true)
                 .apply()
         }
 
@@ -99,6 +114,14 @@ class MainActivity : AppCompatActivity() {
         APICalls.decodeStringComplex(APICalls.encodeStringComplex("Pwd"))
 //        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
 //            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
+
+        findViewById<Button>(R.id.btnEvent).setOnClickListener {
+            startActivity(Intent(this,EventEdit::class.java))
+        }
+
+        findViewById<Button>(R.id.btnSaleRequests).setOnClickListener {
+            startActivity(Intent(this,ClientEventRequestEdit::class.java))
+        }
     }
 
     override fun onResume() {
@@ -111,20 +134,25 @@ class MainActivity : AppCompatActivity() {
             else if (IsLoginDone == 2) {
                 snakmsg = "Login Done!...👍"
                 txtHellow.text = "Hellow! $UserName"
-            }
-            else if (IsLoginDone == 4) {
+            } else if (IsLoginDone == 4) {
                 snakmsg = "Sign Up Done!...👍"
             }
-            if (IsLoginDone != 0 && snakmsg.trim().length>0)
+            if (IsLoginDone != 0 && snakmsg.trim().length > 0)
                 Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
                     .show()
         } else {
             finish()
         }
+        sendTomorrowNotification()
     }
 
     override fun onDestroy() {
         IsRunning = false
         super.onDestroy()
+    }
+
+    private fun sendTomorrowNotification() {
+        if(!PanchangNotification.Is_Running)
+            startService(Intent(this, PanchangNotification::class.java))
     }
 }

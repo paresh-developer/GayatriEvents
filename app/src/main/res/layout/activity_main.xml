@@ -95,6 +95,27 @@
                 android:layout_margin="10dp"
                 android:textSize="15dp"
                 />
+            <Button
+                android:id="@+id/btnEvent"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:text="Events"
+                android:layout_margin="10dp"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnSaleRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="Client Req."
+                android:layout_margin="10dp"
+                android:textSize="15dp"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
