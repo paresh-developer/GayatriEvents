@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.pareshkumarsharma.gayatrievents.panchang.EnWeekDay
 
 
 class PSBSFestivalArrayAdapter(
@@ -48,10 +49,12 @@ class PSBSFestivalArrayAdapter(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt1OfListViewItem)
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
+        val txt3 =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtWeekday)
 
-        txt1?.text = data[position][0].toString().substring(0,2)
+        txt1?.text = data[position][0].toString().substring(0,2) + " " + EnWeekDay.get(data[position][3].toInt()).substring(0,3)
         txt2?.text = data[position][1].toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("#~#", "\n").replace("//","")
-
+        txt3?.text = data[position][2].replace("#~#","\n").replace("upto ","")
         return currentItemView!!
     }
 }

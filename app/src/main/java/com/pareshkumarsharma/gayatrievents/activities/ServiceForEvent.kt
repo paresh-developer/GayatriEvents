@@ -26,7 +26,7 @@ class ServiceForEvent : AppCompatActivity() {
     private lateinit var existingServices : DataTable
 
     internal companion object{
-        var SelectedService = -1
+        var SelectedService = "0"
         var SelectedServiceName = ""
     }
 
@@ -49,7 +49,7 @@ class ServiceForEvent : AppCompatActivity() {
             PSBSArrayAdapterService(this, R.layout.listview_item_service_for_event, existingServices.Rows)
         listViewService.adapter = adapterService
         listViewService.setOnItemClickListener { adapterView, view, i, l ->
-            SelectedService = existingServices.Rows[i][existingServices.Columns.indexOf("Id")].toInt()
+            SelectedService = existingServices.Rows[i][existingServices.Columns.indexOf("GlobalId")]
             SelectedServiceName = existingServices.Rows[i][2]
             NewEvent.Selected_Service_Global_Id = existingServices.Rows[i][1]
 //            Toast.makeText(applicationContext,"Service selected",Toast.LENGTH_LONG).show()

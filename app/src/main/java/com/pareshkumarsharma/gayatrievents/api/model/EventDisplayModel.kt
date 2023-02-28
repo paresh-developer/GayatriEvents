@@ -15,5 +15,6 @@ data class EventDisplayModel(
     val Approved: Boolean,
     val Approval_Time: String,
     val UserGlobalId: String,
-    val CreationTime:String
+    val CreationTime:String,
+    val Reason:String
 )

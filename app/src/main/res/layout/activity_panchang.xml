@@ -116,6 +116,8 @@
                 <ListView
                     android:id="@+id/monthFestivalList"
                     android:layout_width="330dp"
+                    android:dividerHeight="2dp"
+                    android:divider="@color/black"
                     android:layout_height="match_parent" />
             </LinearLayout>
         </HorizontalScrollView>

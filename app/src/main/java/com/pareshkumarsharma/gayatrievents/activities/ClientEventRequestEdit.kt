@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -70,7 +71,7 @@ class ClientEventRequestEdit : AppCompatActivity() {
                             ).getString("expires", "").toString()
                         )
                     )
-                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],0)) {
+                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],0,findViewById<EditText>(R.id.edt_Reason).text.toString())) {
 //                        runOnUiThread {
 //                            Toast.makeText(
 //                                applicationContext,
@@ -113,7 +114,7 @@ class ClientEventRequestEdit : AppCompatActivity() {
                             ).getString("expires", "").toString()
                         )
                     )
-                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],1)) {
+                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],1,findViewById<EditText>(R.id.edt_Reason).text.toString())) {
 //                        runOnUiThread {
 //                            Toast.makeText(
 //                                applicationContext,
@@ -185,6 +186,10 @@ class ClientEventRequestEdit : AppCompatActivity() {
                     c.put("Price", res[i].EventPrice)
                     c.put("Approved", res[i].Approved)
                     c.put("UserGlobalId", res[i].UserGlobalId)
+                    if(res[i].Reason!=null)
+                        c.put("Reason",res[i].Reason)
+                    else
+                        nul_field += ",Reason"
                     val tbl2 = Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
                     if(tbl2.Rows.size>0 && !tbl2.Columns.contains("Error"))
                         c.put("UserId", tbl2.Rows[0][0].toInt())

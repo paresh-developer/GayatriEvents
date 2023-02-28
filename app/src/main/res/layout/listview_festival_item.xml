@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="2dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:background="@android:color/holo_blue_dark">
     <TextView
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -19,11 +25,20 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="30 "
-        android:textSize="20dp"
-        android:paddingStart="5dp"
-        android:background="@android:color/holo_blue_dark"
+        android:text="30"
+        android:textSize="15dp"
         />
+        <TextView
+            android:id="@+id/txtWeekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="WED"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+        </LinearLayout>
     <TextView
         android:textColor="@android:color/black"
         android:padding="2dp"

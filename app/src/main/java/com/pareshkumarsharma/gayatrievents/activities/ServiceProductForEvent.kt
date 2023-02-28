@@ -29,7 +29,7 @@ class ServiceProductForEvent : AppCompatActivity() {
     private lateinit var existingServiceProducts : DataTable
 
     internal companion object{
-        var selectedServiceId:Int = 0
+        var selectedServiceId:String = "0"
         var selectedProductId:Int = 0
         var selectedProductName = ""
         var SelectedProductPrice = 0.0
@@ -56,7 +56,7 @@ class ServiceProductForEvent : AppCompatActivity() {
         listViewServiceProduct.adapter = adapterService
 
         listViewServiceProduct.setOnItemClickListener { adapterView, view, i, l ->
-            ServiceProductDetailsForEvent.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("Id")].toInt()
+            ServiceProductDetailsForEvent.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("GlobalId")]
             selectedProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("Id")].toInt()
             selectedProductName =existingServiceProducts.Rows[i][2]
             SelectedProductPrice = existingServiceProducts.Rows[i][4].toDouble()

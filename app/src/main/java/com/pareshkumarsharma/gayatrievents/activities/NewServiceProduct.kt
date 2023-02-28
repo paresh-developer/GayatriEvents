@@ -12,7 +12,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.Database
 class NewServiceProduct : AppCompatActivity() {
 
     internal companion object{
-        var selectedServiceId:Int = 0
+        var selectedServiceId:String = "0"
         var operation: Char = 'I'
         var SPT = ""
         var SPD = ""

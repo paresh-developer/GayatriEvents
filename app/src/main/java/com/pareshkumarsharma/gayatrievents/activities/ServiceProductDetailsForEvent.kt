@@ -23,7 +23,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 class ServiceProductDetailsForEvent : AppCompatActivity() {
 
     internal companion object{
-        var selectedServiceProductId:Int = 0
+        var selectedServiceProductId:String = "0"
     }
 
     private val CurrentActivity = this

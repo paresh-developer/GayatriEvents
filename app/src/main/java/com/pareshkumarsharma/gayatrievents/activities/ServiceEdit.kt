@@ -45,7 +45,7 @@ class ServiceEdit : AppCompatActivity() {
             PSBSArrayAdapterService(this, R.layout.listview_item_service, existingServices.Rows)
         listViewService.adapter = adapterService
         listViewService.setOnItemClickListener { adapterView, view, i, l ->
-            ServiceProductEdit.selectedServiceId = existingServices.Rows[i][existingServices.Columns.indexOf("Id")].toInt()
+            ServiceProductEdit.selectedServiceId = existingServices.Rows[i][existingServices.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServices.Rows[i][2])
             builder.setMessage(existingServices.Rows[i][3])

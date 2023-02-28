@@ -191,7 +191,8 @@ class Database {
                                 "Approval_Time datetime," +
                                 "UserId int," +
                                 "UserGlobalId text," +
-                                "CreationDate datetime" +
+                                "CreationDate datetime," +
+                                "Reason text" +
                                 ");"
                     )
                 }
@@ -214,7 +215,62 @@ class Database {
                                 "Approval_Time datetime," +
                                 "UserId int," +
                                 "UserGlobalId text," +
-                                "CreationDate datetime" +
+                                "CreationDate datetime," +
+                                "Reason text" +
+                                ");"
+                    )
+                }
+                if (!checkTableExists("EVENTS_Update")) {
+                    sqlite.execSQL(
+                        "Create table EVENTS_Update (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "EventGlobalId text," +
+                                "EventId int," +
+                                "GlobalId text," +
+                                "ServiceProductGlobalId text," +
+                                "ServiceProductId int," +
+                                "ServiceGlobalId text," +
+                                "ServiceId int," +
+                                "Title text," +
+                                "Details text," +
+                                "DateFixed int," +
+                                "DateStart datetime," +
+                                "DateEnd datetime," +
+                                "Price Numeric," +
+                                "Approved int," +
+                                "Approval_Time datetime," +
+                                "UserId int," +
+                                "UserGlobalId text," +
+                                "CreationDate datetime," +
+                                "Reason text" +
+                                ");"
+                    )
+                }
+                if (!checkTableExists("EVENTS_Backup")) {
+                    sqlite.execSQL(
+                        "Create table EVENTS_Backup (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "EventGlobalId text," +
+                                "EventId int," +
+                                "EventUpdateGlobalId text," +
+                                "EventUpdateId int," +
+                                "GlobalId text," +
+                                "ServiceProductGlobalId text," +
+                                "ServiceProductId int," +
+                                "ServiceGlobalId text," +
+                                "ServiceId int," +
+                                "Title text," +
+                                "Details text," +
+                                "DateFixed int," +
+                                "DateStart datetime," +
+                                "DateEnd datetime," +
+                                "Price Numeric," +
+                                "Approved int," +
+                                "Approval_Time datetime," +
+                                "UserId int," +
+                                "UserGlobalId text," +
+                                "CreationDate datetime," +
+                                "Reason text" +
                                 ");"
                     )
                 }
@@ -295,7 +351,7 @@ class Database {
             try {
                 openConnection(1)
                 val c = sqlite.rawQuery(
-                    "Select EventDate,Festivals " +
+                    "Select EventDate,Festivals,Tithi,Weekday " +
                             "from DKP$yr where EventDate like \"${dt}\" and length(trim(Festivals))>0",
                     null
                 )
@@ -351,7 +407,7 @@ class Database {
             var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate from Events", null)
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -366,7 +422,7 @@ class Database {
             var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate from Client_EVENTS_Request", null)
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -423,11 +479,11 @@ class Database {
             return tbl
         }
 
-        internal fun getServicesProduct(serviceId:Int): DataTable {
+        internal fun getServicesProduct(serviceGlobalId:String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceId=$serviceId", null)
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId='$serviceGlobalId'", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -441,11 +497,11 @@ class Database {
             return tbl
         }
 
-        internal fun getServicesProductDetails(serviceProductId:Int): DataTable {
+        internal fun getServicesProductDetails(serviceProductGlobalId:String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductId=$serviceProductId", null)
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductGlobalId='$serviceProductGlobalId'", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

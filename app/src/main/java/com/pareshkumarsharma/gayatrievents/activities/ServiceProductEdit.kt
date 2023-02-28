@@ -29,7 +29,7 @@ class ServiceProductEdit : AppCompatActivity() {
     private lateinit var existingServiceProducts : DataTable
 
     internal companion object{
-        var selectedServiceId:Int = 0
+        var selectedServiceId:String = "0"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class ServiceProductEdit : AppCompatActivity() {
         listViewServiceProduct.adapter = adapterService
 
         listViewServiceProduct.setOnItemClickListener { adapterView, view, i, l ->
-            ServiceProductDetailsEdit.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("Id")].toInt()
+            ServiceProductDetailsEdit.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServiceProducts.Rows[i][2].toString())
             builder.setMessage(existingServiceProducts.Rows[i][3].toString())

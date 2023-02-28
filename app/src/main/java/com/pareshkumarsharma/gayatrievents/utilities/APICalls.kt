@@ -65,6 +65,8 @@ class APICalls {
             "$HOST/Event/UserEventOrders"
         private const val CLIENT_EVENT_REQUEST_RESPONSE =
             "$HOST/Event/UserResponse"
+        private const val CLIENT_EVENT_DELETE_REQUEST =
+            "$HOST/Event/DeleteEvent"
         private const val EVENT_REGISTRATION_REQUEST =
             "$HOST/Event/New"
         // endregion
@@ -967,7 +969,7 @@ class APICalls {
             return isSuccess
         }
 
-        internal fun getExistingServiceProductOfCurrentUser(selectedService: Int): Boolean {
+        internal fun getExistingServiceProductOfCurrentUser(selectedService: String): Boolean {
             var isSuccess = false
 
             if (!isOnline(Cont)) {
@@ -1020,7 +1022,7 @@ class APICalls {
             return isSuccess
         }
 
-        internal fun getExistingServiceProductDetailOfCurrentUser(selectedServiceProduct: Int): Boolean {
+        internal fun getExistingServiceProductDetailOfCurrentUser(selectedServiceProduct: String): Boolean {
             var isSuccess = false
 
             if (!isOnline(Cont)) {
@@ -1179,7 +1181,7 @@ class APICalls {
             return isSuccess
         }
 
-        internal fun sendClientEventRequestResponse(eventGlobalId:String, response:Int): Boolean {
+        internal fun sendClientEventRequestResponse(eventGlobalId:String, response:Int, reason:String): Boolean {
             var isSuccess = false
 
             if (!isOnline(Cont)) {
@@ -1208,7 +1210,62 @@ class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val loginModel = ClientEventRequestResponse(eventGlobalId,response)
+                val loginModel = ClientEventRequestResponse(eventGlobalId,response,reason)
+                val model = Gson().toJson(loginModel, loginModel.javaClass)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val bufferedIn = InputStreamReader(urlConnection.inputStream)
+                    val respo = bufferedIn.readText()
+                    bufferedIn.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val inp = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = inp.readText()
+                    inp.close()
+                }
+            } catch (ex: Exception) {
+                Log.d("API Call", ex.message.toString())
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun sendDeleteEventRequest(eventGlobalId:String, response:Int, reason:String): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return false
+            }
+
+            val url = URL(CLIENT_EVENT_DELETE_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val loginModel = ClientEventRequestResponse(eventGlobalId,response,reason)
                 val model = Gson().toJson(loginModel, loginModel.javaClass)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()

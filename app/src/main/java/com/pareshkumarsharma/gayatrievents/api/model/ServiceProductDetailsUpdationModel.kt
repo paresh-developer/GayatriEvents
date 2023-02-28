@@ -5,5 +5,5 @@ data class ServiceProductDetailsUpdationModel(
     val Title:String,
     val Desc:String,
     val DetailType: Int,
-    val ServiceProductId:Int
+    val ServiceProductGlobalId:String
 )
