@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -190,7 +191,7 @@ class MainActivity : AppCompatActivity() {
                     ).getString("expires", "").toString()
                 )
             )
-            if (APICalls.getExistingServiceOfCurrentUser()) {
+            if (APICalls.getExistingServiceForEvent()) {
                 val res = APICalls.lastCallObject as Array<ServiceDisplayModel>
                 for (i in 0..res.size - 1) {
                     var nul_field = "Id"

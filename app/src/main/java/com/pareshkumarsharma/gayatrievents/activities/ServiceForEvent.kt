@@ -1,33 +1,28 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
-import android.content.DialogInterface
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.appcompat.app.AlertDialog
-import com.pareshkumarsharma.gayatrievents.utilities.Database
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceForEvent
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 class ServiceForEvent : AppCompatActivity() {
 
     private val CurrentActivity:ServiceForEvent = this
-    private lateinit var adapterService: PSBSArrayAdapterService
+    private lateinit var adapterService: PSBSArrayAdapterServiceForEvent
     private lateinit var listViewService: ListView
     private lateinit var existingServices : DataTable
 
     internal companion object{
-        var SelectedService = "0"
-        var SelectedServiceName = ""
+        var SelectedServiceIds = mutableListOf<String>()
+        var SelectedServiceNames = mutableListOf<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,21 +34,22 @@ class ServiceForEvent : AppCompatActivity() {
             finish()
         }
 
-//        findViewById<Button>(R.id.btnCreateNewService).setOnClickListener {
-//            startActivity(Intent(this, NewService::class.java))
-//        }
+        findViewById<Button>(R.id.btnSaveSelected).setOnClickListener {
+            SelectedServiceIds = adapterService.Selected_Ids
+            SelectedServiceNames = adapterService.Selected_Name
+            finish()
+        }
 
         existingServices = Database.getServicesForEvent()
         listViewService = findViewById<ListView>(R.id.listview_ExistingServices)
         adapterService =
-            PSBSArrayAdapterService(this, R.layout.listview_item_service_for_event, existingServices.Rows)
+            PSBSArrayAdapterServiceForEvent(this, R.layout.listview_item_service_for_event, existingServices.Rows)
+        adapterService.Selected_Ids = SelectedServiceIds
         listViewService.adapter = adapterService
         listViewService.setOnItemClickListener { adapterView, view, i, l ->
-            SelectedService = existingServices.Rows[i][existingServices.Columns.indexOf("GlobalId")]
-            SelectedServiceName = existingServices.Rows[i][2]
-            NewEvent.Selected_Service_Global_Id = existingServices.Rows[i][1]
+//            NewEvent.Selected_Service_Global_Id = existingServices.Rows[i][1]
 //            Toast.makeText(applicationContext,"Service selected",Toast.LENGTH_LONG).show()
-            finish()
+//            finish()
 //            ServiceProductEdit.selectedServiceId = existingServices.Rows[i][existingServices.Columns.indexOf("Id")].toInt()
 //            val builder = AlertDialog.Builder(this)
 //            builder.setTitle(existingServices.Rows[i][2])

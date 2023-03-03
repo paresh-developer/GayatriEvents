@@ -497,6 +497,24 @@ class Database {
             return tbl
         }
 
+        internal fun getServicesProductByServiceList(serviceGlobalId:String): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId in ('${serviceGlobalId.replace(",","', '")}')", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if(tbl==null){
+                tbl = DataTable(listOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            }
+            return tbl
+        }
+
         internal fun getServicesProductDetails(serviceProductGlobalId:String): DataTable {
             var tbl: DataTable? = null
             try {

@@ -5,8 +5,8 @@ data class EventRegistrationModel(
     val EventDateFixed: Boolean,
     val EventDateStart: String,
     val EventDateEnd: String,
-    val EventPrice: Double,
-    val ServiceGlobalId: String,
-    val ServiceProductGlobalId: String,
+    val EventPriceList: String,
+    val ServiceGlobalIdList: String,
+    val ServiceProductGlobalIdList: String,
     val EventDetails: String,
 )

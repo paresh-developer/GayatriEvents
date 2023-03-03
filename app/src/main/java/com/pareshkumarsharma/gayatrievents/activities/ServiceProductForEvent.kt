@@ -1,7 +1,6 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterService
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProduct
-import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProductForEvent
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
@@ -24,15 +21,15 @@ class ServiceProductForEvent : AppCompatActivity() {
 
     internal val CurrentActivity = this
 
-    private lateinit var adapterService: PSBSArrayAdapterServiceProduct
+    private lateinit var adapterService: PSBSArrayAdapterServiceProductForEvent
     private lateinit var listViewServiceProduct: ListView
     private lateinit var existingServiceProducts : DataTable
 
     internal companion object{
-        var selectedServiceId:String = "0"
-        var selectedProductId:Int = 0
-        var selectedProductName = ""
-        var SelectedProductPrice = 0.0
+        var SelectedServiceId = mutableListOf<String>()
+        var SelectedProductId = mutableListOf<String>()
+        var SelectedProductName = mutableListOf<String>()
+        var SelectedProductPrice = mutableListOf<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,26 +41,25 @@ class ServiceProductForEvent : AppCompatActivity() {
             finish()
         }
 
-//        findViewById<Button>(R.id.btnCreateNewServiceProduct).setOnClickListener {
-//            NewServiceProduct.selectedServiceId = selectedServiceId
-//            startActivity(Intent(this, NewServiceProduct::class.java))
-//        }
+        findViewById<Button>(R.id.btnSaveSelected).setOnClickListener {
+            SelectedProductId = adapterService.SelectedProductId
+            SelectedProductName = adapterService.SelectedProductNames
+            SelectedProductPrice = adapterService.SelectedProductPrices
+            finish()
+        }
 
-        existingServiceProducts = Database.getServicesProduct(selectedServiceId)
+        existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString())
         listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
         adapterService =
-            PSBSArrayAdapterServiceProduct(this, R.layout.listview_item_service_product, existingServiceProducts.Rows)
+            PSBSArrayAdapterServiceProductForEvent(this, R.layout.listview_item_service_product_for_event, existingServiceProducts.Rows)
+        adapterService.SelectedProductId = SelectedProductId
         listViewServiceProduct.adapter = adapterService
-
         listViewServiceProduct.setOnItemClickListener { adapterView, view, i, l ->
             ServiceProductDetailsForEvent.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("GlobalId")]
-            selectedProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("Id")].toInt()
-            selectedProductName =existingServiceProducts.Rows[i][2]
-            SelectedProductPrice = existingServiceProducts.Rows[i][4].toDouble()
             NewEvent.Selected_Service_Product_Global_Id = existingServiceProducts.Rows[i][1]
             val builder = AlertDialog.Builder(this)
-            builder.setTitle(existingServiceProducts.Rows[i][2].toString())
-            builder.setMessage(existingServiceProducts.Rows[i][3].toString())
+            builder.setTitle(existingServiceProducts.Rows[i][2])
+            builder.setMessage(existingServiceProducts.Rows[i][3])
 //            builder.setPositiveButton(
 //                "Edit",
 //                DialogInterface.OnClickListener { dialogInterface, j ->
@@ -81,11 +77,11 @@ class ServiceProductForEvent : AppCompatActivity() {
                     val inn = Intent(CurrentActivity, ServiceProductDetailsForEvent::class.java)
                     CurrentActivity.startActivity(inn)
                 })
-            builder.setNegativeButton(
-                "Select",
-                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss()
-                    finish()
-                })
+//            builder.setNegativeButton(
+//                "Select",
+//                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss()
+//                    finish()
+//                })
             builder.show()
         }
     }
@@ -109,7 +105,7 @@ class ServiceProductForEvent : AppCompatActivity() {
                     ).getString("expires", "").toString()
                 )
             )
-            if (APICalls.getExistingServiceProductOfCurrentUser(selectedServiceId)) {
+            if (APICalls.getExistingServiceProductOfCurrentUser(SelectedServiceId.joinToString())) {
                 val res = APICalls.lastCallObject as Array<ServiceProductDisplayModel>
                 for (i in 0..res.size - 1) {
                     val c = ContentValues()
@@ -119,7 +115,10 @@ class ServiceProductForEvent : AppCompatActivity() {
                     c.put("SmallDesc", res[i].Desc)
                     c.put("Price", res[i].Price)
                     c.put("CreationDate", res[i].CreationDate)
-                    c.put("ServiceId", selectedServiceId)
+                    val tbl = Database.query("Select Id From Service Where GlobalId = '${res[i].GlobalId}'")
+                    if(tbl.Rows.size>0 && !tbl.Columns.contains("Error")){
+                        c.put("ServiceId", tbl.Rows[0][0].toInt())
+                    }
                     if (Database.getRowCount(
                             "Service_Product",
                             "GlobalId",
@@ -130,12 +129,12 @@ class ServiceProductForEvent : AppCompatActivity() {
                     else
                         Database.updateTo("Service_Product", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
                 }
-                existingServiceProducts = Database.getServicesProduct(selectedServiceId)
+                existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString())
                 runOnUiThread {
                     listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
-                    adapterService = PSBSArrayAdapterServiceProduct(
+                    adapterService = PSBSArrayAdapterServiceProductForEvent(
                         this,
-                        R.layout.listview_item_service_product,
+                        R.layout.listview_item_service_product_for_event,
                         existingServiceProducts.Rows
                     )
                     listViewServiceProduct.adapter = adapterService

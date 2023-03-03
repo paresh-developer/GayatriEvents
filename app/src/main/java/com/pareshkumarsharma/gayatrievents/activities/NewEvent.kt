@@ -34,6 +34,9 @@ class NewEvent : AppCompatActivity() {
         var ServiceProduct_Id = 0
         var ServiceProduct_GlobalId = ""
         var Event_Details = ""
+        var SelectedServiceIds = mutableListOf<String>()
+        var SelectedServiceProductIds = mutableListOf<String>()
+        var SelectedServiceProductPriceList = mutableListOf<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,15 +143,16 @@ class NewEvent : AppCompatActivity() {
             startActivity(Intent(this,ServiceForEvent::class.java))
         }
         findViewById<Button>(R.id.btn_popup_select_service).setOnClickListener {
+            ServiceForEvent.SelectedServiceIds = SelectedServiceIds
             startActivity(Intent(this,ServiceForEvent::class.java))
-            ServiceForEvent.SelectedService
         }
         findViewById<EditText>(R.id.selectedServiceProduct).setOnClickListener {
-            ServiceProductForEvent.selectedServiceId = ServiceForEvent.SelectedService
+            ServiceProductForEvent.SelectedServiceId = ServiceForEvent.SelectedServiceIds
+            ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
             startActivity(Intent(this,ServiceProductForEvent::class.java))
         }
         findViewById<Button>(R.id.btn_popup_select_service_product).setOnClickListener {
-            ServiceProductForEvent.selectedServiceId = ServiceForEvent.SelectedService
+            ServiceProductForEvent.SelectedServiceId = ServiceForEvent.SelectedServiceIds
             startActivity(Intent(this,ServiceProductForEvent::class.java))
         }
 
@@ -193,7 +197,6 @@ class NewEvent : AppCompatActivity() {
             val event_date_end_year = findViewById<NumberPicker>(R.id.nmYear_End).value
             val event_date_start = "$event_date_start_year-$event_date_start_month-$event_date_start_day"
             val event_date_end = "$event_date_end_year-$event_date_end_month-$event_date_end_day"
-            val eventPrice = findViewById<TextView>(R.id.txt_price).text.toString().toDouble()
             Thread(Runnable {
                 APICalls.setContext(this)
                 APICalls.cookies = mapOf<String, String>(
@@ -217,9 +220,10 @@ class NewEvent : AppCompatActivity() {
                 if (Operation == 'I') {
                     if (APICalls.requestNewEventRegistration(
                             EventRegistrationModel(
-                                event_name,event_date_fixed,event_date_start,event_date_end,eventPrice,
-                                Selected_Service_Global_Id,
-                                Selected_Service_Product_Global_Id,event_desc
+                                event_name,event_date_fixed,event_date_start,event_date_end,
+                                SelectedServiceProductPriceList.joinToString(),
+                                SelectedServiceIds.joinToString(),
+                                SelectedServiceProductIds.joinToString(),event_desc
                             )
                         )
                     ) {
@@ -229,6 +233,7 @@ class NewEvent : AppCompatActivity() {
                                 APICalls.lastCallMessage,
                                 Toast.LENGTH_LONG
                             ).show()
+                            findViewById<Button>(R.id.btnSaveNewEvent).isEnabled = true
                             finish()
                         }
                     } else {
@@ -238,7 +243,7 @@ class NewEvent : AppCompatActivity() {
                                 APICalls.lastCallMessage,
                                 Toast.LENGTH_LONG
                             ).show()
-                            findViewById<Button>(R.id.btnNewServiceRequestSubmit).isEnabled = true
+                            findViewById<Button>(R.id.btnSaveNewEvent).isEnabled = true
                         }
                     }
                 }
@@ -279,12 +284,20 @@ class NewEvent : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(ServiceForEvent.SelectedServiceName.trim().length>0)
-            findViewById<EditText>(R.id.selectedService).setText(ServiceForEvent.SelectedServiceName)
-        if(ServiceProductForEvent.selectedProductName.trim().length>0)
-            findViewById<EditText>(R.id.selectedServiceProduct).setText(ServiceProductForEvent.selectedProductName)
-        if(ServiceProductForEvent.SelectedProductPrice>0)
-            findViewById<TextView>(R.id.txt_price).setText(""+ServiceProductForEvent.SelectedProductPrice)
+        SelectedServiceIds = ServiceForEvent.SelectedServiceIds
+        SelectedServiceProductIds = ServiceProductForEvent.SelectedProductId
+        SelectedServiceProductPriceList = ServiceProductForEvent.SelectedProductPrice
+        if(ServiceForEvent.SelectedServiceIds.count()>0)
+            findViewById<EditText>(R.id.selectedService).setText("> "+ServiceForEvent.SelectedServiceNames.joinToString("\n> "))
+        if(ServiceProductForEvent.SelectedProductId.size>0)
+            findViewById<EditText>(R.id.selectedServiceProduct).setText("> "+ServiceProductForEvent.SelectedProductName.joinToString("\n> "))
+        if(ServiceProductForEvent.SelectedProductPrice.count()>0) {
+            var sumPrice = 0.0
+            for (p in ServiceProductForEvent.SelectedProductPrice){
+                sumPrice += p.toDouble()
+            }
+            findViewById<TextView>(R.id.txt_price).setText(ServiceProductForEvent.SelectedProductPrice.joinToString("\n")+"\nTotal: "+sumPrice)
+        }
     }
 
     override fun onDestroy() {
