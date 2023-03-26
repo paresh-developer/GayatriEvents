@@ -1,7 +1,5 @@
 package com.pareshkumarsharma.gayatrievents.api.model
 
-import java.util.Date
-
 data class EventDisplayModel(
     val EventGlobalId: String,
     val EventName: String,

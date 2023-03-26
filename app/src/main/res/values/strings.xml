@@ -2,10 +2,14 @@
     <string name="app_name">Gayatri Event</string>
 
     <string name="main_page">होम पेज</string>
-    <string name="donate_page">दान</string>
+    <string name="donate_page">दान पेज</string>
+    <string name="event_page">प्रसंग पेज</string>
 
+    <string name="btn_Create_event">नया प्रसंग</string>
     <string name="btn_Logout">बहार</string>
+
     <string name="btn_Panchang">पंचांग</string>
+    <string name="btn_Muhurat">मुहुर्त</string>
     <string name="btn_Setting">सेटींग</string>
     <string name="btn_Service">सेवा सुची</string>
     <string name="btn_Donate">दान</string>

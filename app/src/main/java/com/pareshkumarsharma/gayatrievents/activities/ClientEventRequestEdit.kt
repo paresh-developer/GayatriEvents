@@ -2,8 +2,6 @@ package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
 import android.content.DialogInterface
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ListView
@@ -13,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterClientRequest
 import com.pareshkumarsharma.gayatrievents.api.model.EventDisplayModel
-import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database

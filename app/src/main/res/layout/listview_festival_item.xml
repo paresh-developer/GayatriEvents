@@ -41,10 +41,10 @@
         </LinearLayout>
     <TextView
         android:textColor="@android:color/black"
-        android:padding="2dp"
+        android:padding="5dp"
         android:id="@+id/txt2OfListViewItem"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="hi"
         />

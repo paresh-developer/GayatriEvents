@@ -1,14 +1,14 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.pareshkumarsharma.gayatrievents.utilities.APICalls
-import com.pareshkumarsharma.gayatrievents.utilities.Database
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.UserTypeChangeRequestModel
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 internal class Setting : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

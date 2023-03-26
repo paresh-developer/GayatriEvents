@@ -39,7 +39,7 @@
         >
         <TextView
             android:id="@+id/txtEventDateStartEnd"
-            android:textSize="10dp"
+            android:textSize="13dp"
             android:textColor="#535353"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,8 +55,7 @@
             android:id="@+id/txtServiceDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="30dp"
-            android:textSize="12dp"
+            android:textSize="13dp"
             android:textColor="@color/black"
             android:text="Description\n123"
             />
@@ -71,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registerd On"
-            android:textSize="10dp"
+            android:textSize="13dp"
             android:textColor="#535353"
             />
         <TextView
@@ -94,9 +93,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Approval"
-            android:textSize="10dp"
+            android:textSize="15dp"
             android:textAlignment="center"
-            android:textColor="#535353"
             />
     </LinearLayout>
 </LinearLayout>

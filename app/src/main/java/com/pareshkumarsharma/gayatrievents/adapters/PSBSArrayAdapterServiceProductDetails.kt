@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
 internal class PSBSArrayAdapterServiceProductDetails(

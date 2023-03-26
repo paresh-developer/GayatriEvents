@@ -1,20 +1,20 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.pareshkumarsharma.gayatrievents.utilities.APICalls
-import com.pareshkumarsharma.gayatrievents.utilities.Database
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSFestivalArrayAdapter
-import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.panchang.MonthHindi
+import com.pareshkumarsharma.gayatrievents.panchang.PakshaHindi
+import com.pareshkumarsharma.gayatrievents.panchang.WeekDayHindi
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 
 internal class Panchang : AppCompatActivity() {
 
@@ -23,9 +23,9 @@ internal class Panchang : AppCompatActivity() {
         var downloadComplete = false
     }
 
-    lateinit var psbArrayAdadaper : PSBSArrayAdapter
-    lateinit var psbFestivalArrayAdadaper : PSBSFestivalArrayAdapter
-    lateinit var monthStr:String
+    lateinit var psbArrayAdadaper: PSBSArrayAdapter
+    lateinit var psbFestivalArrayAdadaper: PSBSFestivalArrayAdapter
+    lateinit var monthStr: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,28 +100,61 @@ internal class Panchang : AppCompatActivity() {
                             SimpleDateFormat("yyyy").format(Date()).toInt()
                         )
 
-                        val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+                        val monthInt =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString()
+                                .toInt()
 
-                        monthStr = Month.get(monthInt)
+                        monthStr =
+                            MonthHindi.get(monthInt)  + ", " + PakshaHindi.get(
+                                PanchangData.Rows[0][2].toInt()
+                            ) + " पक्ष"+ ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+                        val tithi_nd_paksh = PanchangData.Rows[0][1]
+                        val vikram_savat =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+                        val shak_savat =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+                        val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+                        val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+                        val chandroday =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+                        val chandrast =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+                        val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+                        val moonsign =
+                            PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
 
-                        findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+                        findViewById<TextView>(R.id.txtNavigation).text = monthStr
+                        findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+                        findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+                        findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+                        findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+                        findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+                        findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+                        findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+                        findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+                        findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
 
-                        psbArrayAdadaper = PSBSArrayAdapter(applicationContext,
-                            R.layout.listview_item
-                            ,PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+                        psbArrayAdadaper = PSBSArrayAdapter(
+                            applicationContext,
+                            R.layout.listview_item,
+                            PanchangData.Rows.toTypedArray(),
+                            PanchangData.Columns
+                        )
 
-                        psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,
-                            R.layout.listview_item
-                            ,FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
+                        psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(
+                            applicationContext,
+                            R.layout.listview_item,
+                            FestivalPanchangData.Rows.toTypedArray(),
+                            FestivalPanchangData.Columns
+                        )
 
                         listView.adapter = psbArrayAdadaper
                         listView_festival.adapter = psbFestivalArrayAdadaper
                     }
-                }
-                else{
+                } else {
                     downloadComplete = true
                     runOnUiThread {
-                        Toast.makeText(this,APICalls.lastCallMessage,Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, APICalls.lastCallMessage, Toast.LENGTH_LONG).show()
                     }
                 }
             }.start()
@@ -138,18 +171,47 @@ internal class Panchang : AppCompatActivity() {
                 SimpleDateFormat("yyyy").format(Date()).toInt()
             )
 
-            val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+            val monthInt =
+                PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = MonthHindi.get(monthInt)
+            monthStr =
+                MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
+                    PanchangData.Rows[0][2].toInt()
+                ) + " पक्ष"+ ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+            val tithi_nd_paksh = PanchangData.Rows[0][1]
+            val vikram_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+            val shak_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+            val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+            val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+            val chandroday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+            val chandrast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+            val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+            val moonsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr
+            findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+            findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+            findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+            findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+            findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+            findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+            findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+            findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+            findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
 
-            psbArrayAdadaper = PSBSArrayAdapter(applicationContext, R.layout.listview_item
-                ,PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+            psbArrayAdadaper = PSBSArrayAdapter(
+                applicationContext,
+                R.layout.listview_item,
+                PanchangData.Rows.toTypedArray(),
+                PanchangData.Columns
+            )
 
-            psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(applicationContext,
-                R.layout.listview_item
-                ,FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
+            psbFestivalArrayAdadaper = PSBSFestivalArrayAdapter(
+                applicationContext,
+                R.layout.listview_item,
+                FestivalPanchangData.Rows.toTypedArray(),
+                FestivalPanchangData.Columns
+            )
 
             listView.adapter = psbArrayAdadaper
             listView_festival.adapter = psbFestivalArrayAdadaper
@@ -183,7 +245,35 @@ internal class Panchang : AppCompatActivity() {
                 nmYear.value
             )
 
-            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+            val monthInt =
+                PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+
+            monthStr =
+                MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
+                    PanchangData.Rows[0][2].toInt()
+                ) + " पक्ष" + ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+            val tithi_nd_paksh = PanchangData.Rows[0][1]
+            val vikram_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+            val shak_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+            val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+            val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+            val chandroday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+            val chandrast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+            val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+            val moonsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
+
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr
+            findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+            findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+            findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+            findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+            findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+            findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+            findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+            findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+            findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
+
+            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(), PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
             listView.deferNotifyDataSetChanged()
         }
@@ -192,8 +282,8 @@ internal class Panchang : AppCompatActivity() {
             c.set(nmYear.value, i2 - 1, nmDay.value)
             calendar.date = c.time.time
             if (i2 == 2)
-                nmDay.maxValue = if(nmYear.value%4==0) 29 else 28
-            else if(i2 == 1 || i2 == 3 || i2 == 5 || i2 == 7 || i2 == 8 || i2 == 10 || i2 == 12)
+                nmDay.maxValue = if (nmYear.value % 4 == 0) 29 else 28
+            else if (i2 == 1 || i2 == 3 || i2 == 5 || i2 == 7 || i2 == 8 || i2 == 10 || i2 == 12)
                 nmDay.maxValue = 31
             else
                 nmDay.maxValue = 30
@@ -204,22 +294,48 @@ internal class Panchang : AppCompatActivity() {
                 nmYear.value
             )
 
-            val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+            val monthInt =
+                PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = MonthHindi.get(monthInt)
+            monthStr =
+                MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
+                    PanchangData.Rows[0][2].toInt()
+                ) + " पक्ष"+ ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+            val tithi_nd_paksh = PanchangData.Rows[0][1]
+            val vikram_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+            val shak_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+            val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+            val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+            val chandroday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+            val chandrast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+            val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+            val moonsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr
+            findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+            findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+            findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+            findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+            findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+            findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+            findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+            findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+            findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
+
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(c.time).toString(),
                 SimpleDateFormat("yyyy").format(c.time).toInt()
             )
 
-            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(), PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
             listView.deferNotifyDataSetChanged()
 
-            psbFestivalArrayAdadaper.UpdateData(FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
+            psbFestivalArrayAdadaper.UpdateData(
+                FestivalPanchangData.Rows.toTypedArray(),
+                FestivalPanchangData.Columns
+            )
             psbFestivalArrayAdadaper.notifyDataSetChanged()
             listView_festival.deferNotifyDataSetChanged()
         }
@@ -239,24 +355,52 @@ internal class Panchang : AppCompatActivity() {
                 i2
             )
 
-            val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+            val monthInt =
+                PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = MonthHindi.get(monthInt)
+            monthStr =
+                MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
+                    PanchangData.Rows[0][2].toInt()
+                ) + " पक्ष" + ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+            val tithi_nd_paksh = PanchangData.Rows[0][1]
+            val vikram_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+            val shak_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+            val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+            val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+            val chandroday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+            val chandrast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+            val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+            val moonsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr
+            findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+            findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+            findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+            findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+            findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+            findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+            findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+            findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+            findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
 
-            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(), PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
             listView.deferNotifyDataSetChanged()
 
-            psbFestivalArrayAdadaper.UpdateData(FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
+            psbFestivalArrayAdadaper.UpdateData(
+                FestivalPanchangData.Rows.toTypedArray(),
+                FestivalPanchangData.Columns
+            )
             psbFestivalArrayAdadaper.notifyDataSetChanged()
             listView_festival.deferNotifyDataSetChanged()
         }
 
-        calendar.setDate(System.currentTimeMillis())
+        calendar.date = System.currentTimeMillis()
         calendar.setOnDateChangeListener { calendarView, i, i2, i3 ->
-            c.set(i,i2,i3)
+            c.set(i, i2, i3)
+            nmYear.value = i
+            nmMonth.value = i2 + 1
+            nmDay.value = i3
             val PanchangData = Database.getPanchangOf(
                 SimpleDateFormat("dd-MM-yyyy").format(c.time),
                 i
@@ -267,17 +411,42 @@ internal class Panchang : AppCompatActivity() {
                 SimpleDateFormat("yyyy").format(c.time).toInt()
             )
 
-            val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
+            val monthInt =
+                PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = Month.get(monthInt)
+            monthStr =
+                MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
+                    PanchangData.Rows[0][2].toInt()
+                ) + " पक्ष" + ", " + WeekDayHindi.get(PanchangData.Rows[0][0].toInt())
+            val tithi_nd_paksh = PanchangData.Rows[0][1]
+            val vikram_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("VikramSamvat")]
+            val shak_savat = PanchangData.Rows[0][PanchangData.Columns.indexOf("ShakSamvat")]
+            val suryoday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
+            val suryast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
+            val chandroday = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonrise")]
+            val chandrast = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonset")]
+            val sunsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunsign")]
+            val moonsign = PanchangData.Rows[0][PanchangData.Columns.indexOf("Moonsign")]
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr
+            findViewById<TextView>(R.id.txt_thi_nd_paksha).text = tithi_nd_paksh
+            findViewById<TextView>(R.id.txt_panchang_v_s).text = " : " + vikram_savat
+            findViewById<TextView>(R.id.txt_panchang_s_s).text = " : " + shak_savat
+            findViewById<TextView>(R.id.txt_suryodhay).text = " : " + suryoday
+            findViewById<TextView>(R.id.txt_suryast).text = " : " + suryast
+            findViewById<TextView>(R.id.txt_chandrodhay).text = " : " + chandroday
+            findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
+            findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
+            findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
 
-            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
+            psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(), PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
             listView.deferNotifyDataSetChanged()
 
-            psbFestivalArrayAdadaper.UpdateData(FestivalPanchangData.Rows.toTypedArray(),FestivalPanchangData.Columns)
+            psbFestivalArrayAdadaper.UpdateData(
+                FestivalPanchangData.Rows.toTypedArray(),
+                FestivalPanchangData.Columns
+            )
             psbFestivalArrayAdadaper.notifyDataSetChanged()
             listView_festival.deferNotifyDataSetChanged()
         }
@@ -290,8 +459,7 @@ internal class Panchang : AppCompatActivity() {
                     if (countDot == 4) {
                         disStr = "पंचांग प्राप्त किया जा रहा है..."
                         countDot = 0
-                    }
-                    else
+                    } else
                         disStr = "पंचांग प्राप्त किया जा रहा है..." + ".".repeat(countDot)
                     runOnUiThread {
                         findViewById<TextView>(R.id.txtNavigation).text = disStr
@@ -299,7 +467,7 @@ internal class Panchang : AppCompatActivity() {
                     countDot++
                 }
                 runOnUiThread {
-                    findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
+                    findViewById<TextView>(R.id.txtNavigation).text = monthStr
                 }
             }.start()
     }

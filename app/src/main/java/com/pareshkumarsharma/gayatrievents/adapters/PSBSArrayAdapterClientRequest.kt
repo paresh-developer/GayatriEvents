@@ -1,17 +1,11 @@
 package com.pareshkumarsharma.gayatrievents.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
 internal class PSBSArrayAdapterClientRequest(
@@ -20,7 +14,7 @@ internal class PSBSArrayAdapterClientRequest(
     var data: List<List<String>>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
-    public var SelectedPosition = -1
+    var SelectedPosition = -1
     override fun isEmpty(): Boolean {
         return data.isEmpty()
     }
@@ -74,11 +68,11 @@ internal class PSBSArrayAdapterClientRequest(
             txtEventRegisteredOn?.text = "Requested On :- "+data[position][16].replace('T',' ')
 
             if((data[position][13]==null || data[position][13].startsWith("000")) && data[position][12]=="0")
-                txtApproval?.setText("- Pending Approval - "+data[position][17])
+                txtApproval?.text = "- Pending Approval - "+data[position][17]
             else if(data[position][13]!=null && data[position][12]=="0")
-                txtApproval?.setText("- Rejected - "+data[position][17])
+                txtApproval?.text = "- Rejected - "+data[position][17]
             else if(data[position][13]!=null && data[position][12]=="1")
-                txtApproval?.setText("- Approved - "+data[position][17])
+                txtApproval?.text = "- Approved - "+data[position][17]
 
             var sum_price = 0.0
             for (pri in data[position][11].split(',')){

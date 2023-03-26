@@ -27,6 +27,7 @@ internal class APICalls {
             HOST = hostPath
         }
         internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
+//        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"
@@ -95,9 +96,9 @@ internal class APICalls {
 
             val url = URL(HOST+LOGIN_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             urlConnection.doOutput = true
 
@@ -125,7 +126,7 @@ internal class APICalls {
                                 ),
                                 Pair(
                                     "expires",
-                                    cks?.get(1)!!.split('=')[1]
+                                    cks.get(1)!!.split('=')[1]
                                 )
                             )
                         }
@@ -166,10 +167,10 @@ internal class APICalls {
 
             val url = URL(HOST+REGISTER_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Accept", "*/*");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+            urlConnection.setRequestProperty("Accept", "*/*")
             urlConnection.doOutput = true
 
             try {
@@ -211,7 +212,7 @@ internal class APICalls {
 
             val url = URL( HOST + PANCHANG_DOWNLOAD_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET")
+            urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
 
             if (cookies.size > 0)
@@ -255,9 +256,9 @@ internal class APICalls {
 
             val url = URL( HOST + PASSWORD_RESET_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             urlConnection.doOutput = true
 
@@ -298,9 +299,9 @@ internal class APICalls {
 
             val url = URL( HOST + PASSWORD_RESET)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             urlConnection.doOutput = true
 
@@ -341,9 +342,9 @@ internal class APICalls {
 
             val url = URL( HOST + CHECK_MESSAGER_UPDATE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -392,7 +393,7 @@ internal class APICalls {
 
             val url = URL( HOST + CHECK_MESSAGER_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET")
+            urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
 
             if (cookies.size > 0)
@@ -435,9 +436,9 @@ internal class APICalls {
 
             val url = URL( HOST + USER_TYPE_CHANGE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -489,9 +490,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -543,9 +544,9 @@ internal class APICalls {
 
             val url = URL( HOST + EVENT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -597,9 +598,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -651,9 +652,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_PRODUCT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -706,9 +707,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_PRODUCT_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -761,9 +762,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -818,9 +819,9 @@ internal class APICalls {
 
             val url = URL( HOST + SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -875,9 +876,9 @@ internal class APICalls {
 
             val url = URL( HOST + VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -928,9 +929,9 @@ internal class APICalls {
 
             val url = URL( HOST + VIEW_EXISTING_SERVICE_FOR_EVENTS)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -982,9 +983,9 @@ internal class APICalls {
             val url =
                 URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
                     "Cookie",
@@ -1035,9 +1036,9 @@ internal class APICalls {
             val url =
                 URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
                     "Cookie",
@@ -1087,9 +1088,9 @@ internal class APICalls {
 
             val url = URL( HOST + VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -1140,9 +1141,9 @@ internal class APICalls {
 
             val url = URL( HOST + CLIENT_EVENT_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -1193,9 +1194,9 @@ internal class APICalls {
 
             val url = URL( HOST + CLIENT_EVENT_REQUEST_RESPONSE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -1248,9 +1249,9 @@ internal class APICalls {
 
             val url = URL( HOST + CLIENT_EVENT_DELETE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
 
             if (cookies.size > 0)
                 urlConnection.setRequestProperty(
@@ -1439,7 +1440,7 @@ internal class APICalls {
                 _Cipher.init(Cipher.DECRYPT_MODE, SecretKey, ivspec)
                 var DecodedMessage = ByteArray(0)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    DecodedMessage = java.util.Base64.getDecoder().decode(str);
+                    DecodedMessage = java.util.Base64.getDecoder().decode(str)
                 } else {
                     DecodedMessage = android.util.Base64.decode(str, str.length)
                 }

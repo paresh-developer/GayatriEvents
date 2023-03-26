@@ -18,7 +18,7 @@
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Events"
+            android:text="@string/event_page"
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_weight="20"
@@ -32,9 +32,8 @@
             android:layout_height="wrap_content"
             android:minWidth="150dp"
             android:layout_weight="1"
-            android:text="Create"
-            android:textSize="15dp"
-
+            android:text="@string/btn_Create_event"
+            android:textSize="20dp"
             />
 
     </LinearLayout>

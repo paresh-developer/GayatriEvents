@@ -1,11 +1,11 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.utilities.PaymentManager
 
@@ -39,9 +39,11 @@ class Donate : AppCompatActivity() {
                         1 -> PaymentManager.Paytm(thisActivity)
                         2 -> PaymentManager.PhonePe(thisActivity)
                     }
+                    btn_pay.isEnabled = true
                 })
             alert.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i ->
                 dialogInterface.dismiss()
+                btn_pay.isEnabled = true
             })
             alert.show()
         }

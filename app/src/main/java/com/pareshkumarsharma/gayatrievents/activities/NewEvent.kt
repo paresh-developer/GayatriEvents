@@ -1,15 +1,12 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.EventRegistrationModel
-import com.pareshkumarsharma.gayatrievents.api.model.ServiceRegistrationRequestModel
-import com.pareshkumarsharma.gayatrievents.api.model.ServiceUpdationRequestModel
-import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import java.text.SimpleDateFormat
@@ -57,12 +54,12 @@ internal class NewEvent : AppCompatActivity() {
         val rd_group = findViewById<RadioGroup>(R.id.radioGroup)
         rd_group.setOnCheckedChangeListener { radioGroup, i ->
             if(rdo_Date_Fixed.isChecked){
-                findViewById<TextView>(R.id.txtEventStartDateLabel).setText("Select Event Date: ")
+                findViewById<TextView>(R.id.txtEventStartDateLabel).text = "तारीख पसंद करे: "
                 findViewById<TextView>(R.id.txtEventEndDateLabel).visibility = View.GONE
                 findViewById<LinearLayout>(R.id.lytDateEnd).visibility = View.GONE
             }
             else if(rdo_Date_Not_Fixed.isChecked){
-                findViewById<TextView>(R.id.txtEventStartDateLabel).setText("Select Event Date Range From: ")
+                findViewById<TextView>(R.id.txtEventStartDateLabel).text = "तारीख की प्रारम्भिक सीमा: "
                 findViewById<TextView>(R.id.txtEventEndDateLabel).visibility = View.VISIBLE
                 findViewById<LinearLayout>(R.id.lytDateEnd).visibility = View.VISIBLE
             }
@@ -160,26 +157,31 @@ internal class NewEvent : AppCompatActivity() {
 //            startActivity(Intent(this,ServiceProductForEvent::class.java))
 //        }
         findViewById<Button>(R.id.btn_popup_select_service_product).setOnClickListener {
-            ServiceProductForEvent.SelectedServiceId = SelectedServiceIds
-            ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
-            startActivity(Intent(this,ServiceProductForEvent::class.java))
+            if(SelectedServiceIds!= null && SelectedServiceIds.size>0) {
+                ServiceProductForEvent.SelectedServiceId = SelectedServiceIds
+                ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
+                startActivity(Intent(this, ServiceProductForEvent::class.java))
+            }
+            else{
+                Toast.makeText(this,"उपसेवा के लीये प्रथम सेवा पसंद करना अनीवार्य है।",Toast.LENGTH_LONG).show()
+            }
         }
 
         if(Operation=='U'){
             findViewById<EditText>(R.id.eventName).setText(Event_Name)
             findViewById<EditText>(R.id.eventDesc).setText(Event_Details)
             if(Event_Date_Fixed)
-                findViewById<RadioButton>(R.id.chkEventDateFixed).setChecked(true)
+                findViewById<RadioButton>(R.id.chkEventDateFixed).isChecked = true
             else
-                findViewById<RadioButton>(R.id.chkEventDateNotFixed).setChecked(true)
+                findViewById<RadioButton>(R.id.chkEventDateNotFixed).isChecked = true
             findViewById<NumberPicker>(R.id.nmDay_Start).value = Event_Date_Start.substring(8,10).toInt()
             findViewById<NumberPicker>(R.id.nmMonth_Start).value = Event_Date_Start.substring(5,7).toInt()
             findViewById<NumberPicker>(R.id.nmYear_Start).value = Event_Date_Start.substring(0,4).toInt()
             findViewById<NumberPicker>(R.id.nmDay_End).value = Event_Date_End.substring(8,10).toInt()
             findViewById<NumberPicker>(R.id.nmMonth_End).value = Event_Date_End.substring(5,7).toInt()
             findViewById<NumberPicker>(R.id.nmYear_End).value = Event_Date_End.substring(0,4).toInt()
-            findViewById<TextView>(R.id.txt_price).setText(""+Event_Price)
-            findViewById<Button>(R.id.btnSaveNewEvent).setText("Update")
+            findViewById<TextView>(R.id.txt_price).text = ""+Event_Price
+            findViewById<Button>(R.id.btnSaveNewEvent).text = "Update"
             Selected_Service_Global_Id = Service_GlobalId
             Selected_Service_Product_Global_Id = ServiceProduct_GlobalId
             val tbl = Database.query("Select Title from Service where Id = $Service_Id")
@@ -189,7 +191,7 @@ internal class NewEvent : AppCompatActivity() {
             if(tbl1.Rows.size>0 && !tbl1.Columns.contains("Error"))
             {
                 findViewById<EditText>(R.id.selectedServiceProduct).setText(tbl1.Rows[0][0])
-                findViewById<TextView>(R.id.txt_price).setText(tbl1.Rows[0][1])
+                findViewById<TextView>(R.id.txt_price).text = tbl1.Rows[0][1]
             }
         }
 
@@ -309,10 +311,10 @@ internal class NewEvent : AppCompatActivity() {
             for (p in ServiceProductForEvent.SelectedProductPrice){
                 sumPrice += p.toDouble()
             }
-            findViewById<TextView>(R.id.txt_price).setText(ServiceProductForEvent.SelectedProductPrice.joinToString("\n")+"\n---------\nTotal: "+Math.ceil(sumPrice).toInt())
+            findViewById<TextView>(R.id.txt_price).text = ServiceProductForEvent.SelectedProductPrice.joinToString("\n")+"\n---------\nTotal: "+Math.ceil(sumPrice).toInt()
         }
         else
-            findViewById<TextView>(R.id.txt_price).setText("0.0")
+            findViewById<TextView>(R.id.txt_price).text = "0.0"
     }
 
     override fun onDestroy() {

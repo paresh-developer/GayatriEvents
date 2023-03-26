@@ -4,12 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.pareshkumarsharma.gayatrievents.activities.MainActivity
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
-import com.pareshkumarsharma.gayatrievents.utilities.Database
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.TextView
 
 
 internal class PSBSArrayAdapterServiceProductForEvent(
@@ -119,7 +116,7 @@ internal class PSBSArrayAdapterServiceProductForEvent(
             txtDesc?.text = data[position][3]
 //            txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
 //            txtPrice?.text = "Price: ₹ "+data[position][4].toFloat()
-            txtOwnerAt?.text = "Price: ₹ "+data[position][4].toFloat()
+            txtOwnerAt?.text = "मुल्य: ₹ "+data[position][4].toFloat()
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

@@ -74,7 +74,11 @@ internal class Database {
 
         internal fun checkDatabaseSetup() {
             try {
-                Toast.makeText(activity.applicationContext,"Working On SETUP Please wait...",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity.applicationContext,
+                    "Working On SETUP Please wait...",
+                    Toast.LENGTH_SHORT
+                ).show()
                 openConnection()
                 // some table exists
                 if (!checkTableExists("USERS")) {
@@ -139,7 +143,7 @@ internal class Database {
                                 "City int," +
                                 "Approved int," +
                                 "ApprovalTime datetime," +
-                                "RequestStatus int"+
+                                "RequestStatus int" +
                                 ");"
                     )
                 }
@@ -155,7 +159,7 @@ internal class Database {
                                 "Title text," +
                                 "SmallDesc text," +
                                 "Price Numeric," +
-                                "CreationDate datetime"+
+                                "CreationDate datetime" +
                                 ");"
                     )
                 }
@@ -171,7 +175,7 @@ internal class Database {
                                 "Title text," +
                                 "SmallDesc text," +
                                 "Type Integer," +
-                                "CreationDate datetime"+
+                                "CreationDate datetime" +
                                 ");"
                     )
                 }
@@ -281,10 +285,15 @@ internal class Database {
                                 ");"
                     )
                 }
-                Toast.makeText(activity.applicationContext,"SETUP Completed",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity.applicationContext, "SETUP Completed", Toast.LENGTH_LONG)
+                    .show()
             } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
-                Toast.makeText(activity.applicationContext,"Error : "+ex.message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity.applicationContext,
+                    "Error : " + ex.message,
+                    Toast.LENGTH_SHORT
+                ).show()
             } finally {
                 closeConnection()
             }
@@ -301,10 +310,15 @@ internal class Database {
             }
         }
 
-        internal fun updateTo(tableName: String, values: ContentValues, whereStr: String,whereArg:Array<String>) {
+        internal fun updateTo(
+            tableName: String,
+            values: ContentValues,
+            whereStr: String,
+            whereArg: Array<String>
+        ) {
             try {
                 openConnection()
-                sqlite.update(tableName, values,whereStr,whereArg)
+                sqlite.update(tableName, values, whereStr, whereArg)
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -335,13 +349,12 @@ internal class Database {
                             adikmas = rCnt; break
                         }
                     }
-                    if(adikmas == -1 || adikmas == tmpTbl.Rows.size - 1){
-                         adikmas = tmpTbl.Rows.first()[0].toString().toInt()
+                    if (adikmas == -1 || adikmas == tmpTbl.Rows.size - 1) {
+                        adikmas = tmpTbl.Rows.first()[0].toString().toInt()
+                    } else {
+                        adikmas = tmpTbl.Rows[adikmas + 1][0].toString().toInt()
                     }
-                    else{
-                        adikmas = tmpTbl.Rows[adikmas+1][0].toString().toInt()
-                    }
-                    tbl.Rows[0][tbl.Columns.indexOf("AmantMonth")] = (adikmas+12).toString()
+                    tbl.Rows[0][tbl.Columns.indexOf("AmantMonth")] = (adikmas + 12).toString()
                 }
 
                 c.close()
@@ -351,7 +364,11 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
             return tbl
         }
 
@@ -372,7 +389,11 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
             return tbl
         }
 
@@ -389,7 +410,11 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
             return tbl
         }
 
@@ -398,8 +423,15 @@ internal class Database {
             try {
                 openConnection(1)
 //                val c = sqlite.query("Cities","Select id,name,state_code,country_code from Cities where country_code='IN' and state_code='GJ' order by id", null)
-                val c = sqlite.query("Cities", listOf("id","name","state_code","country_code").toTypedArray(),"country_code=? and state_code=?",
-                    listOf("IN","GJ").toTypedArray(),null,null,"id")
+                val c = sqlite.query(
+                    "Cities",
+                    listOf("id", "cname", "state_code", "country_code").toTypedArray(),
+                    "country_code=? and state_code=?",
+                    listOf("IN", "GJ").toTypedArray(),
+                    null,
+                    null,
+                    "id"
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -408,28 +440,42 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
             return tbl
         }
 
         internal fun getEvents(): DataTable {
-            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()),"")
+            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()), "")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events", null)
+                val c = sqlite.rawQuery(
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
                 tbl.Columns.add("ProductName")
-                for(row in tbl.Rows){
-                    val c1 = sqlite.rawQuery("Select Title from Service_Product Where GlobalId in ('${row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(",","','")}')", null)
+                for (row in tbl.Rows) {
+                    val c1 = sqlite.rawQuery(
+                        "Select Title from Service_Product Where GlobalId in ('${
+                            row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(
+                                ",",
+                                "','"
+                            )
+                        }')", null
+                    )
                     val tbl_tmp = getDataTableFromCursor(c1)
                     c1.close()
                     row.add("")
-                    for (r1 in tbl_tmp.Rows)
-                    {
-                        row[tbl.Columns.size-1] += r1[0] +","
+                    for (r1 in tbl_tmp.Rows) {
+                        row[tbl.Columns.size - 1] += r1[0] + ","
                     }
-                    row[tbl.Columns.size-1] = row[tbl.Columns.size-1].substring(0,row[tbl.Columns.size-1].length-1)
+                    row[tbl.Columns.size - 1] =
+                        row[tbl.Columns.size - 1].substring(0, row[tbl.Columns.size - 1].length - 1)
                 }
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
@@ -440,23 +486,33 @@ internal class Database {
         }
 
         internal fun getClientRequests(): DataTable {
-            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()),"")
+            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()), "")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request", null)
+                val c = sqlite.rawQuery(
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
                 tbl.Columns.add("ProductName")
-                for(row in tbl.Rows){
-                    val c1 = sqlite.rawQuery("Select Title from Service_Product Where GlobalId in ('${row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(",","','")}')", null)
+                for (row in tbl.Rows) {
+                    val c1 = sqlite.rawQuery(
+                        "Select Title from Service_Product Where GlobalId in ('${
+                            row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(
+                                ",",
+                                "','"
+                            )
+                        }')", null
+                    )
                     val tbl_tmp = getDataTableFromCursor(c1)
                     c1.close()
                     row.add("")
-                    for (r1 in tbl_tmp.Rows)
-                    {
-                        row[tbl.Columns.size-1] += r1[0] +","
+                    for (r1 in tbl_tmp.Rows) {
+                        row[tbl.Columns.size - 1] += r1[0] + ","
                     }
-                    row[tbl.Columns.size-1] = row[tbl.Columns.size-1].substring(0,row[tbl.Columns.size-1].length-1)
+                    row[tbl.Columns.size - 1] =
+                        row[tbl.Columns.size - 1].substring(0, row[tbl.Columns.size - 1].length - 1)
                 }
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
@@ -470,7 +526,10 @@ internal class Database {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service", null)
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -479,11 +538,15 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
-            else
-            {
-                for (row in tbl.Rows){
-                    row[tbl.Columns.indexOf("City")] = getCityOf(row[tbl.Columns.indexOf("City")].toInt())
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
+            else {
+                for (row in tbl.Rows) {
+                    row[tbl.Columns.indexOf("City")] =
+                        getCityOf(row[tbl.Columns.indexOf("City")].toInt())
                 }
             }
             return tbl
@@ -493,7 +556,10 @@ internal class Database {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service Where Approved = 1 and RequestStatus = 1", null)
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service Where Approved = 1 and RequestStatus = 1",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -502,21 +568,28 @@ internal class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
-            else
-            {
-                for (row in tbl.Rows){
-                    row[tbl.Columns.indexOf("City")] = getCityOf(row[tbl.Columns.indexOf("City")].toInt())
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
+            else {
+                for (row in tbl.Rows) {
+                    row[tbl.Columns.indexOf("City")] =
+                        getCityOf(row[tbl.Columns.indexOf("City")].toInt())
                 }
             }
             return tbl
         }
 
-        internal fun getServicesProduct(serviceGlobalId:String): DataTable {
+        internal fun getServicesProduct(serviceGlobalId: String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId='$serviceGlobalId'", null)
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId='$serviceGlobalId'",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -524,17 +597,28 @@ internal class Database {
             } finally {
                 closeConnection()
             }
-            if(tbl==null){
-                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
             }
             return tbl
         }
 
-        internal fun getServicesProductByServiceList(serviceGlobalId:String): DataTable {
+        internal fun getServicesProductByServiceList(serviceGlobalId: String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId in ('${serviceGlobalId.replace(",","', '")}')", null)
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Price,CreationDate,ServiceId,ServiceGlobalId from Service_Product Where ServiceGlobalId in ('${
+                        serviceGlobalId.replace(
+                            ",",
+                            "', '"
+                        )
+                    }')", null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -542,17 +626,31 @@ internal class Database {
             } finally {
                 closeConnection()
             }
-            if(tbl==null){
-                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
             }
             return tbl
         }
 
-        internal fun getServicesProductFilterByServiceList(serviceGlobalId:String,productGlobalId:String): DataTable {
+        internal fun getServicesProductFilterByServiceList(
+            serviceGlobalId: String,
+            productGlobalId: String
+        ): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select GlobalId,Title,Price from Service_Product Where ServiceGlobalId in ('${serviceGlobalId.replace(",","', '")}') and GlobalId in ('${productGlobalId.replace(",","', '")}')", null)
+                val c = sqlite.rawQuery(
+                    "Select GlobalId,Title,Price from Service_Product Where ServiceGlobalId in ('${
+                        serviceGlobalId.replace(
+                            ",",
+                            "', '"
+                        )
+                    }') and GlobalId in ('${productGlobalId.replace(",", "', '")}')", null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -560,17 +658,24 @@ internal class Database {
             } finally {
                 closeConnection()
             }
-            if(tbl==null){
-                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
             }
             return tbl
         }
 
-        internal fun getServicesProductDetails(serviceProductGlobalId:String): DataTable {
+        internal fun getServicesProductDetails(serviceProductGlobalId: String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductGlobalId='$serviceProductGlobalId'", null)
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductGlobalId='$serviceProductGlobalId'",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -578,17 +683,24 @@ internal class Database {
             } finally {
                 closeConnection()
             }
-            if(tbl==null){
-                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
             }
             return tbl
         }
 
-        internal fun getCityOf(id:Int):String{
+        internal fun getCityOf(id: Int): String {
             var tbl: DataTable? = null
             try {
                 openConnection(1)
-                val c = sqlite.rawQuery("Select name || ', ' || state_code || ', ' || country_code  from cities where id = $id", null)
+                val c = sqlite.rawQuery(
+                    "Select cname || ', ' || state_code || ', ' || country_code  from cities where id = $id",
+                    null
+                )
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
@@ -599,7 +711,11 @@ internal class Database {
 
             var CityName = ""
             if (tbl == null)
-                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
             else
                 CityName = tbl.Rows[0][0]
 
@@ -615,14 +731,21 @@ internal class Database {
                 columns.add(col)
             while (c.moveToNext()) {
                 val data = ArrayList<String>()
-                for (i in 0..columns.size - 1)
-                    data.add(c.getString(i))
+                for (i in 0..columns.size - 1) {
+                    if (c.getString(i) != null)
+                        data.add(
+                            c.getString(i).replace("पी एम", "PM").replace("ए एम", "AM")
+                                .replace("\\", "")
+                        )
+                    else
+                        data.add(c.getString(i))
+                }
                 row.add(data)
             }
             return DataTable(columns, row, "")
         }
 
-        internal fun getRowCount(tbl:String,col:String,con:String): Int{
+        internal fun getRowCount(tbl: String, col: String, con: String): Int {
             var rowCount = -1
             try {
                 openConnection()
@@ -638,7 +761,7 @@ internal class Database {
             return rowCount
         }
 
-        internal fun getRowCount(tbl:String,col:String,con:Int): Int{
+        internal fun getRowCount(tbl: String, col: String, con: Int): Int {
             var rowCount = 0
             try {
                 openConnection()

@@ -22,12 +22,12 @@
         <TextView
             android:textColor="@color/black"
             android:id="@+id/txtNavigation"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/main_page"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_weight="20"
+            android:layout_weight="1"
             android:layout_margin="5sp"
             android:gravity="center"
             />
@@ -36,11 +36,9 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="150sp"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:text="@string/btn_Logout"
-            android:textSize="15sp"
-
+            android:textSize="20sp"
             />
 
     </LinearLayout>
@@ -75,10 +73,10 @@
                 android:textSize="25sp"
                 />
             <Button
-                android:id="@+id/btnEvent"
-                android:layout_width="130sp"
+                android:id="@+id/btnMuhurat"
+                android:layout_width="140sp"
                 android:layout_height="60sp"
-                android:text="@string/btn_Event"
+                android:text="@string/btn_Muhurat"
                 android:layout_margin="10sp"
                 android:textSize="25sp"
                 />
@@ -88,6 +86,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+            <Button
+                android:id="@+id/btnEvent"
+                android:layout_width="130sp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Event"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
+                />
             <Button
                 android:id="@+id/btnService"
                 android:layout_width="140sp"
@@ -96,6 +102,12 @@
                 android:layout_margin="10sp"
                 android:textSize="25sp"
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
             <Button
                 android:id="@+id/btnSaleRequests"
                 android:layout_width="wrap_content"
@@ -104,16 +116,10 @@
                 android:layout_margin="10sp"
                 android:textSize="25sp"
                 />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
             <Button
                 android:id="@+id/btnDonate"
-                android:layout_width="140sp"
-                android:layout_height="60sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/btn_Donate"
                 android:layout_margin="10sp"
                 android:textSize="25sp"

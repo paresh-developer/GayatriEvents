@@ -7,12 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import android.widget.RadioButton
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
 internal class PSBSArrayAdapterServiceForEvent(
@@ -21,7 +16,7 @@ internal class PSBSArrayAdapterServiceForEvent(
     var data: List<List<String>>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
-    public var SelectedPosition = -1
+    var SelectedPosition = -1
     var Selected_Ids = mutableListOf<String>()
     val Selected_Name = mutableListOf<String>()
     override fun isEmpty(): Boolean {
@@ -87,22 +82,22 @@ internal class PSBSArrayAdapterServiceForEvent(
         try {
             txtTitle?.text = data[position][2]
             txtDesc?.text = data[position][3]
-            txtOwner?.text = "By: " + data[position][4]
+            txtOwner?.text = "प्रकाशक : " + data[position][4]
             var dtime = ""
             if (data[position][9].toInt() == 1) {
-                dtime = " Available From " + data[position][5].replace('T', ' ')
+                dtime = " उपलब्ध हैः " + data[position][5].replace('T', ' ').substring(0,10) + " से"
             } else {
                 if (data[position][10].toInt() == 1) {
                     txtApprov?.setTextColor(Color.RED)
-                    dtime = " Rejected"
+                    dtime = " अस्वीकार्य"
                 } else {
                     txtApprov?.setTextColor(Color.BLUE)
-                    dtime = " Pending"
+                    dtime = " अपुर्ण"
                 }
             }
             txtApprov?.text = " " + dtime
-            txtType?.text = "Type: " + data[position][6]
-            txtCity?.text = " City: " + data[position][7]
+            txtType?.text = " प्रकार: " + data[position][6]
+            txtCity?.text = " शहर: " + data[position][7]
         } catch (Ex: Exception) {
             txtTitle?.text = "Error"
             txtDesc?.text = "Error Message: " + Ex.message

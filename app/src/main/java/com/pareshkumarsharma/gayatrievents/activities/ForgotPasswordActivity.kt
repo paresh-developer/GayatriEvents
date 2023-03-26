@@ -1,13 +1,13 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import com.pareshkumarsharma.gayatrievents.utilities.APICalls
-import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
+import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 
 internal class ForgotPasswordActivity : AppCompatActivity() {
 

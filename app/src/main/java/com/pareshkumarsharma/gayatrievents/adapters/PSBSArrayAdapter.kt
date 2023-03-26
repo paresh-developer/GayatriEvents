@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.panchang.*
 import com.pareshkumarsharma.gayatrievents.panchang.MonthHindi
 import com.pareshkumarsharma.gayatrievents.panchang.PakshaHindi
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
+import com.pareshkumarsharma.gayatrievents.panchang.WeekDayHindi
 
 
 internal class PSBSArrayAdapter(
@@ -60,28 +59,28 @@ internal class PSBSArrayAdapter(
             txt2?.text = "no data"
 
         when(colNames[position]){
-            "Tithi" -> txt1?.text = "તિથી : "
-            "Weekday" -> txt1?.text = "વાર : "
-            "Paksha" -> txt1?.text = "પક્ષ : "
-            "AmantMonth" -> txt1?.text = "મહિનો : "
-            "Festivals"-> txt1?.text = "તહેવાર : "
-            "Sunrise" -> txt1?.text = "સુર્યોદય : "
-            "Sunset" -> txt1?.text = "સુર્યાસ્ત : "
-            "Nakshatra" -> txt1?.text = "નક્ષત્ર : "
-            "Moonsign" -> txt1?.text = "ચંદ્ર રાશી : "
-            "Sunsign" -> txt1?.text = "સુર્ય રાશી : "
-            "Yoga" -> txt1?.text = "યોગ : "
-            "Karan" -> txt1?.text = "કરણ : "
-            "Moonrise" -> txt1?.text = "ચંદ્રોદય : "
-            "Moonset" -> txt1?.text = "ચંદ્ર અસ્ત : "
-            "VikramSamvat" -> txt1?.text = "વિક્રમ સંવત : "
-            "ShakSamvat" -> txt1?.text = "શક સંવત : "
+            "Tithi" -> txt1?.text = "तिथी : "
+            "Weekday" -> txt1?.text = "वार : "
+            "Paksha" -> txt1?.text = "पक्ष : "
+            "AmantMonth" -> txt1?.text = "महिना : "
+            "Festivals"-> txt1?.text = "तहेवार : "
+            "Sunrise" -> txt1?.text = "सुर्योदय : "
+            "Sunset" -> txt1?.text = "सुर्यास्त : "
+            "Nakshatra" -> txt1?.text = "नक्षत्र: "
+            "Moonsign" -> txt1?.text = "चंद्र राशी: "
+            "Sunsign" -> txt1?.text = "सुर्य राशी : "
+            "Yoga" -> txt1?.text = "योग : "
+            "Karan" -> txt1?.text = "करण : "
+            "Moonrise" -> txt1?.text = "चंद्रोदय : "
+            "Moonset" -> txt1?.text = "चंद्रास्त : "
+            "VikramSamvat" -> txt1?.text = "विक्रम संवत : "
+            "ShakSamvat" -> txt1?.text = "शक संवत : "
         }
 
         when (colNames[position]) {
             "Paksha" -> txt2?.text = PakshaHindi.get(txt2?.text.toString().toInt())
             "AmantMonth" -> txt2?.text = MonthHindi.get(txt2?.text.toString().toInt())
-            "Weekday" -> txt2?.text = WeekDay.get(txt2?.text.toString().toInt())
+            "Weekday" -> txt2?.text = WeekDayHindi.get(txt2?.text.toString().toInt())
             "Festivals" -> txt2?.text = txt2?.text.toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("//","")
         }
 

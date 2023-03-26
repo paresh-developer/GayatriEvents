@@ -83,7 +83,7 @@ class PaymentManager {
         }
 
         private fun appInstalledOrNot(activity: Activity,uri: String): Boolean {
-            val pm: PackageManager = activity.getPackageManager()
+            val pm: PackageManager = activity.packageManager
             try {
                 pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
                 return true

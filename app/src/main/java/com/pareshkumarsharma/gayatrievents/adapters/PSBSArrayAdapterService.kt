@@ -6,12 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
-import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
 internal class PSBSArrayAdapterService(
@@ -20,7 +15,7 @@ internal class PSBSArrayAdapterService(
     var data: List<List<String>>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
-    public var SelectedPosition = -1
+    var SelectedPosition = -1
     override fun isEmpty(): Boolean {
         return data.isEmpty()
     }

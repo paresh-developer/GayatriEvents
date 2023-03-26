@@ -1,12 +1,14 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailsRegistrationModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailsUpdationModel
-import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductRegistrationModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 

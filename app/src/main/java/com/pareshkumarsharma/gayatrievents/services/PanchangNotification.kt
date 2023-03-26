@@ -8,10 +8,8 @@ import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
 import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.activities.MainActivity
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 internal class PanchangNotification : Service() {
@@ -121,7 +119,7 @@ internal class PanchangNotification : Service() {
                 ))
             n.setContentTitle(title)
             n.setContentText(message)
-            n.setStyle(Notification.BigTextStyle())
+            n.style = Notification.BigTextStyle()
             notificationManager.notify(
                 PanchangNotification.notificationId++,
                 n.build()

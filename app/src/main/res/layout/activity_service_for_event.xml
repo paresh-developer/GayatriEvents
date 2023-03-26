@@ -18,7 +18,7 @@
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Services"
+            android:text="सेवाए"
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_weight="20"
@@ -32,8 +32,8 @@
             android:layout_height="wrap_content"
             android:minWidth="150dp"
             android:layout_weight="1"
-            android:text="Save"
-            android:textSize="15dp"
+            android:text="दर्ज करें"
+            android:textSize="20dp"
 
             />
 

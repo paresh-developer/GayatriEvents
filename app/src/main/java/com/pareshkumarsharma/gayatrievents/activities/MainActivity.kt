@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -22,7 +21,6 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.services.PanchangNotification
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
-import com.pareshkumarsharma.gayatrievents.utilities.PaymentManager
 
 
 internal class MainActivity : AppCompatActivity() {
@@ -132,7 +130,7 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnDonate).setOnClickListener {
-            startActivity(Intent(this,Donate::class.java))
+            startActivity(Intent(this, Donate::class.java))
         }
 
         RefreshServiceData()
@@ -141,41 +139,73 @@ internal class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-            ||
-            ContextCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(
-                    listOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
-                    10001
-                )
-            }
-        }
-        else{
-            val file_external = Environment.getExternalStorageDirectory()
-            val absolutePath = file_external.absolutePath
-            val apiFile = java.io.File(absolutePath + "/apiUrl.txt")
-            if (apiFile.exists()) {
-                val data_url_api = apiFile.readText()
-                if(data_url_api.trim().length>0)
-                    APICalls.updatePath(data_url_api)
-            }
-        }
+//        var flag_read = false
+//        var flag_write = false
+//        var flag_manage = false
+//
+//        if (ContextCompat.checkSelfPermission(
+//                applicationContext,
+//                Manifest.permission.READ_EXTERNAL_STORAGE
+//            ) == PackageManager.PERMISSION_GRANTED
+//        )
+//            flag_read = true
+//        if (ContextCompat.checkSelfPermission(
+//                applicationContext,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE
+//            ) == PackageManager.PERMISSION_GRANTED
+//        )
+//            flag_write = true
+//        if (ContextCompat.checkSelfPermission(
+//                applicationContext,
+//                Manifest.permission.MANAGE_EXTERNAL_STORAGE
+//            ) == PackageManager.PERMISSION_GRANTED
+//        )
+//            flag_manage = true
+//        if (!flag_read
+//            ||
+//            !flag_write
+//            ||
+//            !flag_manage
+//        ) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                if (!flag_read) {
+//                    requestPermissions(
+//                        listOf(Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray(),
+//                        10001
+//                    )
+//                }
+//                if (!flag_write) {
+//                    requestPermissions(
+//                        listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
+//                        10001
+//                    )
+//                }
+//                if (!flag_manage) {
+//                    requestPermissions(
+//                        listOf(
+//                            Manifest.permission.MANAGE_EXTERNAL_STORAGE
+//                        ).toTypedArray(),
+//                        10001
+//                    )
+//                }
+//            }
+//        } else {
+//            val file_external = Environment.getExternalStorageDirectory()
+//            val absolutePath = file_external.absolutePath
+//            val apiFile = java.io.File(absolutePath + "/apiUrl.txt")
+//            if (apiFile.exists()) {
+//                val data_url_api = apiFile.readText()
+//                if (data_url_api.trim().length > 0)
+//                    APICalls.updatePath(data_url_api)
+//            }
+//        }
 
         if (IsLoginDone != 1) {
             var snakmsg = ""
             if (IsLoginDone == 0) {
                 snakmsg = "સ્વાગત છે! 😎"
                 IsLoginDone = 100
-            }
-            else if (IsLoginDone == 2) {
+            } else if (IsLoginDone == 2) {
                 snakmsg = "પ્રવેશ થયું!...👍"
                 txtHellow.text = "નમસ્તે! $UserName"
                 IsLoginDone = 100
