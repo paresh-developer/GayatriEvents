@@ -11,10 +11,10 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-internal class PSBSArrayAdapterServiceProduct(
+internal class PSBSArrayAdapter_Product_Details(
     val c: Context,
     val r: Int,
-    var data: List<List<String>>
+    var data: Array<List<String>>, var colNames: List<String>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
 
@@ -26,8 +26,9 @@ internal class PSBSArrayAdapterServiceProduct(
         return data.size
     }
 
-    internal fun updateData(dataRows:List<List<String>>){
-        data = dataRows
+    internal fun UpdateData(d: Array<List<String>>, cols: List<String>) {
+        data = d
+        colNames = cols
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -40,33 +41,19 @@ internal class PSBSArrayAdapterServiceProduct(
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                com.pareshkumarsharma.gayatrievents.R.layout.listview_item_service_product,
+                com.pareshkumarsharma.gayatrievents.R.layout.listview_item,
                 parent,
                 false
             )
         }
 
-        val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductTitle)
-        val txtDesc =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDescription)
-        val txtOwnerAt =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductAt)
+        val txt1 =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt1OfListViewItem)
+        val txt2 =
+            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
 
-        val txtPrice =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductPrice)
-
-        try {
-            txtTitle?.text = data[position][2]
-            txtDesc?.text = data[position][3]
-            txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
-            txtPrice?.text = "Price: ₹ "+data[position][4].toFloat()
-        }
-        catch (Ex:Exception){
-            txtTitle?.text = "Error"
-            txtDesc?.text = "Error Message: "+Ex.message
-        }
-
+        txt1?.text = data[position][2]
+        txt2?.text = data[position][3]
         return currentItemView!!
     }
 }

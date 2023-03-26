@@ -168,6 +168,7 @@
             <Button
                 android:id="@+id/btn_popup_select_service"
                 android:text="Select"
+                android:layout_gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -188,12 +189,14 @@
             <Button
                 android:id="@+id/btn_popup_select_service_product"
                 android:text="Select"
+                android:layout_gravity="center_vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         </LinearLayout>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:textAlignment="textEnd"
             android:layout_height="wrap_content"
             android:id="@+id/txt_price"
             android:text="Price: 100$"

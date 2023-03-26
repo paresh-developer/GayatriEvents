@@ -13,7 +13,7 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterEvent(
+internal class PSBSArrayAdapterEvent(
     val c: Context,
     val r: Int,
     var data: List<List<String>>
@@ -66,11 +66,11 @@ class PSBSArrayAdapterEvent(
         try {
 
             txtTitle?.text = data[position][6]
-            txtDesc?.text = data[position][7]
-            if(data[position][8]=="0")
-                txtDateStartEnd?.text = "Date Fixed :- "+data[position][9].substring(0,10)
+            txtDesc?.text = "> Desc. :- "+data[position][7].replace("\n"," ") + "\n> Prod. :- " + data[position][data[position].size-1]
+            if(data[position][8]=="1")
+                txtDateStartEnd?.text = "Date :- Fixed "+data[position][9].substring(0,10)
             else
-                txtDateStartEnd?.text = "Date From :- "+data[position][9].substring(0,10)+" to "+data[position][10].substring(0,10)
+                txtDateStartEnd?.text = "Date :- From "+data[position][9].substring(0,10)+" to "+data[position][10].substring(0,10)
             txtEventRegisteredOn?.text = "Registered On : "+data[position][16].replace('T',' ')
 
             if((data[position][13]==null || data[position][13].startsWith("000")) && data[position][12]=="0")
@@ -79,8 +79,11 @@ class PSBSArrayAdapterEvent(
                 txtApproval?.setText("- Rejected - "+data[position][17])
             else if(data[position][13]!=null && data[position][12]=="1")
                 txtApproval?.setText("- Approved - "+data[position][17])
-
-            txtEventPrice?.text = "Price :- "+data[position][11] + " /-"
+            var sum_price = 0.0
+            for (pri in data[position][11].split(',')){
+                sum_price += pri.trim().toFloat()
+            }
+            txtEventPrice?.text = "Price :- "+sum_price+ " /-"
             txtEventId?.text = "Event Id :- EV"+data[position][16].substring(2,4)+data[position][1].substring(3)
         }
         catch (Ex:Exception){

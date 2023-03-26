@@ -1,6 +1,6 @@
 package com.pareshkumarsharma.gayatrievents.api.model
 
-data class ServiceDisplayModel(
+internal data class ServiceDisplayModel(
     val GlobalId:String,
     val Owner:String,
     val Title:String,

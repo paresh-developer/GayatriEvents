@@ -9,7 +9,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
 import com.pareshkumarsharma.gayatrievents.R
 
-class ForgotPasswordActivity : AppCompatActivity() {
+internal class ForgotPasswordActivity : AppCompatActivity() {
 
     companion object{
         internal var resetRequestId: Int = 0

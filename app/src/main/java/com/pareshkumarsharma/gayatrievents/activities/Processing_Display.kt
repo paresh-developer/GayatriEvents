@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 
 
-class Processing_Display : AppCompatActivity() {
+internal class Processing_Display : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_processing_display)

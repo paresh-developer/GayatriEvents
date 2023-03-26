@@ -20,7 +20,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
-class ServiceProductDetailsEdit : AppCompatActivity() {
+internal class ServiceProductDetailsEdit : AppCompatActivity() {
 
     internal companion object{
         var selectedServiceProductId:String = "0"

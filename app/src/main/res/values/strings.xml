@@ -1,5 +1,22 @@
 <resources>
-    <string name="app_name">GayatriEvents</string>
+    <string name="app_name">Gayatri Event</string>
+
+    <string name="main_page">होम पेज</string>
+    <string name="donate_page">दान</string>
+
+    <string name="btn_Logout">बहार</string>
+    <string name="btn_Panchang">पंचांग</string>
+    <string name="btn_Setting">सेटींग</string>
+    <string name="btn_Service">सेवा सुची</string>
+    <string name="btn_Donate">दान</string>
+    <string name="btn_Event">प्रसंग</string>
+    <string name="btn_Client_Request">बिक्रह याचिका</string>
+
+    <string name="donate_title">દાન કરવાનો હેતુ</string>
+    <string name="donate_desc">વધુ માહિતી \n ( જો તમે જણાવવા માગતા હોય તો. )</string>
+    <string name="donate_amount">દાનની રાશી</string>
+    <string name="donate_page_btn">દાન કરો</string>
+
     <string-array name="listItems">
         <item>Email</item>
         <item>Mobile</item>

@@ -1,6 +1,6 @@
 package com.pareshkumarsharma.gayatrievents.api.model
 
-data class ClientEventRequestResponse(
+internal data class ClientEventRequestResponse(
     val EventGlobalId:String,
     val Approved:Int,
     val Reason:String

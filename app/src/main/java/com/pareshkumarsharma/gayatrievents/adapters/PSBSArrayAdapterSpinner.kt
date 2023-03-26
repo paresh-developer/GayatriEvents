@@ -11,10 +11,10 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterSpinner(
+internal class PSBSArrayAdapterSpinner(
     val c: Context,
     val r: Int,
-    var data: List<String>
+    var data: MutableList<String>
 ) : ArrayAdapter<String>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
 

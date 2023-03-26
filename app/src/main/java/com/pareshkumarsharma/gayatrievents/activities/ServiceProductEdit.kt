@@ -19,7 +19,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
-class ServiceProductEdit : AppCompatActivity() {
+internal class ServiceProductEdit : AppCompatActivity() {
 
 
     internal val CurrentActivity = this

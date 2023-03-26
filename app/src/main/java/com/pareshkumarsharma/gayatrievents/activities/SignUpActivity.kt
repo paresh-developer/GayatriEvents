@@ -8,7 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.R
 
-class SignUpActivity : AppCompatActivity() {
+internal class SignUpActivity : AppCompatActivity() {
     lateinit var edTName: EditText
     lateinit var edTMobile: EditText
     lateinit var edTEmail: EditText

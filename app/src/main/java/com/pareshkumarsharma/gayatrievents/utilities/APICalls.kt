@@ -17,58 +17,60 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-class APICalls {
+internal class APICalls {
     companion object {
 
         private val key = "KLJFIQACWDMBYTVURZONSHXPEG298573"
 
         // region URLS
+        internal fun updatePath(hostPath:String){
+            HOST = hostPath
+        }
+        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
 
-        private const val HOST = "http://10.0.2.2/GayatriEvents/api/"
-
-        private const val LOGIN_URL = "$HOST/MobileApp/Login"
-        private const val REGISTER_URL = "$HOST/MobileApp/Register"
-        private const val PANCHANG_DOWNLOAD_URL = "$HOST/Panchang"
-        private const val PASSWORD_RESET_REQUEST =
-            "$HOST/MobileApp/PasswordResetRequest"
-        private const val PASSWORD_RESET =
-            "$HOST/MobileApp/PasswordReset"
-        private const val CHECK_MESSAGER_REQUEST =
-            "$HOST/MobileApp/MobileMessageRequest"
-        private const val CHECK_MESSAGER_UPDATE =
-            "$HOST/MobileApp/MobileMessageUpdate"
-        private const val USER_TYPE_CHANGE_REQUEST =
-            "$HOST/MobileApp/UserTypeChangeRequest"
-        private const val VIEW_EXISTING_SERVICE_OF_CURRENT_USER =
-            "$HOST/Service/"
-        private const val VIEW_EXISTING_SERVICE_FOR_EVENTS =
-            "$HOST/Service/ForEvent"
-        private const val SERVICE_REGISTRATION_REQUEST =
-            "$HOST/Service/New"
-        private const val SERVICE_UPDATION_REQUEST =
-            "$HOST/Service/Update"
-        private const val SERVICE_PRODUCT_REGISTRATION_REQUEST =
-            "$HOST/Service/NewProduct"
-        private const val SERVICE_PRODUCT_UPDATION_REQUEST =
-            "$HOST/Service/Update/ServiceProduct"
-        private const val SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST =
-            "$HOST/Service/NewProductDetails"
-        private const val SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST =
-            "$HOST/Service/Update/ServiceProductDetail"
-        private const val VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER =
-            "$HOST/Service/Product"
-        private const val VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER =
-            "$HOST/Service/ProductDetails"
-        private const val VIEW_EXISTING_EVENTS_OF_CURRENT_USER =
-            "$HOST/Event/UserEvents"
-        private const val CLIENT_EVENT_REQUEST =
-            "$HOST/Event/UserEventOrders"
-        private const val CLIENT_EVENT_REQUEST_RESPONSE =
-            "$HOST/Event/UserResponse"
-        private const val CLIENT_EVENT_DELETE_REQUEST =
-            "$HOST/Event/DeleteEvent"
-        private const val EVENT_REGISTRATION_REQUEST =
-            "$HOST/Event/New"
+        private var LOGIN_URL = "MobileApp/Login"
+        private var REGISTER_URL = "MobileApp/Register"
+        private var PANCHANG_DOWNLOAD_URL = "Panchang"
+        private var PASSWORD_RESET_REQUEST =
+            "MobileApp/PasswordResetRequest"
+        private var PASSWORD_RESET =
+            "MobileApp/PasswordReset"
+        private var CHECK_MESSAGER_REQUEST =
+            "MobileApp/MobileMessageRequest"
+        private var CHECK_MESSAGER_UPDATE =
+            "MobileApp/MobileMessageUpdate"
+        private var USER_TYPE_CHANGE_REQUEST =
+            "MobileApp/UserTypeChangeRequest"
+        private var VIEW_EXISTING_SERVICE_OF_CURRENT_USER =
+            "Service/"
+        private var VIEW_EXISTING_SERVICE_FOR_EVENTS =
+            "Service/ForEvent"
+        private var SERVICE_REGISTRATION_REQUEST =
+            "Service/New"
+        private var SERVICE_UPDATION_REQUEST =
+            "Service/Update"
+        private var SERVICE_PRODUCT_REGISTRATION_REQUEST =
+            "Service/NewProduct"
+        private var SERVICE_PRODUCT_UPDATION_REQUEST =
+            "Service/Update/ServiceProduct"
+        private var SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST =
+            "Service/NewProductDetails"
+        private var SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST =
+            "Service/Update/ServiceProductDetail"
+        private var VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER =
+            "Service/Product"
+        private var VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER =
+            "Service/ProductDetails"
+        private var VIEW_EXISTING_EVENTS_OF_CURRENT_USER =
+            "Event/UserEvents"
+        private var CLIENT_EVENT_REQUEST =
+            "Event/UserEventOrders"
+        private var CLIENT_EVENT_REQUEST_RESPONSE =
+            "Event/UserResponse"
+        private var CLIENT_EVENT_DELETE_REQUEST =
+            "Event/DeleteEvent"
+        private var EVENT_REGISTRATION_REQUEST =
+            "Event/New"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -91,7 +93,7 @@ class APICalls {
                 return false
             }
 
-            val url = URL(LOGIN_URL)
+            val url = URL(HOST+LOGIN_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -162,7 +164,7 @@ class APICalls {
                 return false
             }
 
-            val url = URL(REGISTER_URL)
+            val url = URL(HOST+REGISTER_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -207,7 +209,7 @@ class APICalls {
 
             var bytes: ByteArray = ByteArray(1, { 0 })
 
-            val url = URL(PANCHANG_DOWNLOAD_URL)
+            val url = URL( HOST + PANCHANG_DOWNLOAD_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET")
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -251,7 +253,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(PASSWORD_RESET_REQUEST)
+            val url = URL( HOST + PASSWORD_RESET_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -294,7 +296,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(PASSWORD_RESET)
+            val url = URL( HOST + PASSWORD_RESET)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -337,7 +339,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(CHECK_MESSAGER_UPDATE)
+            val url = URL( HOST + CHECK_MESSAGER_UPDATE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -388,7 +390,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(CHECK_MESSAGER_REQUEST)
+            val url = URL( HOST + CHECK_MESSAGER_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET")
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -431,7 +433,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(USER_TYPE_CHANGE_REQUEST)
+            val url = URL( HOST + USER_TYPE_CHANGE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -485,7 +487,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_REGISTRATION_REQUEST)
+            val url = URL( HOST + SERVICE_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -539,7 +541,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(EVENT_REGISTRATION_REQUEST)
+            val url = URL( HOST + EVENT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -593,7 +595,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_UPDATION_REQUEST)
+            val url = URL( HOST + SERVICE_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -615,7 +617,7 @@ class APICalls {
             try {
                 val outPutStream = urlConnection.outputStream
                 val model = Gson().toJson(ServiceModel, ServiceUpdationRequestModel::class.java)
-                outPutStream.write(model.toByteArray())
+                outPutStream.write(model.toByteArray(Charsets.UTF_8))
                 outPutStream.flush()
                 outPutStream.close()
                 val responseCode = urlConnection.responseCode
@@ -647,7 +649,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_PRODUCT_REGISTRATION_REQUEST)
+            val url = URL( HOST + SERVICE_PRODUCT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -702,7 +704,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_PRODUCT_UPDATION_REQUEST)
+            val url = URL( HOST + SERVICE_PRODUCT_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -757,7 +759,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
+            val url = URL( HOST + SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -814,7 +816,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
+            val url = URL( HOST + SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -871,7 +873,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
+            val url = URL( HOST + VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -924,7 +926,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(VIEW_EXISTING_SERVICE_FOR_EVENTS)
+            val url = URL( HOST + VIEW_EXISTING_SERVICE_FOR_EVENTS)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -978,7 +980,7 @@ class APICalls {
             }
 
             val url =
-                URL(VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
+                URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -1031,7 +1033,7 @@ class APICalls {
             }
 
             val url =
-                URL(VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
+                URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -1083,7 +1085,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
+            val url = URL( HOST + VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -1136,7 +1138,7 @@ class APICalls {
                 return isSuccess
             }
 
-            val url = URL(CLIENT_EVENT_REQUEST)
+            val url = URL( HOST + CLIENT_EVENT_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -1189,7 +1191,7 @@ class APICalls {
                 return false
             }
 
-            val url = URL(CLIENT_EVENT_REQUEST_RESPONSE)
+            val url = URL( HOST + CLIENT_EVENT_REQUEST_RESPONSE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -1244,7 +1246,7 @@ class APICalls {
                 return false
             }
 
-            val url = URL(CLIENT_EVENT_DELETE_REQUEST)
+            val url = URL( HOST + CLIENT_EVENT_DELETE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0");

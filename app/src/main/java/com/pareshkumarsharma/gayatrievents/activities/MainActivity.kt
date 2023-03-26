@@ -1,39 +1,31 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import android.app.AlarmManager
-import android.app.PendingIntent
+import android.Manifest
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.icu.util.Calendar
-import android.icu.util.LocaleData
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.method.ScrollingMovementMethod
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.R
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProduct
-import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterServiceProductDetails
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.services.PanchangNotification
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
-import java.text.SimpleDateFormat
-import java.time.DateTimeException
-import java.time.LocalDateTime
-import java.util.*
+import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.PaymentManager
 
 
-class MainActivity : AppCompatActivity() {
-
+internal class MainActivity : AppCompatActivity() {
     internal companion object {
         /**
          * 0 when no login
@@ -56,6 +48,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         IsRunning = true
+
+        val DatabaseSetup =
+            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001", false)
+        if (!DatabaseSetup) {
+            Database.activity = this
+            Database.checkDatabaseSetup()
+            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+                .edit()
+                .putBoolean("F001", true)
+                .apply()
+        }
 
         if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone", false))
             startActivity(Intent(this, LoginActivity::class.java))
@@ -107,16 +110,6 @@ class MainActivity : AppCompatActivity() {
                     .show()
         }
 
-        val DatabaseSetup =
-            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F001", false)
-        if (!DatabaseSetup) {
-            Database.checkDatabaseSetup()
-            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
-                .edit()
-                .putBoolean("F001", true)
-                .apply()
-        }
-
 //        startActivity(Intent(this,Panchang::class.java))
 //        APICalls.decodeStringComplex(APICalls.encodeStringComplex("Pwd"))
 //        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
@@ -137,21 +130,57 @@ class MainActivity : AppCompatActivity() {
                 )
                     .show()
         }
+
+        findViewById<Button>(R.id.btnDonate).setOnClickListener {
+            startActivity(Intent(this,Donate::class.java))
+        }
+
         RefreshServiceData()
     }
 
     override fun onResume() {
         super.onResume()
 
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+            ||
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(
+                    listOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
+                    10001
+                )
+            }
+        }
+        else{
+            val file_external = Environment.getExternalStorageDirectory()
+            val absolutePath = file_external.absolutePath
+            val apiFile = java.io.File(absolutePath + "/apiUrl.txt")
+            if (apiFile.exists()) {
+                val data_url_api = apiFile.readText()
+                if(data_url_api.trim().length>0)
+                    APICalls.updatePath(data_url_api)
+            }
+        }
+
         if (IsLoginDone != 1) {
             var snakmsg = ""
-            if (IsLoginDone == 0)
-                snakmsg = "Welcome back! 😎"
+            if (IsLoginDone == 0) {
+                snakmsg = "સ્વાગત છે! 😎"
+                IsLoginDone = 100
+            }
             else if (IsLoginDone == 2) {
-                snakmsg = "Login Done!...👍"
-                txtHellow.text = "Hellow! $UserName"
+                snakmsg = "પ્રવેશ થયું!...👍"
+                txtHellow.text = "નમસ્તે! $UserName"
+                IsLoginDone = 100
             } else if (IsLoginDone == 4) {
-                snakmsg = "Sign Up Done!...👍"
+                snakmsg = "સાઈન અપ થયું!...👍"
             }
             if (IsLoginDone != 0 && snakmsg.trim().length > 0)
                 Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
@@ -239,7 +268,7 @@ class MainActivity : AppCompatActivity() {
         }).start()
     }
 
-    private fun RefreshServiceProductData(selectedService:String = "0"){
+    private fun RefreshServiceProductData(selectedService: String = "0") {
         Thread(Runnable {
             APICalls.setContext(this)
             APICalls.cookies = mapOf<String, String>(
@@ -277,7 +306,12 @@ class MainActivity : AppCompatActivity() {
                     )
                         Database.insertTo("Service_Product", c, "Id")
                     else
-                        Database.updateTo("Service_Product", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
+                        Database.updateTo(
+                            "Service_Product",
+                            c,
+                            "GlobalId=?",
+                            listOf(res[i].GlobalId).toTypedArray()
+                        )
                     RefreshServiceProductDetailsData(res[i].GlobalId)
                 }
             } else {
@@ -292,7 +326,7 @@ class MainActivity : AppCompatActivity() {
         }).start()
     }
 
-    private fun RefreshServiceProductDetailsData(selectedServiceProduct:String="0") {
+    private fun RefreshServiceProductDetailsData(selectedServiceProduct: String = "0") {
         Thread(Runnable {
             APICalls.setContext(this)
             APICalls.cookies = mapOf<String, String>(

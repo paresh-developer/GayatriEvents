@@ -13,14 +13,14 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class ServiceForEvent : AppCompatActivity() {
+internal class ServiceForEvent : AppCompatActivity() {
 
-    private val CurrentActivity:ServiceForEvent = this
+    private val CurrentActivity: ServiceForEvent = this
     private lateinit var adapterService: PSBSArrayAdapterServiceForEvent
     private lateinit var listViewService: ListView
-    private lateinit var existingServices : DataTable
+    private lateinit var existingServices: DataTable
 
-    internal companion object{
+    internal companion object {
         var SelectedServiceIds = mutableListOf<String>()
         var SelectedServiceNames = mutableListOf<String>()
     }
@@ -37,16 +37,40 @@ class ServiceForEvent : AppCompatActivity() {
         findViewById<Button>(R.id.btnSaveSelected).setOnClickListener {
             SelectedServiceIds = adapterService.Selected_Ids
             SelectedServiceNames = adapterService.Selected_Name
+            val tl = Database.getServicesProductFilterByServiceList(
+                SelectedServiceIds.joinToString(","),
+                NewEvent.SelectedServiceProductIds.joinToString(",")
+            )
+            val tblrows_p_id = mutableListOf<String>()
+            val tblrows_p_name = mutableListOf<String>()
+            val tblrows_p_price = mutableListOf<String>()
+            for (r in tl.Rows) {
+                tblrows_p_id.add(r[0].trim())
+            }
+            for (r in tl.Rows) {
+                tblrows_p_name.add(r[1].trim())
+            }
+            for (r in tl.Rows) {
+                tblrows_p_price.add(r[2].trim())
+            }
+            NewEvent.SelectedServiceProductIds = tblrows_p_id.intersect(NewEvent.SelectedServiceProductIds.toSet()).toMutableList()
+            NewEvent.SelectedServiceProductPriceList = tblrows_p_price.intersect(NewEvent.SelectedServiceProductPriceList.toSet()).toMutableList()
+            ServiceProductForEvent.SelectedProductName = tblrows_p_name.intersect(ServiceProductForEvent.SelectedProductName.toSet()).toMutableList()
+            ServiceProductForEvent.SelectedProductPrice = tblrows_p_price.intersect(NewEvent.SelectedServiceProductPriceList.toSet()).toMutableList()
             finish()
         }
 
         existingServices = Database.getServicesForEvent()
         listViewService = findViewById<ListView>(R.id.listview_ExistingServices)
         adapterService =
-            PSBSArrayAdapterServiceForEvent(this, R.layout.listview_item_service_for_event, existingServices.Rows)
+            PSBSArrayAdapterServiceForEvent(
+                this,
+                R.layout.listview_item_service_for_event,
+                existingServices.Rows
+            )
         adapterService.Selected_Ids = SelectedServiceIds
         listViewService.adapter = adapterService
-        listViewService.setOnItemClickListener { adapterView, view, i, l ->
+        listViewService.setOnItemClickListener{ adapterView, view, i, l ->
 //            NewEvent.Selected_Service_Global_Id = existingServices.Rows[i][1]
 //            Toast.makeText(applicationContext,"Service selected",Toast.LENGTH_LONG).show()
 //            finish()
@@ -72,6 +96,7 @@ class ServiceForEvent : AppCompatActivity() {
 //            builder.show()
         }
     }
+
 
     override fun onResume() {
         Thread(Runnable {
@@ -106,7 +131,7 @@ class ServiceForEvent : AppCompatActivity() {
                     c.put("Owner", res[i].Owner)
                     c.put("Approved", res[i].Approved)
                     c.put("RequestStatus", res[i].RequestStatus)
-                    if(res[i].Approved)
+                    if (res[i].Approved)
                         c.put("ApprovalTime", res[i].ApprovalTime)
                     else
                         nul_field += ",ApprovalTime"
@@ -118,9 +143,13 @@ class ServiceForEvent : AppCompatActivity() {
                         ) == 0
                     )
                         Database.insertTo("Service", c, nul_field)
-                    else
-                    {
-                        Database.updateTo("Service", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
+                    else {
+                        Database.updateTo(
+                            "Service",
+                            c,
+                            "GlobalId=?",
+                            listOf(res[i].GlobalId).toTypedArray()
+                        )
                     }
 
                 }

@@ -15,7 +15,7 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterServiceForEvent(
+internal class PSBSArrayAdapterServiceForEvent(
     val c: Context,
     val r: Int,
     var data: List<List<String>>
@@ -82,7 +82,8 @@ class PSBSArrayAdapterServiceForEvent(
         }
 
         chkSelection?.isChecked = Selected_Ids.contains(data[position][1])
-
+        if(chkSelection?.isChecked == true && !Selected_Name.contains(data[position][2]))
+            Selected_Name.add(data[position][2])
         try {
             txtTitle?.text = data[position][2]
             txtDesc?.text = data[position][3]

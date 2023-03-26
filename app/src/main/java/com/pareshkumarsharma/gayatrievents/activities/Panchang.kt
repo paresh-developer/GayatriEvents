@@ -10,12 +10,13 @@ import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSFestivalArrayAdapter
 import com.pareshkumarsharma.gayatrievents.panchang.Month
+import com.pareshkumarsharma.gayatrievents.panchang.MonthHindi
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
-class Panchang : AppCompatActivity() {
+internal class Panchang : AppCompatActivity() {
 
     internal companion object {
         var countDot = 0
@@ -103,7 +104,7 @@ class Panchang : AppCompatActivity() {
 
                         monthStr = Month.get(monthInt)
 
-                        findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+                        findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
 
                         psbArrayAdadaper = PSBSArrayAdapter(applicationContext,
                             R.layout.listview_item
@@ -139,9 +140,9 @@ class Panchang : AppCompatActivity() {
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = Month.get(monthInt)
+            monthStr = MonthHindi.get(monthInt)
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
 
             psbArrayAdadaper = PSBSArrayAdapter(applicationContext, R.layout.listview_item
                 ,PanchangData.Rows.toTypedArray(),PanchangData.Columns)
@@ -205,9 +206,9 @@ class Panchang : AppCompatActivity() {
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = Month.get(monthInt)
+            monthStr = MonthHindi.get(monthInt)
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
 
             val FestivalPanchangData = Database.getPanchangFestivalOf(
                 SimpleDateFormat("%-MM-yyyy").format(c.time).toString(),
@@ -240,9 +241,9 @@ class Panchang : AppCompatActivity() {
 
             val monthInt = PanchangData.Rows[0][PanchangData.Columns.indexOf("AmantMonth")].toString().toInt()
 
-            monthStr = Month.get(monthInt)
+            monthStr = MonthHindi.get(monthInt)
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
 
             psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
@@ -270,7 +271,7 @@ class Panchang : AppCompatActivity() {
 
             monthStr = Month.get(monthInt)
 
-            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+            findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
 
             psbArrayAdadaper.UpdateData(PanchangData.Rows.toTypedArray(),PanchangData.Columns)
             psbArrayAdadaper.notifyDataSetChanged()
@@ -287,18 +288,18 @@ class Panchang : AppCompatActivity() {
                 while (!downloadComplete) {
                     Thread.sleep(600)
                     if (countDot == 4) {
-                        disStr = "Downloading Panchang"
+                        disStr = "पंचांग प्राप्त किया जा रहा है..."
                         countDot = 0
                     }
                     else
-                        disStr = "Downloading Panchang" + ".".repeat(countDot)
+                        disStr = "पंचांग प्राप्त किया जा रहा है..." + ".".repeat(countDot)
                     runOnUiThread {
                         findViewById<TextView>(R.id.txtNavigation).text = disStr
                     }
                     countDot++
                 }
                 runOnUiThread {
-                    findViewById<TextView>(R.id.txtNavigation).text = monthStr + " Panchang"
+                    findViewById<TextView>(R.id.txtNavigation).text = monthStr + " पंचांग"
                 }
             }.start()
     }

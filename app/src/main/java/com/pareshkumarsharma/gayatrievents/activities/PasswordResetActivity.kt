@@ -7,7 +7,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.api.model.PasswordResetRequestModel
 import com.pareshkumarsharma.gayatrievents.R
 
-class PasswordResetActivity : AppCompatActivity() {
+internal class PasswordResetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_reset)

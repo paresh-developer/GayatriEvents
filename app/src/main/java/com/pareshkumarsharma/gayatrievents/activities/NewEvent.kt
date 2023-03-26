@@ -15,7 +15,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.Database
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewEvent : AppCompatActivity() {
+internal class NewEvent : AppCompatActivity() {
     lateinit var Edt_SelectedService:EditText
 
     internal companion object{
@@ -45,6 +45,14 @@ class NewEvent : AppCompatActivity() {
 
         val rdo_Date_Fixed = findViewById<RadioButton>(R.id.chkEventDateFixed)
         val rdo_Date_Not_Fixed = findViewById<RadioButton>(R.id.chkEventDateNotFixed)
+
+        SelectedServiceIds = mutableListOf<String>()
+        SelectedServiceProductIds = mutableListOf<String>()
+        SelectedServiceProductPriceList = mutableListOf<String>()
+
+        ServiceForEvent.SelectedServiceIds = mutableListOf<String>()
+        ServiceProductForEvent.SelectedProductId = mutableListOf<String>()
+        ServiceProductForEvent.SelectedProductPrice = mutableListOf<String>()
 
         val rd_group = findViewById<RadioGroup>(R.id.radioGroup)
         rd_group.setOnCheckedChangeListener { radioGroup, i ->
@@ -138,21 +146,22 @@ class NewEvent : AppCompatActivity() {
             nmDay_E.value = SimpleDateFormat("d").format(c.time).toInt()
         }
 
-        Edt_SelectedService = findViewById<EditText>(R.id.selectedService)
-        Edt_SelectedService.setOnClickListener {
-            startActivity(Intent(this,ServiceForEvent::class.java))
-        }
+//        Edt_SelectedService = findViewById<EditText>(R.id.selectedService)
+//        Edt_SelectedService.setOnClickListener {
+//            startActivity(Intent(this,ServiceForEvent::class.java))
+//        }
         findViewById<Button>(R.id.btn_popup_select_service).setOnClickListener {
             ServiceForEvent.SelectedServiceIds = SelectedServiceIds
             startActivity(Intent(this,ServiceForEvent::class.java))
         }
-        findViewById<EditText>(R.id.selectedServiceProduct).setOnClickListener {
-            ServiceProductForEvent.SelectedServiceId = ServiceForEvent.SelectedServiceIds
-            ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
-            startActivity(Intent(this,ServiceProductForEvent::class.java))
-        }
+//        findViewById<EditText>(R.id.selectedServiceProduct).setOnClickListener {
+//            ServiceProductForEvent.SelectedServiceId = ServiceForEvent.SelectedServiceIds
+//            ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
+//            startActivity(Intent(this,ServiceProductForEvent::class.java))
+//        }
         findViewById<Button>(R.id.btn_popup_select_service_product).setOnClickListener {
-            ServiceProductForEvent.SelectedServiceId = ServiceForEvent.SelectedServiceIds
+            ServiceProductForEvent.SelectedServiceId = SelectedServiceIds
+            ServiceProductForEvent.SelectedProductId = SelectedServiceProductIds
             startActivity(Intent(this,ServiceProductForEvent::class.java))
         }
 
@@ -289,15 +298,21 @@ class NewEvent : AppCompatActivity() {
         SelectedServiceProductPriceList = ServiceProductForEvent.SelectedProductPrice
         if(ServiceForEvent.SelectedServiceIds.count()>0)
             findViewById<EditText>(R.id.selectedService).setText("> "+ServiceForEvent.SelectedServiceNames.joinToString("\n> "))
+        else
+            findViewById<EditText>(R.id.selectedService).setText("")
         if(ServiceProductForEvent.SelectedProductId.size>0)
             findViewById<EditText>(R.id.selectedServiceProduct).setText("> "+ServiceProductForEvent.SelectedProductName.joinToString("\n> "))
+        else
+            findViewById<EditText>(R.id.selectedServiceProduct).setText("")
         if(ServiceProductForEvent.SelectedProductPrice.count()>0) {
             var sumPrice = 0.0
             for (p in ServiceProductForEvent.SelectedProductPrice){
                 sumPrice += p.toDouble()
             }
-            findViewById<TextView>(R.id.txt_price).setText(ServiceProductForEvent.SelectedProductPrice.joinToString("\n")+"\nTotal: "+sumPrice)
+            findViewById<TextView>(R.id.txt_price).setText(ServiceProductForEvent.SelectedProductPrice.joinToString("\n")+"\n---------\nTotal: "+Math.ceil(sumPrice).toInt())
         }
+        else
+            findViewById<TextView>(R.id.txt_price).setText("0.0")
     }
 
     override fun onDestroy() {

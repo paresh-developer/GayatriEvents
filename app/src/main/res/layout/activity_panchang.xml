@@ -27,8 +27,8 @@
                 android:layout_weight="20"
                 android:gravity="center"
                 android:text="Panchang"
-                android:textSize="20dp"
                 android:textColor="@color/black"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <Button
@@ -77,48 +77,20 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:scrollbars="vertical">
-
-                        <CalendarView
-                            android:id="@+id/calendarView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <ListView
-                                android:id="@+id/panchangListView"
-                                android:layout_width="match_parent"
-                                android:layout_height="900dp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </ScrollView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingEnd="5dp"
-                    android:text=">\nF\nE\nS\nT\nI\nV\nA\nL\nS\n>"
-                    android:textColor="@color/black"
-                    android:textSize="25dp" />
-
                 <ListView
                     android:id="@+id/monthFestivalList"
-                    android:layout_width="330dp"
-                    android:dividerHeight="2dp"
-                    android:divider="@color/black"
-                    android:layout_height="match_parent" />
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content" />
+
+                <ListView
+                    android:id="@+id/panchangListView"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content" />
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>

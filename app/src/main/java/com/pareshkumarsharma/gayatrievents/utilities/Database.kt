@@ -3,14 +3,17 @@ package com.pareshkumarsharma.gayatrievents.utilities
 import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.widget.Toast
+import com.pareshkumarsharma.gayatrievents.activities.MainActivity
 
-class Database {
+internal class Database {
     internal companion object {
         internal val DBPATH = "/data/data/com.pareshkumarsharma.gayatrievents/main.db"
         internal val DBPATH_PANCHANG = "/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db"
         private lateinit var sqlite: SQLiteDatabase
         private lateinit var cur: Cursor
         internal var lastError = ""
+        internal lateinit var activity: MainActivity
 
         internal val SHAREDFILE = "shared_pref"
 
@@ -71,6 +74,7 @@ class Database {
 
         internal fun checkDatabaseSetup() {
             try {
+                Toast.makeText(activity.applicationContext,"Working On SETUP Please wait...",Toast.LENGTH_SHORT).show()
                 openConnection()
                 // some table exists
                 if (!checkTableExists("USERS")) {
@@ -177,16 +181,16 @@ class Database {
                         "Create table EVENTS (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                 "GlobalId text," +
-                                "ServiceProductGlobalId text," +
-                                "ServiceProductId int," +
-                                "ServiceGlobalId text," +
-                                "ServiceId int," +
+                                "ServiceProductGlobalIdList text," +
+                                "ServiceProductIdList text," +
+                                "ServiceGlobalIdList text," +
+                                "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
                                 "DateFixed int," +
                                 "DateStart datetime," +
                                 "DateEnd datetime," +
-                                "Price Numeric," +
+                                "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
                                 "UserId int," +
@@ -196,21 +200,22 @@ class Database {
                                 ");"
                     )
                 }
+
                 if (!checkTableExists("Client_EVENTS_Request")) {
                     sqlite.execSQL(
                         "Create table Client_EVENTS_Request (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                 "GlobalId text," +
-                                "ServiceProductGlobalId text," +
-                                "ServiceProductId int," +
-                                "ServiceGlobalId text," +
-                                "ServiceId int," +
+                                "ServiceProductGlobalIdList text," +
+                                "ServiceProductIdList text," +
+                                "ServiceGlobalIdList text," +
+                                "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
                                 "DateFixed int," +
                                 "DateStart datetime," +
                                 "DateEnd datetime," +
-                                "Price Numeric," +
+                                "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
                                 "UserId int," +
@@ -220,6 +225,7 @@ class Database {
                                 ");"
                     )
                 }
+
                 if (!checkTableExists("EVENTS_Update")) {
                     sqlite.execSQL(
                         "Create table EVENTS_Update (" +
@@ -227,16 +233,16 @@ class Database {
                                 "EventGlobalId text," +
                                 "EventId int," +
                                 "GlobalId text," +
-                                "ServiceProductGlobalId text," +
-                                "ServiceProductId int," +
-                                "ServiceGlobalId text," +
-                                "ServiceId int," +
+                                "ServiceProductGlobalIdList text," +
+                                "ServiceProductIdList text," +
+                                "ServiceGlobalIdList text," +
+                                "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
                                 "DateFixed int," +
                                 "DateStart datetime," +
                                 "DateEnd datetime," +
-                                "Price Numeric," +
+                                "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
                                 "UserId int," +
@@ -246,6 +252,7 @@ class Database {
                                 ");"
                     )
                 }
+
                 if (!checkTableExists("EVENTS_Backup")) {
                     sqlite.execSQL(
                         "Create table EVENTS_Backup (" +
@@ -255,16 +262,16 @@ class Database {
                                 "EventUpdateGlobalId text," +
                                 "EventUpdateId int," +
                                 "GlobalId text," +
-                                "ServiceProductGlobalId text," +
-                                "ServiceProductId int," +
-                                "ServiceGlobalId text," +
-                                "ServiceId int," +
+                                "ServiceProductGlobalIdList text," +
+                                "ServiceProductIdList text," +
+                                "ServiceGlobalIdList text," +
+                                "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
                                 "DateFixed int," +
                                 "DateStart datetime," +
                                 "DateEnd datetime," +
-                                "Price Numeric," +
+                                "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
                                 "UserId int," +
@@ -274,8 +281,10 @@ class Database {
                                 ");"
                     )
                 }
+                Toast.makeText(activity.applicationContext,"SETUP Completed",Toast.LENGTH_LONG).show()
             } catch (ex: java.lang.Exception) {
                 lastError = ex.message.toString()
+                Toast.makeText(activity.applicationContext,"Error : "+ex.message,Toast.LENGTH_SHORT).show()
             } finally {
                 closeConnection()
             }
@@ -342,7 +351,7 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             return tbl
         }
 
@@ -363,7 +372,7 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             return tbl
         }
 
@@ -380,7 +389,7 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             return tbl
         }
 
@@ -399,17 +408,29 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             return tbl
         }
 
         internal fun getEvents(): DataTable {
-            var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
+            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()),"")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events", null)
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
+                tbl.Columns.add("ProductName")
+                for(row in tbl.Rows){
+                    val c1 = sqlite.rawQuery("Select Title from Service_Product Where GlobalId in ('${row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(",","','")}')", null)
+                    val tbl_tmp = getDataTableFromCursor(c1)
+                    c1.close()
+                    row.add("")
+                    for (r1 in tbl_tmp.Rows)
+                    {
+                        row[tbl.Columns.size-1] += r1[0] +","
+                    }
+                    row[tbl.Columns.size-1] = row[tbl.Columns.size-1].substring(0,row[tbl.Columns.size-1].length-1)
+                }
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -419,12 +440,24 @@ class Database {
         }
 
         internal fun getClientRequests(): DataTable {
-            var tbl = DataTable(listOf(), mutableListOf(mutableListOf()),"")
+            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()),"")
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalId,ServiceProductId,ServiceGlobalId,ServiceId,Title,Details,DateFixed,DateStart,DateEnd,Price,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request", null)
+                val c = sqlite.rawQuery("Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
+                tbl.Columns.add("ProductName")
+                for(row in tbl.Rows){
+                    val c1 = sqlite.rawQuery("Select Title from Service_Product Where GlobalId in ('${row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(",","','")}')", null)
+                    val tbl_tmp = getDataTableFromCursor(c1)
+                    c1.close()
+                    row.add("")
+                    for (r1 in tbl_tmp.Rows)
+                    {
+                        row[tbl.Columns.size-1] += r1[0] +","
+                    }
+                    row[tbl.Columns.size-1] = row[tbl.Columns.size-1].substring(0,row[tbl.Columns.size-1].length-1)
+                }
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
             } finally {
@@ -446,7 +479,7 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             else
             {
                 for (row in tbl.Rows){
@@ -469,7 +502,7 @@ class Database {
                 closeConnection()
             }
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             else
             {
                 for (row in tbl.Rows){
@@ -492,7 +525,7 @@ class Database {
                 closeConnection()
             }
             if(tbl==null){
-                tbl = DataTable(listOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
             }
             return tbl
         }
@@ -510,7 +543,25 @@ class Database {
                 closeConnection()
             }
             if(tbl==null){
-                tbl = DataTable(listOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+            }
+            return tbl
+        }
+
+        internal fun getServicesProductFilterByServiceList(serviceGlobalId:String,productGlobalId:String): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select GlobalId,Title,Price from Service_Product Where ServiceGlobalId in ('${serviceGlobalId.replace(",","', '")}') and GlobalId in ('${productGlobalId.replace(",","', '")}')", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if(tbl==null){
+                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
             }
             return tbl
         }
@@ -528,7 +579,7 @@ class Database {
                 closeConnection()
             }
             if(tbl==null){
-                tbl = DataTable(listOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf(mutableListOf("Error")),"No Values")
             }
             return tbl
         }
@@ -548,7 +599,7 @@ class Database {
 
             var CityName = ""
             if (tbl == null)
-                tbl = DataTable(listOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
+                tbl = DataTable(mutableListOf("Error"), mutableListOf<MutableList<String>>(mutableListOf("Error")), "Error")
             else
                 CityName = tbl.Rows[0][0]
 
@@ -572,13 +623,14 @@ class Database {
         }
 
         internal fun getRowCount(tbl:String,col:String,con:String): Int{
-            var rowCount = 0
+            var rowCount = -1
             try {
                 openConnection()
                 val c = sqlite.rawQuery("Select Count(id) from $tbl Where $col = '$con'", null)
                 rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
                 c.close()
             } catch (ex: Exception) {
+                rowCount = -1
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()

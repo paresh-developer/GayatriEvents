@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.TextView
+import android.widget.*
+import com.pareshkumarsharma.gayatrievents.activities.MainActivity
 import com.pareshkumarsharma.gayatrievents.panchang.Month
 import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 
-class PSBSArrayAdapterServiceProductForEvent(
+internal class PSBSArrayAdapterServiceProductForEvent(
     val c: Context,
     val r: Int,
     var data: List<List<String>>
@@ -43,7 +43,7 @@ class PSBSArrayAdapterServiceProductForEvent(
         // of the recyclable view is null then inflate the custom layout for the same
         if (currentItemView == null) {
             currentItemView = LayoutInflater.from(context).inflate(
-                com.pareshkumarsharma.gayatrievents.R.layout.listview_item_service_product_for_event,
+                r,
                 parent,
                 false
             )
@@ -60,6 +60,32 @@ class PSBSArrayAdapterServiceProductForEvent(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductPrice)
         val chkSelection =
             currentItemView?.findViewById<CheckBox>(com.pareshkumarsharma.gayatrievents.R.id.chkSelection)
+//        val lstView_productDetails =
+//            currentItemView?.findViewById<ListView>(com.pareshkumarsharma.gayatrievents.R.id.lst_product_details)
+//        val btnMoreDetails =
+//            currentItemView?.findViewById<Button>(com.pareshkumarsharma.gayatrievents.R.id.btn_more_details)
+//
+//        btnMoreDetails?.setOnClickListener {
+//            val p = position
+//            if(btnMoreDetails?.text.toString().contains("More")) {
+//                btnMoreDetails?.text = "Less Details⬆️"
+//                val tbl = Database.getServicesProductDetails(data[position][1])
+//                val adapter = parent?.let { it1 ->
+//                    PSBSArrayAdapter_Product_Details(
+//                        it1.context,
+//                        android.R.layout.simple_spinner_item,
+//                        tbl.Rows.toTypedArray(),
+//                        tbl.Columns
+//                    )
+//                }
+//                lstView_productDetails?.visibility = View.VISIBLE
+//                lstView_productDetails?.adapter = adapter
+//            }
+//            else{
+//                btnMoreDetails?.text = "More Details⬇️"
+//                lstView_productDetails?.visibility = View.GONE
+//            }
+//        }
 
         chkSelection?.setOnCheckedChangeListener { compoundButton, b ->
             if(b){
@@ -81,12 +107,19 @@ class PSBSArrayAdapterServiceProductForEvent(
         }
 
         chkSelection?.isChecked = SelectedProductId.contains(data[position][1])
+        if(chkSelection?.isChecked==true){
+            if(!SelectedProductNames.contains(data[position][2]))
+                SelectedProductNames.add(data[position][2])
+            if(!SelectedProductPrices.contains(data[position][4]))
+                SelectedProductPrices.add(data[position][4])
+        }
 
         try {
             txtTitle?.text = data[position][2]
             txtDesc?.text = data[position][3]
-            txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
-            txtPrice?.text = "Price: ₹ "+data[position][4].toFloat()
+//            txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
+//            txtPrice?.text = "Price: ₹ "+data[position][4].toFloat()
+            txtOwnerAt?.text = "Price: ₹ "+data[position][4].toFloat()
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

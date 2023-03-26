@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.panchang.Month
-import com.pareshkumarsharma.gayatrievents.panchang.Paksha
+import com.pareshkumarsharma.gayatrievents.panchang.*
+import com.pareshkumarsharma.gayatrievents.panchang.MonthHindi
+import com.pareshkumarsharma.gayatrievents.panchang.PakshaHindi
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapter(
+internal class PSBSArrayAdapter(
     val c: Context,
     val r: Int,
     var data: Array<List<String>>, var colNames: List<String>
@@ -58,9 +59,28 @@ class PSBSArrayAdapter(
         if (txt2?.text.toString().trim().length == 0)
             txt2?.text = "no data"
 
+        when(colNames[position]){
+            "Tithi" -> txt1?.text = "તિથી : "
+            "Weekday" -> txt1?.text = "વાર : "
+            "Paksha" -> txt1?.text = "પક્ષ : "
+            "AmantMonth" -> txt1?.text = "મહિનો : "
+            "Festivals"-> txt1?.text = "તહેવાર : "
+            "Sunrise" -> txt1?.text = "સુર્યોદય : "
+            "Sunset" -> txt1?.text = "સુર્યાસ્ત : "
+            "Nakshatra" -> txt1?.text = "નક્ષત્ર : "
+            "Moonsign" -> txt1?.text = "ચંદ્ર રાશી : "
+            "Sunsign" -> txt1?.text = "સુર્ય રાશી : "
+            "Yoga" -> txt1?.text = "યોગ : "
+            "Karan" -> txt1?.text = "કરણ : "
+            "Moonrise" -> txt1?.text = "ચંદ્રોદય : "
+            "Moonset" -> txt1?.text = "ચંદ્ર અસ્ત : "
+            "VikramSamvat" -> txt1?.text = "વિક્રમ સંવત : "
+            "ShakSamvat" -> txt1?.text = "શક સંવત : "
+        }
+
         when (colNames[position]) {
-            "Paksha" -> txt2?.text = Paksha.get(txt2?.text.toString().toInt())
-            "AmantMonth" -> txt2?.text = Month.get(txt2?.text.toString().toInt())
+            "Paksha" -> txt2?.text = PakshaHindi.get(txt2?.text.toString().toInt())
+            "AmantMonth" -> txt2?.text = MonthHindi.get(txt2?.text.toString().toInt())
             "Weekday" -> txt2?.text = WeekDay.get(txt2?.text.toString().toInt())
             "Festivals" -> txt2?.text = txt2?.text.toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("//","")
         }

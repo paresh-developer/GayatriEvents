@@ -1,6 +1,6 @@
 package com.pareshkumarsharma.gayatrievents.api.model
 
-data class ServiceUpdationRequestModel(
+internal data class ServiceUpdationRequestModel(
     val GlobalId:String,
     val Title:String,
     val Desc:String,

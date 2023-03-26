@@ -18,7 +18,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class ClientEventRequestEdit : AppCompatActivity() {
+internal class ClientEventRequestEdit : AppCompatActivity() {
 
     private val CurrentActivity:ClientEventRequestEdit = this
 
@@ -172,18 +172,18 @@ class ClientEventRequestEdit : AppCompatActivity() {
                     c.put("GlobalId", res[i].EventGlobalId)
                     c.put("Title", res[i].EventName)
                     c.put("Details", res[i].EventDetails)
-                    c.put("ServiceProductGlobalId", res[i].ServiceProductGlobalId)
-                    val tbl = Database.query("Select Id from SERVICE_PRODUCT where GlobalId='${res[i].ServiceProductGlobalId}'")
+                    c.put("ServiceProductGlobalIdList", res[i].ServiceProductGlobalIdList)
+                    val tbl = Database.query("Select group_concat(Id) from SERVICE_PRODUCT where GlobalId in ('${res[i].ServiceProductGlobalIdList.replace(",","', '")}')")
                     if(tbl.Rows.size>0 && !tbl.Columns.contains("Error"))
-                        c.put("ServiceProductId", tbl.Rows[0][0].toInt())
-                    val tbl1 = Database.query("Select Id from SERVICE where GlobalId='${res[i].ServiceGlobalId}'")
+                        c.put("ServiceProductIdList", tbl.Rows[0][0])
+                    val tbl1 = Database.query("Select group_concat(Id) from SERVICE where GlobalId in ('${res[i].ServiceGlobalIdList.replace(",","', '")}')")
                     if(tbl1.Rows.size>0 && !tbl1.Columns.contains("Error"))
-                        c.put("ServiceId", tbl1.Rows[0][0].toInt())
-                    c.put("ServiceGlobalId", res[i].ServiceGlobalId)
+                        c.put("ServiceIdList", tbl1.Rows[0][0])
+                    c.put("ServiceGlobalIdList", res[i].ServiceGlobalIdList)
                     c.put("DateFixed", res[i].EventDateFixed)
                     c.put("DateStart", res[i].EventDateStart)
                     c.put("DateEnd", res[i].EventDateEnd)
-                    c.put("Price", res[i].EventPrice)
+                    c.put("PriceList", res[i].EventPriceList)
                     c.put("Approved", res[i].Approved)
                     c.put("UserGlobalId", res[i].UserGlobalId)
                     if(res[i].Reason!=null)

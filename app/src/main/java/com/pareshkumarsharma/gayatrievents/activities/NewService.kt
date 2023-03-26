@@ -12,7 +12,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class NewService : AppCompatActivity() {
+internal class NewService : AppCompatActivity() {
 
     internal companion object {
         var operation: Char = 'I'

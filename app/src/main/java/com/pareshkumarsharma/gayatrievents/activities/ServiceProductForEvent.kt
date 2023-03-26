@@ -16,7 +16,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
-class ServiceProductForEvent : AppCompatActivity() {
+internal class ServiceProductForEvent : AppCompatActivity() {
 
 
     internal val CurrentActivity = this
@@ -48,7 +48,7 @@ class ServiceProductForEvent : AppCompatActivity() {
             finish()
         }
 
-        existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString())
+        existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString(","))
         listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
         adapterService =
             PSBSArrayAdapterServiceProductForEvent(this, R.layout.listview_item_service_product_for_event, existingServiceProducts.Rows)
@@ -59,7 +59,14 @@ class ServiceProductForEvent : AppCompatActivity() {
             NewEvent.Selected_Service_Product_Global_Id = existingServiceProducts.Rows[i][1]
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServiceProducts.Rows[i][2])
-            builder.setMessage(existingServiceProducts.Rows[i][3])
+            var product_text = ""
+            val tbl_details_of_product = Database.getServicesProductDetails(existingServiceProducts.Rows[i][1])
+            for (row in tbl_details_of_product.Rows){
+                product_text += "> "+row[2] + "\n------------\n" + row[3] + "\n\n"
+            }
+            if(product_text.trim().length==0)
+                product_text = existingServiceProducts.Rows[i][3]
+            builder.setMessage(product_text)
 //            builder.setPositiveButton(
 //                "Edit",
 //                DialogInterface.OnClickListener { dialogInterface, j ->
@@ -71,17 +78,17 @@ class ServiceProductForEvent : AppCompatActivity() {
 //                    NewServiceProduct.SPP = existingServiceProducts.Rows[i][4].toFloat()
 //                    CurrentActivity.startActivity(Intent(CurrentActivity,NewServiceProduct::class.java))
 //                })
-            builder.setNeutralButton(
-                "Details",
-                DialogInterface.OnClickListener { dialogInterface, j ->
-                    val inn = Intent(CurrentActivity, ServiceProductDetailsForEvent::class.java)
-                    CurrentActivity.startActivity(inn)
-                })
-//            builder.setNegativeButton(
-//                "Select",
-//                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss()
-//                    finish()
+//            builder.setNeutralButton(
+//                "Details",
+//                DialogInterface.OnClickListener { dialogInterface, j ->
+//                    val inn = Intent(CurrentActivity, ServiceProductDetailsForEvent::class.java)
+//                    CurrentActivity.startActivity(inn)
 //                })
+            builder.setNegativeButton(
+                "Ok",
+                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss()
+//                    finish()
+                })
             builder.show()
         }
     }
@@ -129,15 +136,12 @@ class ServiceProductForEvent : AppCompatActivity() {
                     else
                         Database.updateTo("Service_Product", c,"GlobalId=?",listOf(res[i].GlobalId).toTypedArray())
                 }
-                existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString())
+                existingServiceProducts = Database.getServicesProductByServiceList(SelectedServiceId.joinToString(","))
                 runOnUiThread {
                     listViewServiceProduct = findViewById<ListView>(R.id.listview_ExistingServicesProduct)
-                    adapterService = PSBSArrayAdapterServiceProductForEvent(
-                        this,
-                        R.layout.listview_item_service_product_for_event,
-                        existingServiceProducts.Rows
-                    )
-                    listViewServiceProduct.adapter = adapterService
+                    adapterService.updateData(existingServiceProducts.Rows)
+                    adapterService.notifyDataSetChanged()
+                    listViewServiceProduct.deferNotifyDataSetChanged()
                 }
             } else {
                 runOnUiThread {

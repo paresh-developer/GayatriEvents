@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.pareshkumarsharma.gayatrievents.panchang.EnWeekDay
 
 
-class PSBSFestivalArrayAdapter(
+internal class PSBSFestivalArrayAdapter(
     val c: Context,
     val r: Int,
     var data: Array<List<String>>, var colNames: List<String>,

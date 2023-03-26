@@ -1,7 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.utilities
 
-data class DataTable(
-    val Columns: List<String>,
+internal data class DataTable(
+    val Columns: MutableList<String>,
     var Rows: MutableList<MutableList<String>>,
     val Error: String
 )

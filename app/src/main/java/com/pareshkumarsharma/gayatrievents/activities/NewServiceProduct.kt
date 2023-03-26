@@ -9,7 +9,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductUpdationModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class NewServiceProduct : AppCompatActivity() {
+internal class NewServiceProduct : AppCompatActivity() {
 
     internal companion object{
         var selectedServiceId:String = "0"

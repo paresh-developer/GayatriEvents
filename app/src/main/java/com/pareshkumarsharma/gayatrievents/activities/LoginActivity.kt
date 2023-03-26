@@ -14,7 +14,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.UserRegisterModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class LoginActivity : AppCompatActivity() {
+internal class LoginActivity : AppCompatActivity() {
 
     lateinit var editTextEmailMobile: EditText
     lateinit var editTextPassword: EditText

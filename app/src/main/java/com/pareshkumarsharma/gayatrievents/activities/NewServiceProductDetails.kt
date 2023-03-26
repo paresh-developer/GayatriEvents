@@ -10,7 +10,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductRegistrationM
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
-class NewServiceProductDetails : AppCompatActivity() {
+internal class NewServiceProductDetails : AppCompatActivity() {
     internal companion object {
         var selectedServiceProductId: String = "0"
         var operation: Char = 'I'

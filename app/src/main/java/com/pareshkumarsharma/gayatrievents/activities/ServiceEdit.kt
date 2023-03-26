@@ -18,7 +18,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
-class ServiceEdit : AppCompatActivity() {
+internal class ServiceEdit : AppCompatActivity() {
 
     private val CurrentActivity:ServiceEdit = this
 

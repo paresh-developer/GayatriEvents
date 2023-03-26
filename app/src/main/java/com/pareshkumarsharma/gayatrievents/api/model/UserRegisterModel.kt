@@ -1,6 +1,6 @@
 package com.pareshkumarsharma.gayatrievents.api.model
 
-data class UserRegisterModel(
+internal data class UserRegisterModel(
     val User_Name:String,
     val User_Mobile:String,
     val User_Email:String,

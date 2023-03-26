@@ -7,13 +7,13 @@
     tools:context=".activities.MainActivity"
     android:id="@+id/mainActivityLayout"
     android:orientation="vertical"
-    android:layout_margin="5dp"
+    android:layout_margin="5sp"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="90dp"
+        android:minHeight="90sp"
         android:layout_weight="1"
         android:gravity="top"
         android:orientation="horizontal"
@@ -24,11 +24,11 @@
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Home"
-            android:textSize="20dp"
+            android:text="@string/main_page"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_weight="20"
-            android:layout_margin="5dp"
+            android:layout_margin="5sp"
             android:gravity="center"
             />
 
@@ -36,10 +36,10 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="150dp"
+            android:minWidth="150sp"
             android:layout_weight="1"
-            android:text="Logout"
-            android:textSize="15dp"
+            android:text="@string/btn_Logout"
+            android:textSize="15sp"
 
             />
 
@@ -57,8 +57,8 @@
             android:id="@+id/txtHellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello! Pareshkumar Sharma"
-            android:textSize="25dp"
+            android:text=""
+            android:textSize="25sp"
             />
 
         <LinearLayout
@@ -68,20 +68,19 @@
             >
             <Button
                 android:id="@+id/btnPanchang"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:text="Panchang"
-                android:layout_margin="10dp"
-                android:textSize="15dp"
+                android:layout_width="140sp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Panchang"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
                 />
-
             <Button
-                android:id="@+id/btnSetting"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:text="Setting"
-                android:layout_margin="10dp"
-                android:textSize="15dp"
+                android:id="@+id/btnEvent"
+                android:layout_width="130sp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Event"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
                 />
         </LinearLayout>
         <LinearLayout
@@ -91,32 +90,47 @@
             >
             <Button
                 android:id="@+id/btnService"
-                android:layout_width="140dp"
-                android:layout_height="60dp"
-                android:text="Service"
-                android:layout_margin="10dp"
-                android:textSize="15dp"
+                android:layout_width="140sp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Service"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
                 />
             <Button
-                android:id="@+id/btnEvent"
-                android:layout_width="130dp"
-                android:layout_height="60dp"
-                android:text="Events"
-                android:layout_margin="10dp"
-                android:textSize="15dp"
+                android:id="@+id/btnSaleRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_Client_Request"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/btnDonate"
+                android:layout_width="140sp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Donate"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
+                />
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btnSaleRequests"
+                android:id="@+id/btnSetting"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:text="Client Req."
-                android:layout_margin="10dp"
-                android:textSize="15dp"
+                android:layout_height="60sp"
+                android:text="@string/btn_Setting"
+                android:layout_margin="10sp"
+                android:textSize="25sp"
                 />
         </LinearLayout>
     </LinearLayout>

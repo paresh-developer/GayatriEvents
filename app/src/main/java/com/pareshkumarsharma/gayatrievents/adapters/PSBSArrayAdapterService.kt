@@ -14,7 +14,7 @@ import com.pareshkumarsharma.gayatrievents.panchang.Paksha
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDay
 
 
-class PSBSArrayAdapterService(
+internal class PSBSArrayAdapterService(
     val c: Context,
     val r: Int,
     var data: List<List<String>>

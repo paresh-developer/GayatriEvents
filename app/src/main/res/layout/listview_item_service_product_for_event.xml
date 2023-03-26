@@ -19,7 +19,9 @@
         />
         <CheckBox
             android:id="@+id/chkSelection"
+            android:focusable="false"
             android:layout_weight="1"
+            android:checked="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -53,6 +55,7 @@
         <TextView
             android:id="@+id/txtServiceProductPrice"
             android:textSize="10dp"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,4 +71,18 @@
             android:text="At: "
             />
     </LinearLayout>
+<!--    <ListView-->
+<!--        android:id="@+id/lst_product_details"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp"/>-->
+<!--    <Button-->
+<!--        android:focusable="false"-->
+<!--        android:id="@+id/btn_more_details"-->
+<!--        android:textSize="12dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textAlignment="textEnd"-->
+<!--        android:text="More Details ⬇️ "-->
+<!--        />-->
 </LinearLayout>

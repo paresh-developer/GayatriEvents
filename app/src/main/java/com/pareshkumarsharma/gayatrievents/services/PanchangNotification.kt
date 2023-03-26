@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
-class PanchangNotification : Service() {
+internal class PanchangNotification : Service() {
 
     lateinit var builder: Notification.Builder
     lateinit var notificationManager: NotificationManager
