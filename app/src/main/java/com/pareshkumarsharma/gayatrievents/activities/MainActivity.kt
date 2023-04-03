@@ -133,6 +133,10 @@ internal class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, Donate::class.java))
         }
 
+        findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
+            startActivity(Intent(this, LogActivity::class.java))
+        }
+
         RefreshServiceData()
     }
 

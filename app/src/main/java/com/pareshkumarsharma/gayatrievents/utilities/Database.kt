@@ -200,7 +200,9 @@ internal class Database {
                                 "UserId int," +
                                 "UserGlobalId text," +
                                 "CreationDate datetime," +
-                                "Reason text" +
+                                "Reason text," +
+                                "RequestStatus int," +
+                                "PaymentStatus int" +
                                 ");"
                     )
                 }
@@ -225,7 +227,9 @@ internal class Database {
                                 "UserId int," +
                                 "UserGlobalId text," +
                                 "CreationDate datetime," +
-                                "Reason text" +
+                                "Reason text," +
+                                "RequestStatus int," +
+                                "PaymentStatus int" +
                                 ");"
                     )
                 }
@@ -282,8 +286,7 @@ internal class Database {
                                 "UserGlobalId text," +
                                 "CreationDate datetime," +
                                 "Reason text" +
-                                ");"
-                    )
+                                ");")
                 }
                 Toast.makeText(activity.applicationContext, "SETUP Completed", Toast.LENGTH_LONG)
                     .show()
@@ -304,6 +307,7 @@ internal class Database {
                 openConnection()
                 sqlite.insert(tableName, colmnHack, values)
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -320,6 +324,7 @@ internal class Database {
                 openConnection()
                 sqlite.update(tableName, values, whereStr, whereArg)
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -359,6 +364,7 @@ internal class Database {
 
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -384,6 +390,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -405,6 +412,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -435,6 +443,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -478,6 +487,7 @@ internal class Database {
                         row[tbl.Columns.size - 1].substring(0, row[tbl.Columns.size - 1].length - 1)
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -515,6 +525,7 @@ internal class Database {
                         row[tbl.Columns.size - 1].substring(0, row[tbl.Columns.size - 1].length - 1)
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -533,6 +544,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -563,6 +575,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -593,6 +606,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -622,6 +636,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -654,6 +669,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -679,6 +695,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -704,6 +721,7 @@ internal class Database {
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 lastError = ex.message.toString()
             } finally {
                 closeConnection()
@@ -753,6 +771,7 @@ internal class Database {
                 rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
                 c.close()
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
                 rowCount = -1
                 lastError = ex.message.toString()
             } finally {
@@ -770,6 +789,7 @@ internal class Database {
                 c.close()
             } catch (ex: Exception) {
                 lastError = ex.message.toString()
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
             } finally {
                 closeConnection()
             }

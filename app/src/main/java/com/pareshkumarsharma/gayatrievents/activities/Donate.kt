@@ -1,6 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -21,31 +22,32 @@ class Donate : AppCompatActivity() {
         val btn_pay = findViewById<Button>(R.id.btn_process_donate_pay)
         btn_pay.setOnClickListener {
             btn_pay.isEnabled = false
-            val alert = AlertDialog.Builder(thisActivity)
-            alert.setTitle("Select payment mode")
-            alert.setSingleChoiceItems(
-                listOf("Google Pay", "PayTM", "PhonePe").toTypedArray(),
-                0,
-                DialogInterface.OnClickListener { dialogInterface, i ->
-                    selectedPaymentMethod = i
-                })
-            alert.setPositiveButton(
-                "Ok",
-                DialogInterface.OnClickListener { dialogInterface, i ->
-                    dialogInterface.dismiss()
-                    Toast.makeText(thisActivity,"Processing Payment",Toast.LENGTH_SHORT).show()
-                    when(selectedPaymentMethod){
-                        0 -> PaymentManager.GooglePay(thisActivity)
-                        1 -> PaymentManager.Paytm(thisActivity)
-                        2 -> PaymentManager.PhonePe(thisActivity)
-                    }
-                    btn_pay.isEnabled = true
-                })
-            alert.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i ->
-                dialogInterface.dismiss()
-                btn_pay.isEnabled = true
-            })
-            alert.show()
+            startActivity(Intent(this,NewPayment::class.java))
+//            val alert = AlertDialog.Builder(thisActivity)
+//            alert.setTitle("Select payment mode")
+//            alert.setSingleChoiceItems(
+//                listOf("Google Pay", "PayTM", "PhonePe").toTypedArray(),
+//                0,
+//                DialogInterface.OnClickListener { dialogInterface, i ->
+//                    selectedPaymentMethod = i
+//                })
+//            alert.setPositiveButton(
+//                "Ok",
+//                DialogInterface.OnClickListener { dialogInterface, i ->
+//                    dialogInterface.dismiss()
+//                    Toast.makeText(thisActivity,"Processing Payment",Toast.LENGTH_SHORT).show()
+//                    when(selectedPaymentMethod){
+////                        0 -> PaymentManager.GooglePay(thisActivity)
+////                        1 -> PaymentManager.Paytm(thisActivity)
+////                        2 -> PaymentManager.PhonePe(thisActivity)
+//                    }
+//                    btn_pay.isEnabled = true
+//                })
+//            alert.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i ->
+//                dialogInterface.dismiss()
+//                btn_pay.isEnabled = true
+//            })
+//            alert.show()
         }
 
     }

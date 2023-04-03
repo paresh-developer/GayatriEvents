@@ -21,6 +21,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.LogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewPayment"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentEdit"
+            android:exported="false" />
+        <activity
             android:name=".activities.Donate"
             android:exported="false">
             <meta-data

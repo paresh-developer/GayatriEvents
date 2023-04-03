@@ -1,9 +1,14 @@
 package com.pareshkumarsharma.gayatrievents.utilities
 
+import android.R
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 
 
 class PaymentManager {
@@ -19,28 +24,28 @@ class PaymentManager {
 
         private val UPI_ID = "pareshsharma98000@okhdfcbank"
 
-        internal fun GooglePay(activity: Activity) {
+        internal fun GooglePay(activity: Activity,categoryCode:String, tranId:String,tranNote:String, amount:Float):Intent {
             // Google Pay Payment info
             // https://developers.google.com/pay/india/api/web/create-payment-method
             val uri = Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
                 .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
-                .appendQueryParameter("pn", "Pareshkumar Sharma") // Payee name or business name.
-                .appendQueryParameter("mc", "1234") // Business retailer category code.
-                .appendQueryParameter("tr", "123456789") // Transaction reference ID. (Business specific ID. Must be unique for each request.)
-                .appendQueryParameter("tn", "Pay For Shadi") // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
-                .appendQueryParameter("am", "10.01") // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
+                .appendQueryParameter("pn", "Gayatri Event") // Payee name or business name.
+                .appendQueryParameter("mc", categoryCode) // Business retailer category code.
+                .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
+                .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
+                .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "https://test.merchant.website")  // Transaction reference URL.
+                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
             intent.setPackage(GOOGLE_TEZ_PACKAGE_NAME)
-            activity.startActivityForResult(intent, TEZ_REQUEST_CODE)
+            return intent
         }
 
-        internal fun PhonePe(activity: Activity) {
+        internal fun PhonePe(activity: Activity,categoryCode:String, tranId:String,tranNote:String, amount:Float):Intent {
             // Google Pay Payment info
             // https://developers.google.com/pay/india/api/web/create-payment-method
             val uri = Uri.Builder()
@@ -48,20 +53,20 @@ class PaymentManager {
                 .authority("pay")
                 .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
                 .appendQueryParameter("pn", "Pareshkumar Sharma") // Payee name or business name.
-                .appendQueryParameter("mc", "1234") // Business retailer category code.
-                .appendQueryParameter("tr", "123456789") // Transaction reference ID. (Business specific ID. Must be unique for each request.)
-                .appendQueryParameter("tn", "Pay For Shadi") // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
-                .appendQueryParameter("am", "10.01") // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
+                .appendQueryParameter("mc", categoryCode) // Business retailer category code.
+                .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
+                .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
+                .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "https://test.merchant.website")  // Transaction reference URL.
+                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
             intent.setPackage(PHONEPE_PACKAGE_NAME)
-            activity.startActivityForResult(intent, TEZ_REQUEST_CODE)
+            return intent
         }
 
-        internal fun Paytm(activity: Activity) {
+        internal fun Paytm(activity: Activity,categoryCode:String, tranId:String,tranNote:String, amount:Float): Intent {
             // Google Pay Payment info
             // https://developers.google.com/pay/india/api/web/create-payment-method
             val uri = Uri.Builder()
@@ -69,17 +74,17 @@ class PaymentManager {
                 .authority("pay")
                 .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
                 .appendQueryParameter("pn", "Pareshkumar Sharma") // Payee name or business name.
-                .appendQueryParameter("mc", "1234") // Business retailer category code.
-                .appendQueryParameter("tr", "123456789") // Transaction reference ID. (Business specific ID. Must be unique for each request.)
-                .appendQueryParameter("tn", "Pay For Shadi") // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
-                .appendQueryParameter("am", "10.01") // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
+                .appendQueryParameter("mc", categoryCode) // Business retailer category code.
+                .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
+                .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
+                .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "https://test.merchant.website")  // Transaction reference URL.
+                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
             intent.setPackage(PAYTM_PACKAGE_NAME)
-            activity.startActivityForResult(intent, TEZ_REQUEST_CODE)
+            return intent
         }
 
         private fun appInstalledOrNot(activity: Activity,uri: String): Boolean {
