@@ -1,18 +1,13 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import android.Manifest
 import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.method.ScrollingMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
@@ -130,7 +125,7 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnDonate).setOnClickListener {
-            startActivity(Intent(this, Donate::class.java))
+            startActivity(Intent(this, DonationEdit::class.java))
         }
 
         findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
@@ -207,14 +202,14 @@ internal class MainActivity : AppCompatActivity() {
         if (IsLoginDone != 1) {
             var snakmsg = ""
             if (IsLoginDone == 0) {
-                snakmsg = "સ્વાગત છે! 😎"
+                snakmsg = "स्वागत है! 😎"
                 IsLoginDone = 100
             } else if (IsLoginDone == 2) {
-                snakmsg = "પ્રવેશ થયું!...👍"
-                txtHellow.text = "નમસ્તે! $UserName"
+                snakmsg = "प्रवेश हो गया!...👍"
+                txtHellow.text = "नमस्ते! $UserName"
                 IsLoginDone = 100
             } else if (IsLoginDone == 4) {
-                snakmsg = "સાઈન અપ થયું!...👍"
+                snakmsg = "प्रवेश हो गया!...👍"
             }
             if (IsLoginDone != 0 && snakmsg.trim().length > 0)
                 Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)

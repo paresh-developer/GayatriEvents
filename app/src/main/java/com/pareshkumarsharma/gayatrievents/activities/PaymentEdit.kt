@@ -1,7 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 
 class PaymentEdit : AppCompatActivity() {

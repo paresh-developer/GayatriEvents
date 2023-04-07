@@ -17,11 +17,11 @@ import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 internal class ClientEventRequestEdit : AppCompatActivity() {
 
-    private val CurrentActivity:ClientEventRequestEdit = this
+    private val CurrentActivity: ClientEventRequestEdit = this
 
     private lateinit var adapterClientEventRequests: PSBSArrayAdapterClientRequest
     private lateinit var listViewClientEventRequests: ListView
-    private lateinit var existingClientRequests : DataTable
+    private lateinit var existingClientRequests: DataTable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +35,20 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
         existingClientRequests = Database.getClientRequests()
         listViewClientEventRequests = findViewById<ListView>(R.id.listview_ExistingServices)
         adapterClientEventRequests =
-            PSBSArrayAdapterClientRequest(this, R.layout.listview_item_client_request, existingClientRequests.Rows)
+            PSBSArrayAdapterClientRequest(
+                this,
+                R.layout.listview_item_client_request,
+                existingClientRequests.Rows
+            )
         listViewClientEventRequests.adapter = adapterClientEventRequests
         listViewClientEventRequests.setOnItemClickListener { adapterView, view, i, l ->
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingClientRequests.Rows[i][6])
-            builder.setMessage("Do you want to approve this event ?")
-            builder.setNegativeButton("Reject", DialogInterface.OnClickListener { dialogInterface, j ->
+            builder.setMessage(existingClientRequests.Rows[i][7])
+            if (existingClientRequests.Rows[i][18].toInt() == 0) {
+                builder.setNegativeButton(
+                    "अस्विकार करे",
+                    DialogInterface.OnClickListener { dialogInterface, j ->
 //                NewService.SGLB = existingServices.Rows[i][1]
 //                NewService.ST = existingServices.Rows[i][6]
 //                NewService.STL = existingServices.Rows[i][2]
@@ -50,25 +57,30 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
 //                NewService.SA = existingServices.Rows[i][8]
 //                NewService.operation = 'U'
 //                CurrentActivity.startActivity(Intent(CurrentActivity,NewService::class.java))
-                Thread(Runnable {
-                    APICalls.setContext(this)
-                    APICalls.cookies = mapOf<String, String>(
-                        Pair(
-                            "token",
-                            getSharedPreferences(
-                                Database.SHAREDFILE,
-                                MODE_PRIVATE
-                            ).getString("token", "").toString()
-                        ),
-                        Pair(
-                            "expires",
-                            getSharedPreferences(
-                                Database.SHAREDFILE,
-                                MODE_PRIVATE
-                            ).getString("expires", "").toString()
-                        )
-                    )
-                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],0,findViewById<EditText>(R.id.edt_Reason).text.toString())) {
+                        Thread(Runnable {
+                            APICalls.setContext(this)
+                            APICalls.cookies = mapOf<String, String>(
+                                Pair(
+                                    "token",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("token", "").toString()
+                                ),
+                                Pair(
+                                    "expires",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("expires", "").toString()
+                                )
+                            )
+                            if (APICalls.sendClientEventRequestResponse(
+                                    existingClientRequests.Rows[i][1],
+                                    0,
+                                    findViewById<EditText>(R.id.edt_Reason).text.toString()
+                                )
+                            ) {
 //                        runOnUiThread {
 //                            Toast.makeText(
 //                                applicationContext,
@@ -76,42 +88,48 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
 //                                Toast.LENGTH_LONG
 //                            ).show()
 //                        }
-                        RefreshData()
-                    }
-                    else{
-                        runOnUiThread {
-                            Toast.makeText(
-                                applicationContext,
-                                APICalls.lastCallMessage,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }).start()
-            })
-            builder.setPositiveButton("Approve", DialogInterface.OnClickListener { dialogInterface, j ->
+                                RefreshData()
+                            } else {
+                                runOnUiThread {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        APICalls.lastCallMessage,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }).start()
+                    })
+                builder.setPositiveButton(
+                    "स्विकार करे",
+                    DialogInterface.OnClickListener { dialogInterface, j ->
 //                ServiceProductEdit.selectedServiceId = existingServices.Rows[i][existingServices.Columns.indexOf("Id")].toInt()
 //                val inn = Intent(CurrentActivity,ServiceProductEdit::class.java)
 //                CurrentActivity.startActivity(inn)
-                Thread(Runnable {
-                    APICalls.setContext(this)
-                    APICalls.cookies = mapOf<String, String>(
-                        Pair(
-                            "token",
-                            getSharedPreferences(
-                                Database.SHAREDFILE,
-                                MODE_PRIVATE
-                            ).getString("token", "").toString()
-                        ),
-                        Pair(
-                            "expires",
-                            getSharedPreferences(
-                                Database.SHAREDFILE,
-                                MODE_PRIVATE
-                            ).getString("expires", "").toString()
-                        )
-                    )
-                    if (APICalls.sendClientEventRequestResponse(existingClientRequests.Rows[i][1],1,findViewById<EditText>(R.id.edt_Reason).text.toString())) {
+                        Thread(Runnable {
+                            APICalls.setContext(this)
+                            APICalls.cookies = mapOf<String, String>(
+                                Pair(
+                                    "token",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("token", "").toString()
+                                ),
+                                Pair(
+                                    "expires",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("expires", "").toString()
+                                )
+                            )
+                            if (APICalls.sendClientEventRequestResponse(
+                                    existingClientRequests.Rows[i][1],
+                                    1,
+                                    findViewById<EditText>(R.id.edt_Reason).text.toString()
+                                )
+                            ) {
 //                        runOnUiThread {
 //                            Toast.makeText(
 //                                applicationContext,
@@ -119,30 +137,33 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
 //                                Toast.LENGTH_LONG
 //                            ).show()
 //                        }
-                        RefreshData()
-                    }
-                    else{
-                        runOnUiThread {
-                            Toast.makeText(
-                                applicationContext,
-                                APICalls.lastCallMessage,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }).start()
-            })
-            builder.setNeutralButton("Cancel", DialogInterface.OnClickListener { dialogInterface, j ->  dialogInterface.dismiss()})
+                                RefreshData()
+                            } else {
+                                runOnUiThread {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        APICalls.lastCallMessage,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }).start()
+                    })
+            }
+            builder.setNeutralButton(
+                "Ok",
+                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss() })
             builder.show()
         }
     }
+
 
     override fun onResume() {
         RefreshData()
         super.onResume()
     }
 
-    private fun RefreshData(){
+    private fun RefreshData() {
         Thread(Runnable {
             APICalls.setContext(this)
             APICalls.cookies = mapOf<String, String>(
@@ -170,11 +191,25 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     c.put("Title", res[i].EventName)
                     c.put("Details", res[i].EventDetails)
                     c.put("ServiceProductGlobalIdList", res[i].ServiceProductGlobalIdList)
-                    val tbl = Database.query("Select group_concat(Id) from SERVICE_PRODUCT where GlobalId in ('${res[i].ServiceProductGlobalIdList.replace(",","', '")}')")
-                    if(tbl.Rows.size>0 && !tbl.Columns.contains("Error"))
+                    val tbl = Database.query(
+                        "Select group_concat(Id) from SERVICE_PRODUCT where GlobalId in ('${
+                            res[i].ServiceProductGlobalIdList.replace(
+                                ",",
+                                "', '"
+                            )
+                        }')"
+                    )
+                    if (tbl.Rows.size > 0 && !tbl.Columns.contains("Error"))
                         c.put("ServiceProductIdList", tbl.Rows[0][0])
-                    val tbl1 = Database.query("Select group_concat(Id) from SERVICE where GlobalId in ('${res[i].ServiceGlobalIdList.replace(",","', '")}')")
-                    if(tbl1.Rows.size>0 && !tbl1.Columns.contains("Error"))
+                    val tbl1 = Database.query(
+                        "Select group_concat(Id) from SERVICE where GlobalId in ('${
+                            res[i].ServiceGlobalIdList.replace(
+                                ",",
+                                "', '"
+                            )
+                        }')"
+                    )
+                    if (tbl1.Rows.size > 0 && !tbl1.Columns.contains("Error"))
                         c.put("ServiceIdList", tbl1.Rows[0][0])
                     c.put("ServiceGlobalIdList", res[i].ServiceGlobalIdList)
                     c.put("DateFixed", res[i].EventDateFixed)
@@ -182,16 +217,19 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     c.put("DateEnd", res[i].EventDateEnd)
                     c.put("PriceList", res[i].EventPriceList)
                     c.put("Approved", res[i].Approved)
+                    c.put("PaymentStatus", res[i].PaymentStatus)
+                    c.put("RequestStatus", res[i].RequestStatus)
                     c.put("UserGlobalId", res[i].UserGlobalId)
-                    if(res[i].Reason!=null)
-                        c.put("Reason",res[i].Reason)
+                    if (res[i].Reason != null)
+                        c.put("Reason", res[i].Reason)
                     else
                         nul_field += ",Reason"
-                    val tbl2 = Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
-                    if(tbl2.Rows.size>0 && !tbl2.Columns.contains("Error"))
+                    val tbl2 =
+                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
+                    if (tbl2.Rows.size > 0 && !tbl2.Columns.contains("Error"))
                         c.put("UserId", tbl2.Rows[0][0].toInt())
                     c.put("CreationDate", res[i].CreationTime)
-                    if (res[i].Approval_Time!=null)
+                    if (res[i].Approval_Time != null)
                         c.put("Approval_Time", res[i].Approval_Time)
                     else
                         nul_field += ",ApprovalTime"

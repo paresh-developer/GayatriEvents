@@ -1,23 +1,14 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.EventRegistrationModel
-import com.pareshkumarsharma.gayatrievents.api.model.PaymentRequest
-import com.pareshkumarsharma.gayatrievents.api.model.PaymentUpdateModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
-import com.pareshkumarsharma.gayatrievents.utilities.PaymentManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -287,115 +278,10 @@ internal class NewEvent : AppCompatActivity() {
                             for (am in SelectedServiceProductPriceList) {
                                 EventAmount += am.toFloat()
                             }
-
-//                            val alert = AlertDialog.Builder(thisActivity)
-//                            alert.setTitle("Select payment mode")
-//                            alert.setSingleChoiceItems(
-//                                listOf("Google Pay", "PayTM", "PhonePe").toTypedArray(),
-//                                0,
-//                                DialogInterface.OnClickListener { dialogInterface, i ->
-//                                    selectedPaymentMethod = i
-//                                })
-//                            alert.setPositiveButton(
-//                                "Ok",
-//                                DialogInterface.OnClickListener { dialogInterface, i ->
-//                                    dialogInterface.dismiss()
-//                                    Toast.makeText(
-//                                        thisActivity,
-//                                        "Requesting Payment",
-//                                        Toast.LENGTH_SHORT
-//                                    ).show()
-//                                    Thread(Runnable {
-//                                        if (APICalls.requestNewPaymentRegistration(
-//                                                PaymentRequest(
-//                                                    "For " + event_name + " ($EventId)",
-//                                                    EventId,
-//                                                    EventAmount,
-//                                                    selectedPaymentMethod
-//                                                )
-//                                            )
-//                                        ) {
-//                                            val transId =
-//                                                APICalls.lastCallMessage.split("Id:")[1].trim()
-//                                                    .trim('"')
-//                                            Payment_Id = transId
-//                                            runOnUiThread {
-//                                                Toast.makeText(
-//                                                    applicationContext,
-//                                                    APICalls.lastCallMessage,
-//                                                    Toast.LENGTH_SHORT
-//                                                ).show()
-//                                            }
-//                                            when (selectedPaymentMethod) {
-//                                                0 -> openPayment(
-//                                                    PaymentManager.GooglePay(
-//                                                        thisActivity,
-//                                                        "Event",
-//                                                        transId,
-//                                                        "For " + event_name + " ($EventId)",
-//                                                        EventAmount
-//                                                    )
-//                                                )
-//                                                1 -> openPayment(
-//                                                    PaymentManager.Paytm(
-//                                                        thisActivity,
-//                                                        "Event",
-//                                                        transId,
-//                                                        "For " + event_name + " ($EventId)",
-//                                                        EventAmount
-//                                                    )
-//                                                )
-//                                                2 -> openPayment(
-//                                                    PaymentManager.PhonePe(
-//                                                        thisActivity,
-//                                                        "Event",
-//                                                        transId,
-//                                                        "For " + event_name + " ($EventId)",
-//                                                        EventAmount
-//                                                    )
-//                                                )
-//                                            }
-//                                            if (APICalls.requestPaymentStatusUpdate(
-//                                                    PaymentUpdateModel(
-//                                                        "PROCESS",
-//                                                        transId, "", "", 0, "", 1
-//                                                    )
-//                                                )
-//                                            ) {
-//                                                runOnUiThread {
-//                                                    Toast.makeText(
-//                                                        applicationContext,
-//                                                        APICalls.lastCallMessage,
-//                                                        Toast.LENGTH_SHORT
-//                                                    ).show()
-//                                                }
-//                                            } else {
-//                                                runOnUiThread {
-//                                                    Toast.makeText(
-//                                                        applicationContext,
-//                                                        APICalls.lastCallMessage,
-//                                                        Toast.LENGTH_SHORT
-//                                                    ).show()
-//                                                }
-//                                            }
-//                                        } else {
-//                                            runOnUiThread {
-//                                                Toast.makeText(
-//                                                    applicationContext,
-//                                                    APICalls.lastCallMessage,
-//                                                    Toast.LENGTH_SHORT
-//                                                ).show()
-//                                            }
-//                                        }
-//                                    }).start()
-//
-//                                })
-//                            alert.setNegativeButton(
-//                                "Cancel",
-//                                DialogInterface.OnClickListener { dialogInterface, i ->
-//                                    dialogInterface.dismiss()
-//                                })
-//                            alert.show()
+                            NewPayment.RefCode = 'E'
+                            NewPayment.RefName = event_name
+                            NewPayment.RefAmount = EventAmount
+                            NewPayment.RefId = EventId
                             startActivity(Intent(this, NewPayment::class.java))
                             finish()
                         }
@@ -477,17 +363,6 @@ internal class NewEvent : AppCompatActivity() {
                 ).toInt()
         } else
             findViewById<TextView>(R.id.txt_price).text = "0.0"
-    }
-
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        if (resultCode == TEZ_REQUEST_CODE) {
-
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {

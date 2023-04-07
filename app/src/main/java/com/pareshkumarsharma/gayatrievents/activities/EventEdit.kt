@@ -44,7 +44,7 @@ internal class EventEdit : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingEvents.Rows[i][6])
             builder.setMessage(existingEvents.Rows[i][7])
-            if ((existingEvents.Rows[i][13] == null || existingEvents.Rows[i][13].startsWith("000")) && existingEvents.Rows[i][12] == "0") {
+            if (existingEvents.Rows[i][18].toInt() != 0 && existingEvents.Rows[i][12].toInt() == 0) {
 //                builder.setNegativeButton(
 //                    "Edit",
 //                    DialogInterface.OnClickListener { dialogInterface, j ->
@@ -104,6 +104,24 @@ internal class EventEdit : AppCompatActivity() {
                         }).start()
                     })
             }
+            if (existingEvents.Rows[i][19].toShort() != 2.toShort() && existingEvents.Rows[i][18].toInt() == 0) {
+                var prices = 0.0F
+                for (pri in existingEvents.Rows[i][11].split(',')) {
+                    prices += pri.trim().toFloat()
+                }
+                val refId = existingEvents.Rows[i][1]
+                val refName = existingEvents.Rows[i][6]
+                builder.setPositiveButton(
+                    "Payment",
+                    DialogInterface.OnClickListener { dialogInterface, i ->
+                        NewPayment.RefCode = 'E'
+                        NewPayment.RefAmount = prices
+                        NewPayment.RefId = refId
+                        NewPayment.RefName = refName
+                        startActivity(Intent(this, NewPayment::class.java))
+                        dialogInterface.dismiss()
+                    })
+            }
 
             builder.setNeutralButton(
                 "Ok",
@@ -146,14 +164,28 @@ internal class EventEdit : AppCompatActivity() {
                     c.put("Details", res[i].EventDetails)
                     c.put("ServiceProductGlobalIdList", res[i].ServiceProductGlobalIdList)
                     val tbl =
-                        Database.query("Select group_concat(Id) from SERVICE_PRODUCT where GlobalId in ('${res[i].ServiceProductGlobalIdList.replace(",","', '")}')")
+                        Database.query(
+                            "Select group_concat(Id) from SERVICE_PRODUCT where GlobalId in ('${
+                                res[i].ServiceProductGlobalIdList.replace(
+                                    ",",
+                                    "', '"
+                                )
+                            }')"
+                        )
                     if (tbl.Rows.size > 0 && !tbl.Columns.contains("Error"))
                         c.put("ServiceProductIdList", tbl.Rows[0][0])
                     else
                         nul_field += ",ServiceProductIdList"
 
                     val tbl1 =
-                        Database.query("Select group_concat(Id) from SERVICE where GlobalId='${res[i].ServiceGlobalIdList.replace(",","', '")}'")
+                        Database.query(
+                            "Select group_concat(Id) from SERVICE where GlobalId='${
+                                res[i].ServiceGlobalIdList.replace(
+                                    ",",
+                                    "', '"
+                                )
+                            }'"
+                        )
                     if (tbl1.Rows.size > 0 && !tbl1.Columns.contains("Error"))
                         c.put("ServiceIdList", tbl1.Rows[0][0])
                     else
@@ -168,8 +200,8 @@ internal class EventEdit : AppCompatActivity() {
                     c.put("UserGlobalId", res[i].UserGlobalId)
                     c.put("PaymentStatus", res[i].PaymentStatus)
                     c.put("RequestStatus", res[i].RequestStatus)
-                    if(res[i].Reason!=null)
-                        c.put("Reason",res[i].Reason)
+                    if (res[i].Reason != null)
+                        c.put("Reason", res[i].Reason)
                     else
                         nul_field += ",Reason"
                     val tbl2 =

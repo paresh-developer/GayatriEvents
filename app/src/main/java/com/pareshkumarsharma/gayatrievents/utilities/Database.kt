@@ -288,6 +288,23 @@ internal class Database {
                                 "Reason text" +
                                 ");")
                 }
+
+                if (!checkTableExists("DONATION")) {
+                    //table not exists
+                    sqlite.execSQL(
+                        "Create table DONATION (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "Motive text," +
+                                "Description text," +
+                                "Amount float," +
+                                "UserId int," +
+                                "UserGlobalId text," +
+                                "CreatedOn datetime," +
+                                "PaymentStatus datetime" +
+                                ");"
+                    )
+                }
                 Toast.makeText(activity.applicationContext, "SETUP Completed", Toast.LENGTH_LONG)
                     .show()
             } catch (ex: java.lang.Exception) {
@@ -462,7 +479,7 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Events",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -483,8 +500,14 @@ internal class Database {
                     for (r1 in tbl_tmp.Rows) {
                         row[tbl.Columns.size - 1] += r1[0] + ","
                     }
-                    row[tbl.Columns.size - 1] =
-                        row[tbl.Columns.size - 1].substring(0, row[tbl.Columns.size - 1].length - 1)
+
+                    if(tbl_tmp.Rows.size>0) {
+                        row[tbl.Columns.size - 1] =
+                            row[tbl.Columns.size - 1].substring(
+                                0,
+                                row[tbl.Columns.size - 1].length - 1
+                            )
+                    }
                 }
             } catch (ex: Exception) {
                 LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
@@ -500,7 +523,7 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason from Client_EVENTS_Request",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -738,6 +761,29 @@ internal class Database {
                 CityName = tbl.Rows[0][0]
 
             return CityName
+        }
+
+        fun getDonations():DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id, GlobalId,Motive,Description,Amount,UserId,UserGlobalId,CreatedOn,PaymentStatus from Donation", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
         }
 
         // region Utility

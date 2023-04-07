@@ -70,12 +70,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registerd On"
-            android:textSize="13dp"
+            android:textSize="10dp"
             android:textColor="#535353"
             />
         <TextView
             android:id="@+id/txtEventPrice"
-            android:textSize="10dp"
+            android:textSize="13dp"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,11 +90,20 @@
         >
         <TextView
             android:id="@+id/txtApproved"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approval"
+            android:layout_weight="1"
+            android:textSize="15dp"
+            android:layout_gravity="left"
+            />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtPayment"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Approval"
             android:textSize="15dp"
-            android:textAlignment="center"
             />
     </LinearLayout>
 </LinearLayout>

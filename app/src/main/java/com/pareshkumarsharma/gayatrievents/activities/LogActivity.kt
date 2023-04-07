@@ -1,8 +1,8 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.utilities.LogManagement
 

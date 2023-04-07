@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ClientEventRequestEdit"
+    tools:context=".activities.DonationEdit"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         >
 
@@ -17,7 +18,7 @@
             android:id="@+id/txtNavigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="बिक्री आदेश"
+            android:text="दान पेज"
             android:textSize="20dp"
             android:textStyle="bold"
             android:layout_weight="20"
@@ -25,18 +26,20 @@
             android:gravity="center"
             />
 
+        <Button
+            android:id="@+id/btnCreateNewDonation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="नया दान"
+            android:textSize="15dp"
+            />
+
     </LinearLayout>
-    <EditText
-        android:id="@+id/edt_Reason"
-        android:layout_gravity="right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="कारण"
-        />
 
     <ListView
         android:padding="5dp"
-        android:id="@+id/listview_ExistingServices"
+        android:id="@+id/listview_ExistingDonation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

@@ -26,8 +26,8 @@ internal class APICalls {
         internal fun updatePath(hostPath:String){
             HOST = hostPath
         }
-        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
-//        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
+//        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
+        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"
@@ -76,6 +76,10 @@ internal class APICalls {
             "Payment/New"
         private var PAYMENT_UPDATE_REQUEST =
             "Payment/Update"
+        private var NEW_DONATION_REQUEST =
+            "Donation/New"
+        private var AVAILABLE_DONATIONS_OF_USER =
+            "Donation/"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -148,7 +152,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -196,7 +200,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -242,6 +246,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -285,6 +290,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -328,6 +334,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -378,7 +385,7 @@ internal class APICalls {
                     lastCallMessage = InputStreamReader(urlConnection.errorStream).readText()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -421,7 +428,7 @@ internal class APICalls {
                         BufferedReader(InputStreamReader(urlConnection.errorStream)).readText()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -476,6 +483,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -530,6 +538,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -584,6 +593,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -638,6 +648,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -693,6 +704,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -748,6 +760,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -805,6 +818,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -862,6 +876,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -915,6 +930,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -968,6 +984,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1021,6 +1038,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1074,6 +1092,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1127,6 +1146,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1180,6 +1200,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1235,7 +1256,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -1290,7 +1311,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                Log.d("API Call", ex.message.toString())
+                LogManagement.Log(ex.message.toString(),"API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -1344,6 +1365,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1398,6 +1420,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1405,6 +1428,116 @@ internal class APICalls {
 
             return isSuccess
         }
+
+        internal fun requestNewDonationRegistration(donationModel: DonationRequestModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL( HOST + NEW_DONATION_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(donationModel, DonationRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getExistingDonationOfCurrentUser(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL( HOST + AVAILABLE_DONATIONS_OF_USER)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson<Array<DonationDisplayModel>>(
+                            respo,
+                            Array<DonationDisplayModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
         // endregion
 
         // region Utility

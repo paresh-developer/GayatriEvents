@@ -103,12 +103,20 @@
 <!--        android:background="#D32F2F"-->
         <TextView
             android:id="@+id/txtApproved"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rejected"
-            android:textSize="10dp"
-            android:textStyle="bold"
+            android:text="Approval"
+            android:layout_weight="1"
+            android:textSize="15dp"
+            android:layout_gravity="left"
+            />
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approval"
+            android:textSize="15dp"
             />
     </LinearLayout>
 </LinearLayout>
