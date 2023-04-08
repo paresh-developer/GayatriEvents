@@ -143,7 +143,9 @@ internal class Database {
                                 "City int," +
                                 "Approved int," +
                                 "ApprovalTime datetime," +
-                                "RequestStatus int" +
+                                "RequestStatus int," +
+                                "UserId int,"+
+                                "UserGlobalId text"+
                                 ");"
                     )
                 }
@@ -443,6 +445,24 @@ internal class Database {
             return tbl
         }
 
+        fun getUserGlobalId(username:String,mobile:String,password:String):String{
+            var id=""
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("select GlobalId from users where email = '$username' and mobile = '$mobile' and User_Password = '$password'", null)
+                val tbl = getDataTableFromCursor(c)
+                c.close()
+                if(tbl!=null && tbl.Rows.count()>0)
+                    id = tbl.Rows[0][0]
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return id
+        }
+
         internal fun getCities(): DataTable {
             var tbl: DataTable? = null
             try {
@@ -474,12 +494,12 @@ internal class Database {
             return tbl
         }
 
-        internal fun getEvents(): DataTable {
+        internal fun getEvents(userGlobalId:String): DataTable {
             var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()), "")
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events where UserGlobalId = '$userGlobalId'",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -556,12 +576,12 @@ internal class Database {
             return tbl
         }
 
-        internal fun getServices(): DataTable {
+        internal fun getServices(userGlobalId:String): DataTable {
             var tbl: DataTable? = null
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service",
+                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service  where UserGlobalId = '$userGlobalId'",
                     null
                 )
                 tbl = getDataTableFromCursor(c)

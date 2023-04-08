@@ -15,6 +15,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
 
 internal class ServiceEdit : AppCompatActivity() {
 
@@ -37,7 +38,7 @@ internal class ServiceEdit : AppCompatActivity() {
             startActivity(Intent(this, NewService::class.java))
         }
 
-        existingServices = Database.getServices()
+        existingServices = Database.getServices(GlobalData.getUserGlobalId())
         listViewService = findViewById<ListView>(R.id.listview_ExistingServices)
         adapterService =
             PSBSArrayAdapterService(this, R.layout.listview_item_service, existingServices.Rows)
@@ -91,6 +92,13 @@ internal class ServiceEdit : AppCompatActivity() {
                     var nul_field = "Id"
                     val c = ContentValues()
                     c.put("GlobalId", res[i].GlobalId)
+                    c.put("UserGlobalId", res[i].UserGlobalId)
+                    val tbl2 =
+                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
+                    if (tbl2.Rows.size > 0 && !tbl2.Columns.contains("Error"))
+                        c.put("UserId", tbl2.Rows[0][0].toInt())
+                    else
+                        nul_field += ",UserId"
                     c.put("ServiceType", res[i].ServiceType)
                     c.put("City", res[i].City)
                     c.put("Title", res[i].Title)
@@ -117,7 +125,7 @@ internal class ServiceEdit : AppCompatActivity() {
                     }
 
                 }
-                existingServices = Database.getServices()
+                existingServices = Database.getServices(GlobalData.getUserGlobalId())
 
                 runOnUiThread {
                     adapterService.updateData(existingServices.Rows)

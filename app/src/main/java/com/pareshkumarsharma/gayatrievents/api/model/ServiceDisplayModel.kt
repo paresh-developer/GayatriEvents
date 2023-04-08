@@ -10,5 +10,6 @@ internal data class ServiceDisplayModel(
     val City: Int,
     val Approved: Boolean,
     val ApprovalTime: String,
-    val RequestStatus: Boolean
+    val RequestStatus: Boolean,
+    val UserGlobalId:String
 )

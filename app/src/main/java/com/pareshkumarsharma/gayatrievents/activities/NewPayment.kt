@@ -3,10 +3,7 @@ package com.pareshkumarsharma.gayatrievents.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -73,6 +70,11 @@ class NewPayment : AppCompatActivity() {
             findViewById<ImageButton>(R.id.btn_img_paytm).isEnabled = false
             findViewById<ImageButton>(R.id.btn_img_googlepay).isEnabled = false
             findViewById<ImageButton>(R.id.btn_img_phonepe).isEnabled = false
+        }
+
+        findViewById<Button>(R.id.btn_cash_pay_request).setOnClickListener {
+            requestPayment(RefName, RefId, RefAmount, 0, RefCode)
+            findViewById<Button>(R.id.btn_cash_pay_request).isEnabled = false
         }
 
         PaymentActivityResultLauncher =
@@ -147,6 +149,7 @@ class NewPayment : AppCompatActivity() {
                     )
                 )
             ) {
+                runOnUiThread { Toast.makeText(applicationContext,APICalls.lastCallMessage,Toast.LENGTH_SHORT).show() }
                 Payment_Global_Id =
                     APICalls.lastCallMessage.split("Id:")[1].trim()
                         .trim('"')

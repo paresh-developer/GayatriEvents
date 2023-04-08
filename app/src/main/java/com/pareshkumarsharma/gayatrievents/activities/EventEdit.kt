@@ -15,6 +15,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.EventDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
 
 internal class EventEdit : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ internal class EventEdit : AppCompatActivity() {
             startActivity(Intent(this, NewEvent::class.java))
         }
 
-        existingEvents = Database.getEvents()
+        existingEvents = Database.getEvents(GlobalData.getUserGlobalId())
         listViewEvents = findViewById<ListView>(R.id.listview_ExistingEvents)
         adapterEvents =
             PSBSArrayAdapterEvent(this, R.layout.listview_item_event, existingEvents.Rows)
@@ -44,7 +45,7 @@ internal class EventEdit : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingEvents.Rows[i][6])
             builder.setMessage(existingEvents.Rows[i][7])
-            if (existingEvents.Rows[i][18].toInt() != 0 && existingEvents.Rows[i][12].toInt() == 0) {
+            if (!existingEvents.Rows[i][18].equals("1") && !existingEvents.Rows[i][18].equals("0")) {
 //                builder.setNegativeButton(
 //                    "Edit",
 //                    DialogInterface.OnClickListener { dialogInterface, j ->
@@ -64,45 +65,50 @@ internal class EventEdit : AppCompatActivity() {
 //                        NewEvent.Operation = 'U'
 //                        CurrentActivity.startActivity(Intent(CurrentActivity, NewEvent::class.java))
 //                    })
-                builder.setNegativeButton(
-                    "Delete",
-                    DialogInterface.OnClickListener { dialogInterface, i123 ->
-                        Thread(Runnable {
-                            APICalls.setContext(this)
-                            APICalls.cookies = mapOf<String, String>(
-                                Pair(
-                                    "token",
-                                    getSharedPreferences(
-                                        Database.SHAREDFILE,
-                                        MODE_PRIVATE
-                                    ).getString("token", "").toString()
-                                ),
-                                Pair(
-                                    "expires",
-                                    getSharedPreferences(
-                                        Database.SHAREDFILE,
-                                        MODE_PRIVATE
-                                    ).getString("expires", "").toString()
+                if(existingEvents.Rows[i][18].equals("1") && existingEvents.Rows[i][18].equals("1")){
+                    // TODO: Create refund logic for 50%
+                }
+                else {
+                    builder.setNegativeButton(
+                        "Delete",
+                        DialogInterface.OnClickListener { dialogInterface, i123 ->
+                            Thread(Runnable {
+                                APICalls.setContext(this)
+                                APICalls.cookies = mapOf<String, String>(
+                                    Pair(
+                                        "token",
+                                        getSharedPreferences(
+                                            Database.SHAREDFILE,
+                                            MODE_PRIVATE
+                                        ).getString("token", "").toString()
+                                    ),
+                                    Pair(
+                                        "expires",
+                                        getSharedPreferences(
+                                            Database.SHAREDFILE,
+                                            MODE_PRIVATE
+                                        ).getString("expires", "").toString()
+                                    )
                                 )
-                            )
-                            if (APICalls.sendDeleteEventRequest(
-                                    existingEvents.Rows[i][1],
-                                    0,
-                                    "Deleted By Client"
-                                )
-                            ) {
-                                RefreshData()
-                            } else {
-                                runOnUiThread {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        APICalls.lastCallMessage,
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                if (APICalls.sendDeleteEventRequest(
+                                        existingEvents.Rows[i][1],
+                                        0,
+                                        "Deleted By Client"
+                                    )
+                                ) {
+                                    RefreshData()
+                                } else {
+                                    runOnUiThread {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            APICalls.lastCallMessage,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
                                 }
-                            }
-                        }).start()
-                    })
+                            }).start()
+                        })
+                }
             }
             if (existingEvents.Rows[i][19].toShort() != 2.toShort() && existingEvents.Rows[i][18].toInt() == 0) {
                 var prices = 0.0F
@@ -234,7 +240,7 @@ internal class EventEdit : AppCompatActivity() {
                     }
 
                 }
-                existingEvents = Database.getEvents()
+                existingEvents = Database.getEvents(GlobalData.getUserGlobalId())
 
                 runOnUiThread {
                     adapterEvents.updateData(existingEvents.Rows)

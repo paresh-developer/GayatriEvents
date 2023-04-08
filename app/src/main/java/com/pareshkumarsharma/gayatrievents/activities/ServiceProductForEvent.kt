@@ -28,7 +28,7 @@ internal class ServiceProductForEvent : AppCompatActivity() {
         var SelectedServiceId = mutableListOf<String>()
         var SelectedProductId = mutableListOf<String>()
         var SelectedProductName = mutableListOf<String>()
-        var SelectedProductPrice = mutableListOf<String>()
+        var SelectedProductPrice = mutableListOf<Float>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

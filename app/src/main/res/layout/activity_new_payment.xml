@@ -104,8 +104,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lyt_cash"
             android:visibility="gone"
+            android:id="@+id/lyt_cash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -126,6 +126,13 @@
                 android:text="परेशकुमार शर्मा ( मो. 8128611138 ),\nलाइन नं. 1, दुकान नं. 2,\nमाधव दर्शन कोम्प्लेक्स,\nजुलेलाल चौक, वाघावडी रोड,\nभावनगर - 364001"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/btn_cash_pay_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Request (दर्ज करें)"
+                />
         </LinearLayout>
     </LinearLayout>
 

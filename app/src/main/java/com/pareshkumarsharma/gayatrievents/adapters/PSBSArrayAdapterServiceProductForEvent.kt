@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import com.pareshkumarsharma.gayatrievents.R
 
 
 internal class PSBSArrayAdapterServiceProductForEvent(
@@ -14,10 +15,12 @@ internal class PSBSArrayAdapterServiceProductForEvent(
     val r: Int,
     var data: List<List<String>>
 ) : ArrayAdapter<List<String>>(c, r, data) {
+
     //var Identity = 0 // for panchang 1 for festivals
     var SelectedProductId = mutableListOf<String>()
     var SelectedProductNames = mutableListOf<String>()
-    var SelectedProductPrices = mutableListOf<String>()
+    var SelectedProductPrices = mutableListOf<Float>()
+
     override fun isEmpty(): Boolean {
         return data.isEmpty()
     }
@@ -47,16 +50,16 @@ internal class PSBSArrayAdapterServiceProductForEvent(
         }
 
         val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductTitle)
+            currentItemView?.findViewById<TextView>(R.id.txtServiceProductTitle)
         val txtDesc =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDescription)
+            currentItemView?.findViewById<TextView>(R.id.txtServiceProductDescription)
         val txtOwnerAt =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductAt)
+            currentItemView?.findViewById<TextView>(R.id.txtServiceProductAt)
 
         val txtPrice =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductPrice)
+            currentItemView?.findViewById<TextView>(R.id.txtServiceProductPrice)
         val chkSelection =
-            currentItemView?.findViewById<CheckBox>(com.pareshkumarsharma.gayatrievents.R.id.chkSelection)
+            currentItemView?.findViewById<CheckBox>(R.id.chkSelection)
 //        val lstView_productDetails =
 //            currentItemView?.findViewById<ListView>(com.pareshkumarsharma.gayatrievents.R.id.lst_product_details)
 //        val btnMoreDetails =
@@ -90,25 +93,25 @@ internal class PSBSArrayAdapterServiceProductForEvent(
                     SelectedProductId.add(data[position][1])
                 if(!SelectedProductNames.contains(data[position][2]))
                     SelectedProductNames.add(data[position][2])
-                if(!SelectedProductPrices.contains(data[position][4]))
-                    SelectedProductPrices.add(data[position][4])
+                    SelectedProductPrices.add(data[position][4].toFloat())
             }
             else{
-                if(SelectedProductId.contains(data[position][1]))
+                if(SelectedProductId.contains(data[position][1])) {
+                    val idIndex = SelectedProductId.indexOf(data[position][1])
                     SelectedProductId.remove(data[position][1])
+                    SelectedProductPrices.removeAt(idIndex)
+                }
                 if(SelectedProductNames.contains(data[position][2]))
                     SelectedProductNames.remove(data[position][2])
-                if(SelectedProductPrices.contains(data[position][4]))
-                    SelectedProductPrices.remove(data[position][4])
             }
         }
 
         chkSelection?.isChecked = SelectedProductId.contains(data[position][1])
         if(chkSelection?.isChecked==true){
-            if(!SelectedProductNames.contains(data[position][2]))
+            if(!SelectedProductNames.contains(data[position][2])) {
                 SelectedProductNames.add(data[position][2])
-            if(!SelectedProductPrices.contains(data[position][4]))
-                SelectedProductPrices.add(data[position][4])
+                SelectedProductPrices.add(data[position][4].toFloat())
+            }
         }
 
         try {

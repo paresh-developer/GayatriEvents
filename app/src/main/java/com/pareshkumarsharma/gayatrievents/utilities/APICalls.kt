@@ -26,8 +26,8 @@ internal class APICalls {
         internal fun updatePath(hostPath:String){
             HOST = hostPath
         }
-//        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
-        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
+        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
+//        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"

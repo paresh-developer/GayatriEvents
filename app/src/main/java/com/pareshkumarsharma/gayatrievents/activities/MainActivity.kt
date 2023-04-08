@@ -16,6 +16,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
 import com.pareshkumarsharma.gayatrievents.services.PanchangNotification
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
 
 
 internal class MainActivity : AppCompatActivity() {
@@ -62,6 +63,8 @@ internal class MainActivity : AppCompatActivity() {
                     .toString()
         }
 
+        GlobalData.setUserGlobalId(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE))
+
         txtHellow = findViewById(R.id.txtHellow)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
 
@@ -103,11 +106,6 @@ internal class MainActivity : AppCompatActivity() {
                     .show()
         }
 
-//        startActivity(Intent(this,Panchang::class.java))
-//        APICalls.decodeStringComplex(APICalls.encodeStringComplex("Pwd"))
-//        if(Database.query("SELECT count(rootpage) FROM sqlite_master WHERE type='table' and not name = 'sqlite_sequence' and not name = 'android_metadata';").Rows[0][0].toString().toInt()>0)
-//            Toast.makeText(this,"Tables Exists",Toast.LENGTH_LONG).show()
-
         findViewById<Button>(R.id.btnEvent).setOnClickListener {
             startActivity(Intent(this, EventEdit::class.java))
         }
@@ -137,67 +135,6 @@ internal class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-//        var flag_read = false
-//        var flag_write = false
-//        var flag_manage = false
-//
-//        if (ContextCompat.checkSelfPermission(
-//                applicationContext,
-//                Manifest.permission.READ_EXTERNAL_STORAGE
-//            ) == PackageManager.PERMISSION_GRANTED
-//        )
-//            flag_read = true
-//        if (ContextCompat.checkSelfPermission(
-//                applicationContext,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE
-//            ) == PackageManager.PERMISSION_GRANTED
-//        )
-//            flag_write = true
-//        if (ContextCompat.checkSelfPermission(
-//                applicationContext,
-//                Manifest.permission.MANAGE_EXTERNAL_STORAGE
-//            ) == PackageManager.PERMISSION_GRANTED
-//        )
-//            flag_manage = true
-//        if (!flag_read
-//            ||
-//            !flag_write
-//            ||
-//            !flag_manage
-//        ) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                if (!flag_read) {
-//                    requestPermissions(
-//                        listOf(Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray(),
-//                        10001
-//                    )
-//                }
-//                if (!flag_write) {
-//                    requestPermissions(
-//                        listOf(Manifest.permission.WRITE_EXTERNAL_STORAGE).toTypedArray(),
-//                        10001
-//                    )
-//                }
-//                if (!flag_manage) {
-//                    requestPermissions(
-//                        listOf(
-//                            Manifest.permission.MANAGE_EXTERNAL_STORAGE
-//                        ).toTypedArray(),
-//                        10001
-//                    )
-//                }
-//            }
-//        } else {
-//            val file_external = Environment.getExternalStorageDirectory()
-//            val absolutePath = file_external.absolutePath
-//            val apiFile = java.io.File(absolutePath + "/apiUrl.txt")
-//            if (apiFile.exists()) {
-//                val data_url_api = apiFile.readText()
-//                if (data_url_api.trim().length > 0)
-//                    APICalls.updatePath(data_url_api)
-//            }
-//        }
 
         if (IsLoginDone != 1) {
             var snakmsg = ""
@@ -255,6 +192,13 @@ internal class MainActivity : AppCompatActivity() {
                     var nul_field = "Id"
                     val c = ContentValues()
                     c.put("GlobalId", res[i].GlobalId)
+                    c.put("UserGlobalId", res[i].UserGlobalId)
+                    val tbl2 =
+                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
+                    if (tbl2.Rows.size > 0 && !tbl2.Columns.contains("Error"))
+                        c.put("UserId", tbl2.Rows[0][0].toInt())
+                    else
+                        nul_field += ",UserId"
                     c.put("ServiceType", res[i].ServiceType)
                     c.put("City", res[i].City)
                     c.put("Title", res[i].Title)

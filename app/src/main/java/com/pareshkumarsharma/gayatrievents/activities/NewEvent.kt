@@ -36,7 +36,7 @@ internal class NewEvent : AppCompatActivity() {
         var Event_Details = ""
         var SelectedServiceIds = mutableListOf<String>()
         var SelectedServiceProductIds = mutableListOf<String>()
-        var SelectedServiceProductPriceList = mutableListOf<String>()
+        var SelectedServiceProductPriceList = mutableListOf<Float>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +48,11 @@ internal class NewEvent : AppCompatActivity() {
 
         SelectedServiceIds = mutableListOf<String>()
         SelectedServiceProductIds = mutableListOf<String>()
-        SelectedServiceProductPriceList = mutableListOf<String>()
+        SelectedServiceProductPriceList = mutableListOf<Float>()
 
         ServiceForEvent.SelectedServiceIds = mutableListOf<String>()
         ServiceProductForEvent.SelectedProductId = mutableListOf<String>()
-        ServiceProductForEvent.SelectedProductPrice = mutableListOf<String>()
+        ServiceProductForEvent.SelectedProductPrice = mutableListOf<Float>()
 
         val rd_group = findViewById<RadioGroup>(R.id.radioGroup)
         rd_group.setOnCheckedChangeListener { radioGroup, i ->

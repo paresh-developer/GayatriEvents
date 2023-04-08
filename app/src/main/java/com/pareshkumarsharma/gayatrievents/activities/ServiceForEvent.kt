@@ -43,7 +43,7 @@ internal class ServiceForEvent : AppCompatActivity() {
             )
             val tblrows_p_id = mutableListOf<String>()
             val tblrows_p_name = mutableListOf<String>()
-            val tblrows_p_price = mutableListOf<String>()
+            val tblrows_p_price = mutableListOf<Float>()
             for (r in tl.Rows) {
                 tblrows_p_id.add(r[0].trim())
             }
@@ -51,7 +51,7 @@ internal class ServiceForEvent : AppCompatActivity() {
                 tblrows_p_name.add(r[1].trim())
             }
             for (r in tl.Rows) {
-                tblrows_p_price.add(r[2].trim())
+                tblrows_p_price.add(r[2].trim().toFloat())
             }
             NewEvent.SelectedServiceProductIds = tblrows_p_id.intersect(NewEvent.SelectedServiceProductIds.toSet()).toMutableList()
             NewEvent.SelectedServiceProductPriceList = tblrows_p_price.intersect(NewEvent.SelectedServiceProductPriceList.toSet()).toMutableList()
