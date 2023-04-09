@@ -14,6 +14,7 @@ import com.pareshkumarsharma.gayatrievents.api.model.EventDisplayModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
 
 internal class ClientEventRequestEdit : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
             finish()
         }
 
-        existingClientRequests = Database.getClientRequests()
+        existingClientRequests = Database.getClientRequests(GlobalData.getUserGlobalId())
         listViewClientEventRequests = findViewById<ListView>(R.id.listview_ExistingServices)
         adapterClientEventRequests =
             PSBSArrayAdapterClientRequest(
@@ -252,7 +253,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     }
 
                 }
-                existingClientRequests = Database.getClientRequests()
+                existingClientRequests = Database.getClientRequests(GlobalData.getUserGlobalId())
 
                 runOnUiThread {
                     adapterClientEventRequests.updateData(existingClientRequests.Rows)

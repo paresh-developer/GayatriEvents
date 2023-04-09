@@ -62,7 +62,7 @@ internal class ServiceEdit : AppCompatActivity() {
                 val inn = Intent(CurrentActivity,ServiceProductEdit::class.java)
                 CurrentActivity.startActivity(inn)
             })
-            builder.setNeutralButton("Cancel", DialogInterface.OnClickListener { dialogInterface, j ->  })
+            builder.setNeutralButton("Ok", DialogInterface.OnClickListener { dialogInterface, j ->  })
             builder.show()
         }
     }

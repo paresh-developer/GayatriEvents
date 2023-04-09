@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Muhurat"
+    android:orientation="vertical"
+    android:layout_margin="5sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/txtNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="चोघडिया मुहुर्त"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_margin="5sp"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/nmDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:focusedByDefault="false" />
+
+        <NumberPicker
+            android:id="@+id/nmMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <NumberPicker
+            android:id="@+id/nmYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rdo_group_chogadiya"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+        <RadioButton
+            android:checked="true"
+            android:id="@+id/rdo_divas"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="दिवस"
+            android:layout_marginEnd="30dp"
+            />
+        <RadioButton
+            android:id="@+id/rdo_ratri"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="रात्री"
+            />
+    </RadioGroup>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_margin="5dp">
+        <TableRow>
+            <TextView
+                android:id="@+id/month"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="महिना : - "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginStart="5dp"
+                android:id="@+id/weekday"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="वार :- "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/sunrise"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="सुर्योदय : - "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginStart="5dp"
+                android:id="@+id/sunset"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:text="सुर्योस्त :- "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </TableRow>
+    </TableLayout>
+    <ListView
+        android:id="@+id/lst_muhurat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>

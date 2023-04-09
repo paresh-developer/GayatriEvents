@@ -57,9 +57,9 @@ internal class MainActivity : AppCompatActivity() {
         if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone", false))
             startActivity(Intent(this, LoginActivity::class.java))
         else {
-            IsLoginDone = 5
+            IsLoginDone = 2
             UserName =
-                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("Uname", "")
+                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("LLName", "")
                     .toString()
         }
 
@@ -95,7 +95,7 @@ internal class MainActivity : AppCompatActivity() {
         val packapath = this.packageName
         btnPanchang.setOnClickListener {
             startActivity(Intent(this, Panchang::class.java))
-            IsLoginDone = 5
+            IsLoginDone = 2
         }
 
         findViewById<Button>(R.id.btnService).setOnClickListener {
@@ -128,6 +128,10 @@ internal class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
             startActivity(Intent(this, LogActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnMuhurat).setOnClickListener {
+            startActivity(Intent(this, Muhurat::class.java))
         }
 
         RefreshServiceData()
@@ -186,7 +190,7 @@ internal class MainActivity : AppCompatActivity() {
                     ).getString("expires", "").toString()
                 )
             )
-            if (APICalls.getExistingServiceForEvent()) {
+            if (APICalls.getExistingServiceOfCurrentUser()) {
                 val res = APICalls.lastCallObject as Array<ServiceDisplayModel>
                 for (i in 0..res.size - 1) {
                     var nul_field = "Id"

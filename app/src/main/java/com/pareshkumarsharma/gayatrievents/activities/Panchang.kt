@@ -226,8 +226,8 @@ internal class Panchang : AppCompatActivity() {
         nmMonth.minValue = 1
         nmDay.maxValue = 31
         nmMonth.maxValue = 12
-        nmYear.minValue = 1422
-        nmYear.maxValue = 2822
+        nmYear.minValue = 1900 // we have from 1422
+        nmYear.maxValue = 2100
 
         nmDay.value = SimpleDateFormat("d").format(Date()).toInt()
         nmMonth.value = SimpleDateFormat("M").format(Date()).toInt()

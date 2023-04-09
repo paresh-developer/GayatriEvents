@@ -110,7 +110,7 @@ internal class EventEdit : AppCompatActivity() {
                         })
                 }
             }
-            if (existingEvents.Rows[i][19].toShort() != 2.toShort() && existingEvents.Rows[i][18].toInt() == 0) {
+            if (existingEvents.Rows[i][19].toShort() != 2.toShort() && existingEvents.Rows[i][18].toInt() <= existingEvents.Rows[i][12].toInt()) {
                 var prices = 0.0F
                 for (pri in existingEvents.Rows[i][11].split(',')) {
                     prices += pri.trim().toFloat()
@@ -118,7 +118,7 @@ internal class EventEdit : AppCompatActivity() {
                 val refId = existingEvents.Rows[i][1]
                 val refName = existingEvents.Rows[i][6]
                 builder.setPositiveButton(
-                    "Payment",
+                    "मुल्य चुकायें",
                     DialogInterface.OnClickListener { dialogInterface, i ->
                         NewPayment.RefCode = 'E'
                         NewPayment.RefAmount = prices

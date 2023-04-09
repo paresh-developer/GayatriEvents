@@ -1,6 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,11 +63,15 @@ internal class PSBSArrayAdapterDonation(
             txtDesc?.text = data[position][3]
             txtAmount?.text = "मुल्य: "+data[position][4] + " /-"
             txtCreatedOn?.text = data[position][7]
-            if(data[position][8].toShort()==2.toShort())
-                txtPaymentStatus?.text = "मुल्य चुका दिया गया है"
-            else
-                txtPaymentStatus?.text = "मुल्य चुकाना बाकी है"
 
+            txtPaymentStatus?.setTextColor(Color.BLACK)
+            if(data[position][8].toShort()==2.toShort()) {
+                txtPaymentStatus?.text = "मुल्य चुका दिया गया है"
+                txtPaymentStatus?.setTextColor(Color.BLUE)
+            }
+            else {
+                txtPaymentStatus?.text = "मुल्य चुकाना बाकी है"
+            }
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

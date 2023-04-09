@@ -47,7 +47,7 @@ class DonationEdit : AppCompatActivity() {
                 NewPayment.RefName = tblData.Rows[i][2]
                 NewPayment.RefAmount = tblData.Rows[i][4].toFloat()
                 builder.setPositiveButton(
-                    "Payment",
+                    "मुल्य चुकायें",
                     DialogInterface.OnClickListener { dialogInterface, i ->
                         startActivity(Intent(this, NewPayment::class.java))
                         dialogInterface.dismiss()

@@ -67,6 +67,7 @@ internal class LoginActivity : AppCompatActivity() {
                             .putString("token", APICalls.cookies["token"])
                             .putString("expires", APICalls.cookies["expires"])
                             .putString("LLUname",userModel.User_Email)
+                            .putString("LLName",userModel.User_Name)
                             .putString("LLMobile",userModel.User_Mobile)
                             .putString("LLPassword",userModel.User_Password)
                             .putInt("LLUType",userModel.User_Type)

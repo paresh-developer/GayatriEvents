@@ -23,5 +23,11 @@ internal class LogManagement {
                 return f.readText()
             else return "File not exists"
         }
+
+        fun ClearLogs(){
+            val f = File(PackagePath+FilePath)
+            if(f.exists())
+                f.delete()
+        }
     }
 }

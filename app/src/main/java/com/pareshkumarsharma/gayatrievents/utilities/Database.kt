@@ -538,16 +538,111 @@ internal class Database {
             return tbl
         }
 
-        internal fun getClientRequests(): DataTable {
+        internal fun getClientRequests(userGlobalId:String): DataTable {
             var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()), "")
             try {
                 openConnection()
+
+                // check vendor services
+                val c_ven_ser = sqlite.rawQuery("Select GlobalId from Service where UserGlobalId = '$userGlobalId'", null)
+                val tbl_ven_ser = getDataTableFromCursor(c_ven_ser)
+                c_ven_ser.close()
+                val vendor_services = mutableListOf<String>()
+                for (ser in tbl_ven_ser.Rows){
+                    vendor_services.add(ser[0])
+                }
+
+                // if no services are available
+                if(vendor_services.isEmpty()){
+                    tbl.Columns.add("Title")
+                    tbl.Rows.add(mutableListOf<String>("You don't have any service yet."))
+                    return tbl
+                }
+
+                // if vendor has any services
                 val c = sqlite.rawQuery(
                     "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
                 c.close()
+
+                // filter by vendor service
+                val ind_of_ser_list_c = tbl.Columns.indexOf("ServiceGlobalIdList")
+                val ind_of_prod_list_c = tbl.Columns.indexOf("ServiceProductGlobalIdList")
+                val ind_of_prise_list_c = tbl.Columns.indexOf("PriceList")
+
+                val ind_row_delete = mutableListOf<Int>()
+
+                for (all_ser in tbl.Rows){
+                    val sers = all_ser[ind_of_ser_list_c] // ser1, ser2
+                    val prds = all_ser[ind_of_prod_list_c] // prd1, prd2
+                    val prss = all_ser[ind_of_prise_list_c] // 1.0, 0.1
+
+                    val sers_list = mutableListOf<String>()
+                    val prds_list = mutableListOf<String>()
+                    val prss_list = mutableListOf<String>()
+
+                    for (eser in sers.split(',')){ // service added in list
+                        sers_list.add(eser.trim())
+                    }
+
+                    for (eser in prds.split(',')){ // product added in list
+                        prds_list.add(eser.trim())
+                    }
+
+                    for (eser in prss.split(',')){ // price added in list
+                        prss_list.add(eser.trim())
+                    }
+
+                    // got common services
+                    val int_service = vendor_services.intersect(sers_list)
+                    if(int_service.size == 0) {
+                        ind_row_delete.add(tbl.Rows.indexOf(all_ser))
+                        continue
+                    }
+                    all_ser[ind_of_ser_list_c] = int_service.joinToString()
+
+                    // get products of that services
+                    val c_ven_prd = sqlite.rawQuery("Select GlobalId from SERVICE_PRODUCT where ServiceGlobalId in ('${int_service.joinToString("', '")}')", null)
+                    val tbl_ven_prd = getDataTableFromCursor(c_ven_prd)
+                    c_ven_prd.close()
+                    val vendor_products = mutableListOf<String>()
+                    for (prd in tbl_ven_prd.Rows){
+                        vendor_products.add(prd[0])
+                    }
+
+                    // get common products
+                    val int_product = vendor_products.intersect(prds_list)
+                    all_ser[ind_of_prod_list_c] = int_product.joinToString()
+
+                    // get index of common products for prices
+                    val indes_of_common_product = mutableListOf<Int>()
+                    for (inp in int_product){
+                        indes_of_common_product.add(prds_list.indexOf(inp))
+                    }
+
+                    // create new price list
+                    val new_price_list = mutableListOf<String>()
+                    for (ind in indes_of_common_product){
+                        new_price_list.add(prss_list[ind])
+                    }
+
+                    // update price
+                    all_ser[ind_of_prise_list_c] = new_price_list.joinToString()
+                }
+
+                for (dr in ind_row_delete){
+                    if(dr<tbl.Rows.size)
+                        tbl.Rows.removeAt(dr)
+                }
+
+                if(tbl.Rows.count()==0){
+                    tbl.Rows.add(mutableListOf("You don't have any event yet"))
+                    return tbl
+                }
+
+                // Product names will be added
                 tbl.Columns.add("ProductName")
                 for (row in tbl.Rows) {
                     val c1 = sqlite.rawQuery(
