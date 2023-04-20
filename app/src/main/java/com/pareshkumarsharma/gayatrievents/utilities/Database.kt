@@ -124,8 +124,7 @@ internal class Database {
                         "Create table SERVICE_TYPE (" +
                                 "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                 "Service_Type_Name text" +
-                                ");"
-                    )
+                                ");")
                     sqlite.execSQL("Insert into Service_TYPE (Service_Type_Name) Values ('Brahman'),('Hall_Booking'),('Kariyana'),('Catering'),('Delivery'),('Photo_VIdeo_Studio'),('Decoration');")
                 }
 
@@ -146,8 +145,7 @@ internal class Database {
                                 "RequestStatus int," +
                                 "UserId int,"+
                                 "UserGlobalId text"+
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("SERVICE_PRODUCT")) {
@@ -162,8 +160,7 @@ internal class Database {
                                 "SmallDesc text," +
                                 "Price Numeric," +
                                 "CreationDate datetime" +
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("SERVICE_PRODUCT_DETAIL")) {
@@ -178,8 +175,7 @@ internal class Database {
                                 "SmallDesc text," +
                                 "Type Integer," +
                                 "CreationDate datetime" +
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("EVENTS")) {
@@ -205,8 +201,7 @@ internal class Database {
                                 "Reason text," +
                                 "RequestStatus int," +
                                 "PaymentStatus int" +
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("Client_EVENTS_Request")) {
@@ -232,8 +227,7 @@ internal class Database {
                                 "Reason text," +
                                 "RequestStatus int," +
                                 "PaymentStatus int" +
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("EVENTS_Update")) {
@@ -259,8 +253,7 @@ internal class Database {
                                 "UserGlobalId text," +
                                 "CreationDate datetime," +
                                 "Reason text" +
-                                ");"
-                    )
+                                ");")
                 }
 
                 if (!checkTableExists("EVENTS_Backup")) {
@@ -883,6 +876,75 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery("Select Id, GlobalId,Motive,Description,Amount,UserId,UserGlobalId,CreatedOn,PaymentStatus from Donation", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
+        fun getUsers():DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Uname, Email, Id, GlobalId, Mobile from Users Where GlobalId != '${GlobalData.getUserGlobalId()}'", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
+        fun getService(userIds:String):DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id,GlobalId,Title from Service Where UserGlobalId in ('${userIds.replace(",","','")}','${GlobalData.getUserGlobalId()}')", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
+        fun getServiceProduct(serviceIds:String):DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id,GlobalId,Title from Service_Product Where ServiceGlobalId in ('${serviceIds.replace(",","','")}')", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

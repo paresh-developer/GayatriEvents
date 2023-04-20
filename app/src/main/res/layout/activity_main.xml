@@ -67,7 +67,7 @@
                 android:layout_width="140sp"
                 android:layout_height="60sp"
                 android:text="@string/btn_Panchang"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
             <Button
@@ -76,7 +76,7 @@
                 android:layout_width="140sp"
                 android:layout_height="60sp"
                 android:text="@string/btn_Muhurat"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_width="130sp"
                 android:layout_height="60sp"
                 android:text="@string/btn_Event"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
             <Button
@@ -100,7 +100,7 @@
                 android:layout_width="140sp"
                 android:layout_height="60sp"
                 android:text="@string/btn_Service"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_Client_Request"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
             <Button
@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_Donate"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
 
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60sp"
                 android:text="@string/btn_Setting"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
             <Button
@@ -148,7 +148,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60sp"
                 android:text="Logs"
-                android:layout_margin="10sp"
+                android:layout_margin="5sp"
+                android:textSize="25sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/btnPartnership"
+                android:layout_width="wrap_content"
+                android:layout_height="60sp"
+                android:text="साझेंदारी"
+                android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>

@@ -134,6 +134,10 @@ internal class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, Muhurat::class.java))
         }
 
+        findViewById<Button>(R.id.btnPartnership).setOnClickListener {
+            startActivity(Intent(this, Patnership::class.java))
+        }
+
         RefreshServiceData()
     }
 

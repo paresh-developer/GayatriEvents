@@ -81,6 +81,8 @@ internal class APICalls {
             "Donation/New"
         private var AVAILABLE_DONATIONS_OF_USER =
             "Donation/"
+        private var AVAILABLE_USER_FOR_PARTNERSHIP =
+            "MobileApp/"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -1539,6 +1541,59 @@ internal class APICalls {
             return isSuccess
         }
 
+        internal fun getUsersForPartnership(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL( HOST + AVAILABLE_USER_FOR_PARTNERSHIP)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson(
+                            respo,
+                            Array<UserRegisterModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
         // endregion
 
         // region Utility
