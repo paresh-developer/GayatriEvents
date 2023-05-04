@@ -25,7 +25,7 @@ internal class Panchang : AppCompatActivity() {
 
     lateinit var psbArrayAdadaper: PSBSArrayAdapter
     lateinit var psbFestivalArrayAdadaper: PSBSFestivalArrayAdapter
-    lateinit var monthStr: String
+    var monthStr: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

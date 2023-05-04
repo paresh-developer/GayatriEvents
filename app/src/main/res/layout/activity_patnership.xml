@@ -143,7 +143,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="अगली बारी चुनें"
+            android:text="उपसेवों की अगली बारी चुनें"
             android:textColor="@color/black"
             android:textSize="20dp" />
 
@@ -169,5 +169,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+        <Button
+            android:id="@+id/btnSaveTurn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="दर्ज करें"
+            />
+        <TextView
+            android:id="@+id/user_Trun_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="चुनाव यहा अंकीत होगा"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
     </LinearLayout>
 </LinearLayout>

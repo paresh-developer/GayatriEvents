@@ -125,12 +125,14 @@ internal class PSBSArrayAdapterClientRequest(
                 sum_price += pri.trim().toFloat()
             }
 
-
+            var str_turn = ""
+            if(data[position][20]!= null && data[position][20].trim().replace(",","").length>0)
+                str_turn = "बारी - "+data[position][20]
             txtEventPrice?.text = "मुल्य :- " + sum_price + " /-"
             txtEventId?.text = "प्रसंग नं :- EV" + data[position][16].substring(
                 2,
                 4
-            ) + data[position][1].substring(3)
+            ) + data[position][1].substring(3) + " " + str_turn
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

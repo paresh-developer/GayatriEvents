@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.api.model.PartnershipDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDetailDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceProductDisplayModel
@@ -134,11 +135,12 @@ internal class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, Muhurat::class.java))
         }
 
-        findViewById<Button>(R.id.btnPartnership).setOnClickListener {
-            startActivity(Intent(this, Patnership::class.java))
-        }
+//        findViewById<Button>(R.id.btnPartnership).setOnClickListener {
+//            startActivity(Intent(this, Patnership::class.java))
+//        }
 
         RefreshServiceData()
+        RefreshPartnershipData()
     }
 
     override fun onResume() {
@@ -360,6 +362,97 @@ internal class MainActivity : AppCompatActivity() {
 //                        Toast.LENGTH_LONG
 //                    ).show()
 //                }
+            }
+        }).start()
+    }
+
+    fun RefreshPartnershipData() {
+        Thread(Runnable {
+            APICalls.setContext(this)
+            APICalls.cookies = mapOf<String, String>(
+                Pair(
+                    "token",
+                    getSharedPreferences(
+                        Database.SHAREDFILE,
+                        MODE_PRIVATE
+                    ).getString("token", "").toString()
+                ),
+                Pair(
+                    "expires",
+                    getSharedPreferences(
+                        Database.SHAREDFILE,
+                        MODE_PRIVATE
+                    ).getString("expires", "").toString()
+                )
+            )
+            if (APICalls.getPartnership()) {
+                val res = APICalls.lastCallObject as Array<PartnershipDisplayModel>
+                for (i in 0..res.size - 1) {
+                    val c = ContentValues()
+                    var nul_field = "Id"
+                    c.put("GlobalId", res[i].GlobalId)
+                    c.put("UserGlobalId", res[i].UserGlobalId)
+                    val tbl2 =
+                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
+                    if (tbl2.Rows.size > 0 && !tbl2.Columns.contains("Error"))
+                        c.put("UserId", tbl2.Rows[0][0].toInt())
+                    else
+                        nul_field += ",UserId"
+                    c.put("PartnerUserIdList", res[i].PartnerUserGlobalIdList)
+                    c.put("PartnershipShare", res[i].PartnershipShare)
+                    c.put("PartnershipType", res[i].PatnershipType)
+                    c.put("CreatedOn", res[i].CreatedOn)
+                    c.put("Approval", res[i].Approval)
+                    c.put("RequestStatus", res[i].RequestStatus)
+                    nul_field += ",ApprovedOn"
+                    if (Database.getRowCount(
+                            "Partnership",
+                            "GlobalId",
+                            c.getAsString("GlobalId").toString()
+                        ) == 0
+                    )
+                        Database.insertTo("Partnership", c, nul_field)
+                    else
+                        Database.updateTo(
+                            "Partnership",
+                            c,
+                            "GlobalId=?",
+                            listOf(res[i].GlobalId).toTypedArray()
+                        )
+
+                    val res1 = res[i].Product
+                    val c1 = ContentValues()
+                    var nul_field1 = "Id"
+                    c1.put("GlobalId", res[i].GlobalId)
+                    c1.put("UserGlobalId", res[i].UserGlobalId)
+                    val tbl3 =
+                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
+                    if (tbl3.Rows.size > 0 && !tbl3.Columns.contains("Error"))
+                        c1.put("UserId", tbl3.Rows[0][0].toInt())
+                    else
+                        nul_field1 += ",UserId"
+                    c1.put("PartnerUserIdList", res[i].PartnerUserGlobalIdList)
+                    c1.put("PartnershipShare", res[i].PartnershipShare)
+                    c1.put("PartnershipType", res[i].PatnershipType)
+                    c1.put("CreatedOn", res[i].CreatedOn)
+                    c1.put("Approval", res[i].Approval)
+                    c1.put("RequestStatus", res[i].RequestStatus)
+                    nul_field1 += ",ApprovedOn"
+                    if (Database.getRowCount(
+                            "Partnership",
+                            "GlobalId",
+                            c1.getAsString("GlobalId").toString()
+                        ) == 0
+                    )
+                        Database.insertTo("Partnership", c, nul_field1)
+                    else
+                        Database.updateTo(
+                            "Partnership",
+                            c1,
+                            "GlobalId=?",
+                            listOf(res1[i].GlobalId).toTypedArray()
+                        )
+                }
             }
         }).start()
     }

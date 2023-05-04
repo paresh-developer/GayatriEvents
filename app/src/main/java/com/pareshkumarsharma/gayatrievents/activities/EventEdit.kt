@@ -206,6 +206,7 @@ internal class EventEdit : AppCompatActivity() {
                     c.put("UserGlobalId", res[i].UserGlobalId)
                     c.put("PaymentStatus", res[i].PaymentStatus)
                     c.put("RequestStatus", res[i].RequestStatus)
+                    c.put("UserTurn", res[i].UserTurn)
                     if (res[i].Reason != null)
                         c.put("Reason", res[i].Reason)
                     else

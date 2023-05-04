@@ -16,6 +16,7 @@ class LogActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_Clear).setOnClickListener {
             findViewById<EditText>(R.id.editTextTextMultiLine).text.clear()
+            LogManagement.ClearLogs()
         }
     }
 }

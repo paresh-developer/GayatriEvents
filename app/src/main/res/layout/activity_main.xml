@@ -127,7 +127,6 @@
                 android:layout_margin="5sp"
                 android:textSize="25sp"
                 />
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -143,20 +142,23 @@
                 android:textSize="25sp"
                 />
             <Button
+                android:visibility="visible"
                 android:layout_weight="1"
                 android:id="@+id/btnLogScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="60sp"
                 android:text="Logs"
                 android:layout_margin="5sp"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 />
         </LinearLayout>
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
+                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/btnPartnership"
                 android:layout_width="wrap_content"
@@ -166,5 +168,15 @@
                 android:textSize="25sp"
                 />
         </LinearLayout>
+        <TextView
+
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="bottom"
+            android:text="All right reserved by\nPareshkumar Sharma Business Solutions"
+            />
     </LinearLayout>
 </LinearLayout>

@@ -27,8 +27,8 @@ internal class APICalls {
             HOST = hostPath
         }
 //        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
-//        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
-        internal var HOST = "http://192.168.1.6/GayatriEvents/api/"
+        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
+//        internal var HOST = "http://10.0.2.2/GayatriEventsDemo/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"
@@ -83,6 +83,8 @@ internal class APICalls {
             "Donation/"
         private var AVAILABLE_USER_FOR_PARTNERSHIP =
             "MobileApp/"
+        private var AVAILABLE_PARTNERSHIP =
+            "Patnership/"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -1575,6 +1577,60 @@ internal class APICalls {
                         Gson().fromJson(
                             respo,
                             Array<UserRegisterModel>::class.java
+                        )
+                    lastCallObject = model
+                    inp.close()
+                    lastCallMessage = "Ok"
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(),"API Call")
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun getPartnership(): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL( HOST + AVAILABLE_PARTNERSHIP)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.requestMethod = "GET"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            try {
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    val model =
+                        Gson().fromJson(
+                            respo,
+                            Array<PartnershipDisplayModel>::class.java
                         )
                     lastCallObject = model
                     inp.close()

@@ -200,7 +200,8 @@ internal class Database {
                                 "CreationDate datetime," +
                                 "Reason text," +
                                 "RequestStatus int," +
-                                "PaymentStatus int" +
+                                "PaymentStatus int," +
+                                "UserTurn text" +
                                 ");")
                 }
 
@@ -226,7 +227,8 @@ internal class Database {
                                 "CreationDate datetime," +
                                 "Reason text," +
                                 "RequestStatus int," +
-                                "PaymentStatus int" +
+                                "PaymentStatus int," +
+                                "UserTurn text" +
                                 ");")
                 }
 
@@ -296,10 +298,48 @@ internal class Database {
                                 "UserId int," +
                                 "UserGlobalId text," +
                                 "CreatedOn datetime," +
-                                "PaymentStatus datetime" +
+                                "PaymentStatus int" +
                                 ");"
                     )
                 }
+
+                if (!checkTableExists("Partnership")) {
+                    //table not exists
+                    sqlite.execSQL(
+                        "Create table Partnership (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "UserId Id," +
+                                "UserGlobalId text," +
+                                "PartnerUserIdList text," +
+                                "ApprovedOn datetime," +
+                                "RequestStatus int," +
+                                "Approval int," +
+                                "PartnershipShare float," +
+                                "PartnershipType int," +
+                                "CreatedOn datetime" +
+                                ");"
+                    )
+                }
+
+                if (!checkTableExists("Partnership_Product")) {
+                    //table not exists
+                    sqlite.execSQL(
+                        "Create table Partnership_Product (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "GlobalId text," +
+                                "Partnership_Request_Id int," +
+                                "Partnership_Request_GlobalId text," +
+                                "ServiceId int," +
+                                "ServiceGlobalId text," +
+                                "ProductId int," +
+                                "ProductGlobalId text," +
+                                "Turn int," +
+                                "CreatedOn datetime" +
+                                ");"
+                    )
+                }
+
                 Toast.makeText(activity.applicationContext, "SETUP Completed", Toast.LENGTH_LONG)
                     .show()
             } catch (ex: java.lang.Exception) {
@@ -554,7 +594,7 @@ internal class Database {
 
                 // if vendor has any services
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Client_EVENTS_Request",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -917,6 +957,29 @@ internal class Database {
             return tbl
         }
 
+        fun getUsersForTurn(userIds:String):DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id, GlobalId, Uname, Email from Users Where GlobalId in ('${userIds.replace(",","','")}','${GlobalData.getUserGlobalId()}')", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
         fun getService(userIds:String):DataTable{
             var tbl: DataTable? = null
             try {
@@ -945,6 +1008,29 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery("Select Id,GlobalId,Title from Service_Product Where ServiceGlobalId in ('${serviceIds.replace(",","','")}')", null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
+        fun getServiceProductByProductId(productIds:String):DataTable{
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery("Select Id,GlobalId,Title from Service_Product Where GlobalId in ('${productIds.replace(",","','")}')", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {
