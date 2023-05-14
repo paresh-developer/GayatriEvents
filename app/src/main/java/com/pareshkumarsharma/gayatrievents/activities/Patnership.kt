@@ -9,10 +9,15 @@ import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter_Product
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter_Service
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter_User
+import com.pareshkumarsharma.gayatrievents.api.model.PartnershipProductRequestModel
+import com.pareshkumarsharma.gayatrievents.api.model.PartnershipRequestModel
 import com.pareshkumarsharma.gayatrievents.api.model.UserRegisterModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Patnership : AppCompatActivity() {
 
@@ -266,9 +271,69 @@ class Patnership : AppCompatActivity() {
                 Toast.makeText(this, errormsg, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-
-
+            // submit the partnership request
+            postRequest()
         }
+        RefreshUser()
+    }
+
+    override fun onResume() {
+
+        super.onResume()
+    }
+
+    fun postRequest(){
+        Thread(Runnable {
+            APICalls.setContext(this)
+            APICalls.cookies = mapOf<String, String>(
+                Pair(
+                    "token",
+                    getSharedPreferences(
+                        Database.SHAREDFILE,
+                        MODE_PRIVATE
+                    ).getString("token", "").toString()
+                ),
+                Pair(
+                    "expires",
+                    getSharedPreferences(
+                        Database.SHAREDFILE,
+                        MODE_PRIVATE
+                    ).getString("expires", "").toString()
+                )
+            )
+            val prodList = mutableListOf<PartnershipProductRequestModel>()
+            for (prd in selectedProduct_Turn_Map.keys){
+                val userid = selectedProduct_Turn_Map[prd]
+                var index = 0
+                if(userid == GlobalData.getUserGlobalId())
+                    index = 1
+                else
+                    index = selectedUser.indexOf(userid) + 2
+                var serviceId = ""
+                for (prd1 in tbl_data_Product.Rows){ if(prd1[1].toString().trim().equals(prd.trim())){ serviceId = prd1[3] } }
+                prodList.add(PartnershipProductRequestModel(serviceId,prd,index,SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date())))
+            }
+            val p = PartnershipRequestModel("${GlobalData.getUserGlobalId()},"+selectedUser.joinToString(","),50.0F,0,prodList,SimpleDateFormat("yyyy/MM/dd HH:mm").format(Date()))
+            if (APICalls.requestNewPartnershipRegistration(p)) {
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        APICalls.lastCallMessage,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    finish()
+                }
+            }
+            else{
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        APICalls.lastCallMessage,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }).start()
     }
 
     fun RefreshUser(){
@@ -299,7 +364,7 @@ class Patnership : AppCompatActivity() {
                     values.put("Mobile",res[i].User_Mobile)
                     values.put("GlobalId",res[i].User_GlobalId)
 
-                    if(Database.query("Select * From USERS where EMAIL = '${res[i].User_Email}' Or Mobile = '${res[i].User_Mobile}'").Rows.size==0) {
+                    if(Database.query("Select * From USERS where GlobalId = '${res[i].User_GlobalId}'").Rows.size==0) {
                         Database.insertTo("USERS", values, "Id,User_Password,User_Type")
                     }
                     else{
@@ -313,9 +378,11 @@ class Patnership : AppCompatActivity() {
 
                     tbl_data = Database.getUsers()
 //                    tbl_data.Rows.add(0, mutableListOf<String>("UserNames","Emails"))
-                    adapter_user.UpdateData(tbl_data.Rows)
-                    adapter_user.notifyDataSetChanged()
-                    lst_Users.deferNotifyDataSetChanged()
+                    runOnUiThread {
+                        adapter_user.UpdateData(tbl_data.Rows)
+                        adapter_user.notifyDataSetChanged()
+                        lst_Users.deferNotifyDataSetChanged()
+                    }
                 }
             } else {
                 runOnUiThread {

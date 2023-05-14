@@ -13,6 +13,7 @@ import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.UserRegisterModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
+import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
 
 internal class LoginActivity : AppCompatActivity() {
 
@@ -74,6 +75,8 @@ internal class LoginActivity : AppCompatActivity() {
                             .putBoolean("LLDone",true)
                             .apply()
 
+                    GlobalData.setUserGlobalId(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE))
+
                     val values = ContentValues()
                     values.put("Uname",userModel.User_Name)
                     values.put("Email",userModel.User_Email)
@@ -84,6 +87,9 @@ internal class LoginActivity : AppCompatActivity() {
 
                     if(Database.query("Select * From USERS where EMAIL = '${userModel.User_Email}' Or Mobile = '${userModel.User_Mobile}'").Rows.size==0) {
                         Database.insertTo("USERS", values, "Id")
+                    }
+                    else{
+                        Database.updateTo("USERS",values,"GlobalId = ?",listOf(userModel.User_GlobalId).toTypedArray())
                     }
 
                     if(!MainActivity.IsRunning)
@@ -122,9 +128,17 @@ internal class LoginActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtForgotPassword).setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
+
+        findViewById<TextView>(R.id.tv_link_privacyPolice).setOnClickListener {
+            startActivity(Intent(this, PrivacyPolicy::class.java))
+        }
     }
 
     override fun onBackPressed() {
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

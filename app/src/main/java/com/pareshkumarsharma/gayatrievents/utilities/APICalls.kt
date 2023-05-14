@@ -23,11 +23,13 @@ internal class APICalls {
         private val key = "KLJFIQACWDMBYTVURZONSHXPEG298573"
 
         // region URLS
-        internal fun updatePath(hostPath:String){
+        internal fun updatePath(hostPath: String) {
             HOST = hostPath
         }
-//        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
-        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
+
+        //        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
+//        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
+        var HOST = "http://192.168.1.5/GayatriEvents/api/"
 //        internal var HOST = "http://10.0.2.2/GayatriEventsDemo/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
@@ -85,6 +87,8 @@ internal class APICalls {
             "MobileApp/"
         private var AVAILABLE_PARTNERSHIP =
             "Patnership/"
+        private var NEW_PARTNERSHIP_REQUEST =
+            "Patnership/New"
         // endregion
 
         // region RESPONSE MESSAGES
@@ -107,7 +111,7 @@ internal class APICalls {
                 return false
             }
 
-            val url = URL(HOST+LOGIN_URL)
+            val url = URL(HOST + LOGIN_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -157,7 +161,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -178,7 +182,7 @@ internal class APICalls {
                 return false
             }
 
-            val url = URL(HOST+REGISTER_URL)
+            val url = URL(HOST + REGISTER_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -205,7 +209,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -223,7 +227,7 @@ internal class APICalls {
 
             var bytes: ByteArray = ByteArray(1, { 0 })
 
-            val url = URL( HOST + PANCHANG_DOWNLOAD_URL)
+            val url = URL(HOST + PANCHANG_DOWNLOAD_URL)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -251,7 +255,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -268,7 +272,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + PASSWORD_RESET_REQUEST)
+            val url = URL(HOST + PASSWORD_RESET_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -295,7 +299,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -312,7 +316,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + PASSWORD_RESET)
+            val url = URL(HOST + PASSWORD_RESET)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -339,7 +343,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -356,7 +360,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + CHECK_MESSAGER_UPDATE)
+            val url = URL(HOST + CHECK_MESSAGER_UPDATE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -390,7 +394,7 @@ internal class APICalls {
                     lastCallMessage = InputStreamReader(urlConnection.errorStream).readText()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -407,7 +411,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + CHECK_MESSAGER_REQUEST)
+            val url = URL(HOST + CHECK_MESSAGER_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -433,7 +437,7 @@ internal class APICalls {
                         BufferedReader(InputStreamReader(urlConnection.errorStream)).readText()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -450,7 +454,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + USER_TYPE_CHANGE_REQUEST)
+            val url = URL(HOST + USER_TYPE_CHANGE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -488,7 +492,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -505,7 +509,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_REGISTRATION_REQUEST)
+            val url = URL(HOST + SERVICE_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -543,7 +547,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -560,7 +564,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + EVENT_REGISTRATION_REQUEST)
+            val url = URL(HOST + EVENT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -598,7 +602,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -615,7 +619,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_UPDATION_REQUEST)
+            val url = URL(HOST + SERVICE_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -653,7 +657,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -670,7 +674,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_PRODUCT_REGISTRATION_REQUEST)
+            val url = URL(HOST + SERVICE_PRODUCT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -709,7 +713,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -726,7 +730,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_PRODUCT_UPDATION_REQUEST)
+            val url = URL(HOST + SERVICE_PRODUCT_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -765,7 +769,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -782,7 +786,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
+            val url = URL(HOST + SERVICE_PRODUCT_DETAILS_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -823,7 +827,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -840,7 +844,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
+            val url = URL(HOST + SERVICE_PRODUCT_DETAILS_UPDATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -881,7 +885,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -898,7 +902,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
+            val url = URL(HOST + VIEW_EXISTING_SERVICE_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -935,7 +939,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -952,7 +956,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + VIEW_EXISTING_SERVICE_FOR_EVENTS)
+            val url = URL(HOST + VIEW_EXISTING_SERVICE_FOR_EVENTS)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -989,7 +993,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1007,7 +1011,7 @@ internal class APICalls {
             }
 
             val url =
-                URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
+                URL(HOST + VIEW_EXISTING_SERVICE_PRODUCT_OF_CURRENT_USER + "?serviceGlobalId=$selectedService")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1043,7 +1047,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1061,7 +1065,7 @@ internal class APICalls {
             }
 
             val url =
-                URL( HOST + VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
+                URL(HOST + VIEW_EXISTING_SERVICE_PRODUCT_DETAIL_OF_CURRENT_USER + "?serviceProductGlobalId=$selectedServiceProduct")
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1097,7 +1101,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1114,7 +1118,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
+            val url = URL(HOST + VIEW_EXISTING_EVENTS_OF_CURRENT_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1151,7 +1155,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1168,7 +1172,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + CLIENT_EVENT_REQUEST)
+            val url = URL(HOST + CLIENT_EVENT_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1205,7 +1209,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1214,7 +1218,11 @@ internal class APICalls {
             return isSuccess
         }
 
-        internal fun sendClientEventRequestResponse(eventGlobalId:String, response:Int, reason:String): Boolean {
+        internal fun sendClientEventRequestResponse(
+            eventGlobalId: String,
+            response: Int,
+            reason: String
+        ): Boolean {
             var isSuccess = false
 
             if (!isOnline(Cont)) {
@@ -1222,7 +1230,7 @@ internal class APICalls {
                 return false
             }
 
-            val url = URL( HOST + CLIENT_EVENT_REQUEST_RESPONSE)
+            val url = URL(HOST + CLIENT_EVENT_REQUEST_RESPONSE)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1243,7 +1251,7 @@ internal class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val loginModel = ClientEventRequestResponse(eventGlobalId,response,reason)
+                val loginModel = ClientEventRequestResponse(eventGlobalId, response, reason)
                 val model = Gson().toJson(loginModel, loginModel.javaClass)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
@@ -1261,7 +1269,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -1269,7 +1277,11 @@ internal class APICalls {
             return isSuccess
         }
 
-        internal fun sendDeleteEventRequest(eventGlobalId:String, response:Int, reason:String): Boolean {
+        internal fun sendDeleteEventRequest(
+            eventGlobalId: String,
+            response: Int,
+            reason: String
+        ): Boolean {
             var isSuccess = false
 
             if (!isOnline(Cont)) {
@@ -1277,7 +1289,7 @@ internal class APICalls {
                 return false
             }
 
-            val url = URL( HOST + CLIENT_EVENT_DELETE_REQUEST)
+            val url = URL(HOST + CLIENT_EVENT_DELETE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1298,7 +1310,7 @@ internal class APICalls {
 
             try {
                 val outPutStream = urlConnection.outputStream
-                val loginModel = ClientEventRequestResponse(eventGlobalId,response,reason)
+                val loginModel = ClientEventRequestResponse(eventGlobalId, response, reason)
                 val model = Gson().toJson(loginModel, loginModel.javaClass)
                 outPutStream.write(model.toByteArray())
                 outPutStream.flush()
@@ -1316,7 +1328,7 @@ internal class APICalls {
                     inp.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
             } finally {
                 urlConnection.disconnect()
             }
@@ -1332,7 +1344,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + PAYMENT_REGISTRATION_REQUEST)
+            val url = URL(HOST + PAYMENT_REGISTRATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1370,7 +1382,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1387,7 +1399,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + PAYMENT_UPDATE_REQUEST)
+            val url = URL(HOST + PAYMENT_UPDATE_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1425,7 +1437,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1442,7 +1454,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + NEW_DONATION_REQUEST)
+            val url = URL(HOST + NEW_DONATION_REQUEST)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "POST"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1480,7 +1492,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1497,7 +1509,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + AVAILABLE_DONATIONS_OF_USER)
+            val url = URL(HOST + AVAILABLE_DONATIONS_OF_USER)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1534,7 +1546,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1551,7 +1563,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + AVAILABLE_USER_FOR_PARTNERSHIP)
+            val url = URL(HOST + AVAILABLE_USER_FOR_PARTNERSHIP)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1588,7 +1600,7 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()
@@ -1605,7 +1617,7 @@ internal class APICalls {
                 return isSuccess
             }
 
-            val url = URL( HOST + AVAILABLE_PARTNERSHIP)
+            val url = URL(HOST + AVAILABLE_PARTNERSHIP)
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
             urlConnection.requestMethod = "GET"
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
@@ -1642,7 +1654,62 @@ internal class APICalls {
                     res.close()
                 }
             } catch (ex: Exception) {
-                LogManagement.Log(ex.message.toString(),"API Call")
+                LogManagement.Log(ex.message.toString(), "API Call")
+                lastCallMessage = ex.message.toString()
+            } finally {
+                urlConnection.disconnect()
+            }
+
+            return isSuccess
+        }
+
+        internal fun requestNewPartnershipRegistration(partnershipModel: PartnershipRequestModel): Boolean {
+            var isSuccess = false
+
+            if (!isOnline(Cont)) {
+                lastCallMessage = NO_INTERNTET_MSG
+                return isSuccess
+            }
+
+            val url = URL(HOST + NEW_PARTNERSHIP_REQUEST)
+            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            urlConnection.requestMethod = "POST"
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0")
+            urlConnection.setRequestProperty("Content-Type", "application/json")
+
+            if (cookies.size > 0)
+                urlConnection.setRequestProperty(
+                    "Cookie",
+                    "token=" + cookies["token"] + ";expires=" + cookies["expires"]
+                )
+            else {
+                lastCallMessage = "Cookie expire"
+                isSuccess = false
+                return isSuccess
+            }
+
+            urlConnection.doOutput = true
+
+            try {
+                val outPutStream = urlConnection.outputStream
+                val model = Gson().toJson(partnershipModel, PartnershipRequestModel::class.java)
+                outPutStream.write(model.toByteArray())
+                outPutStream.flush()
+                outPutStream.close()
+                val responseCode = urlConnection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val inp = InputStreamReader(urlConnection.inputStream)
+                    val respo = inp.readText()
+                    inp.close()
+                    lastCallMessage = respo
+                    isSuccess = true
+                } else {
+                    val res = InputStreamReader(urlConnection.errorStream)
+                    lastCallMessage = res.readText()
+                    res.close()
+                }
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message.toString(), "API Call")
                 lastCallMessage = ex.message.toString()
             } finally {
                 urlConnection.disconnect()

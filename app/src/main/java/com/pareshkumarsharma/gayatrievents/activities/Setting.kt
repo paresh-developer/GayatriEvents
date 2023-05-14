@@ -1,8 +1,10 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
@@ -80,6 +82,10 @@ internal class Setting : AppCompatActivity() {
                     }
                 }).start()
             }
+        }
+        982494
+        findViewById<TextView>(R.id.tv_link_privacyPolice).setOnClickListener {
+            startActivity(Intent(this, PrivacyPolicy::class.java))
         }
     }
 }

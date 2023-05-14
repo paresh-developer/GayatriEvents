@@ -31,4 +31,9 @@
         <item>Email</item>
         <item>Mobile</item>
     </string-array>
+    <string name="title_activity_privacy_policy">PrivacyPolicyActivity</string>
+    <string name="large_text">
+
+    </string>
+    <string name="action_settings">Settings</string>
 </resources>

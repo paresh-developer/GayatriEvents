@@ -128,6 +128,14 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
+            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
+                Toast.makeText(
+                    applicationContext,
+                    "You cannot access Client Requests",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
             startActivity(Intent(this, LogActivity::class.java))
         }
 
@@ -135,9 +143,22 @@ internal class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, Muhurat::class.java))
         }
 
-//        findViewById<Button>(R.id.btnPartnership).setOnClickListener {
+        findViewById<Button>(R.id.btnPartnership).setOnClickListener {
+            Toast.makeText(
+                    applicationContext,
+                    "this is Under development",
+                    Toast.LENGTH_LONG
+                ).show()
+//            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "You cannot access Client Requests",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
 //            startActivity(Intent(this, Patnership::class.java))
-//        }
+        }
 
         RefreshServiceData()
         RefreshPartnershipData()

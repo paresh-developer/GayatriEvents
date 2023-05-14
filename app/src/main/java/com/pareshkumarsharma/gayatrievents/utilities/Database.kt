@@ -709,7 +709,7 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service  where UserGlobalId = '$userGlobalId'",
+                    "Select Id, GlobalId,Title,SmallDesc,Owner,ApprovalTime,(Select Service_Type_Name from Service_Type Where Id=ServiceType)ServiceType,City,SAddress,Approved,RequestStatus from Service where UserGlobalId = '$userGlobalId'",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -1007,7 +1007,7 @@ internal class Database {
             var tbl: DataTable? = null
             try {
                 openConnection()
-                val c = sqlite.rawQuery("Select Id,GlobalId,Title from Service_Product Where ServiceGlobalId in ('${serviceIds.replace(",","','")}')", null)
+                val c = sqlite.rawQuery("Select Id,GlobalId,Title,ServiceGlobalId from Service_Product Where ServiceGlobalId in ('${serviceIds.replace(",","','")}')", null)
                 tbl = getDataTableFromCursor(c)
                 c.close()
             } catch (ex: Exception) {

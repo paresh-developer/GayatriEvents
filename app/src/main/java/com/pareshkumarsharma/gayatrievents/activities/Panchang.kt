@@ -21,6 +21,7 @@ internal class Panchang : AppCompatActivity() {
     internal companion object {
         var countDot = 0
         var downloadComplete = false
+        var downloadStarted = false
     }
 
     lateinit var psbArrayAdadaper: PSBSArrayAdapter
@@ -45,7 +46,7 @@ internal class Panchang : AppCompatActivity() {
         val listView_festival = findViewById<ListView>(R.id.monthFestivalList)
         val calendar = findViewById<CalendarView>(R.id.calendarView)
 
-        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F002", false)) {
+        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("F002", false) && !downloadStarted) {
             listView.isEnabled = false
             listView_festival.isEnabled = false
             nmDay.isEnabled = false
@@ -53,6 +54,7 @@ internal class Panchang : AppCompatActivity() {
             nmYear.isEnabled = false
             calendar.visibility = View.GONE
             Thread {
+                downloadStarted = true
                 APICalls.setContext(applicationContext)
                 APICalls.cookies = mapOf<String, String>(
                     Pair(
@@ -83,7 +85,7 @@ internal class Panchang : AppCompatActivity() {
                             .edit()
                             .putBoolean("F002", true)
                             .apply()
-
+                        downloadStarted = false
                         listView.isEnabled = true
                         nmDay.isEnabled = true
                         nmMonth.isEnabled = true

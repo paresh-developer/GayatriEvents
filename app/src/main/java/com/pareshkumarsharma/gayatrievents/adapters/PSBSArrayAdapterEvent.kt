@@ -105,7 +105,7 @@ internal class PSBSArrayAdapterEvent(
             }
 
 
-            txtEventPrice?.text = "मुल्य :- " + sum_price + " /-"
+            txtEventPrice?.text = "मुल्य :- " + Math.ceil(sum_price) + " /-"
             txtEventId?.text = "प्रसंग नं :- EV" + data[position][16].substring(
                 2,
                 4

@@ -153,12 +153,10 @@
                 />
         </LinearLayout>
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:enabled="false"
                 android:layout_weight="1"
                 android:id="@+id/btnPartnership"
                 android:layout_width="wrap_content"
@@ -169,13 +167,11 @@
                 />
         </LinearLayout>
         <TextView
-
             android:layout_weight="1"
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:gravity="bottom"
             android:text="All right reserved by\nPareshkumar Sharma Business Solutions"
             />
     </LinearLayout>
