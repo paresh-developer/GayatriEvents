@@ -83,4 +83,15 @@
         android:gravity="bottom"
         android:textColor="@color/black"
         />
+
+    <TextView
+        android:padding="5dp"
+        android:id="@+id/tv_link_deleteUser"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete account"
+        android:gravity="bottom"
+        android:textColor="@color/black"
+        />
 </LinearLayout>

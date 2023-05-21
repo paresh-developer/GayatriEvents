@@ -228,7 +228,8 @@ internal class Database {
                                 "Reason text," +
                                 "RequestStatus int," +
                                 "PaymentStatus int," +
-                                "UserTurn text" +
+                                "UserTurn text," +
+                                "OrderReady int" +
                                 ");")
                 }
 
@@ -585,6 +586,20 @@ internal class Database {
                     vendor_services.add(ser[0])
                 }
 
+                // for partnership checking
+                val c_ven_pat_ser = sqlite.rawQuery("Select GlobalId from Partnership Where PartnerUserIdList like '$userGlobalId,%' Or PartnerUserIdList like '%,$userGlobalId,%' Or PartnerUserIdList like '%,$userGlobalId' Or PartnerUserIdList like '$userGlobalId'", null)
+                val tbl_ven_pat_ser = getDataTableFromCursor(c_ven_pat_ser)
+                c_ven_pat_ser.close()
+                if(tbl_ven_pat_ser.Rows.size>0) {
+                    val partn_id = tbl_ven_pat_ser.Rows[0][0]
+                    val c_ven_partner_ser = sqlite.rawQuery("Select DISTINCT ServiceGlobalId From Partnership_Product Where Partnership_Request_GlobalId = '$partn_id'", null)
+                    val tbl_ven_partner_ser = getDataTableFromCursor(c_ven_partner_ser)
+                    for (ser in tbl_ven_partner_ser.Rows) {
+                        if(!vendor_services.contains(ser[0]))
+                            vendor_services.add(ser[0])
+                    }
+                }
+
                 // if no services are available
                 if(vendor_services.isEmpty()){
                     tbl.Columns.add("Title")
@@ -594,7 +609,7 @@ internal class Database {
 
                 // if vendor has any services
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn from Client_EVENTS_Request",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn,OrderReady from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -604,17 +619,20 @@ internal class Database {
                 val ind_of_ser_list_c = tbl.Columns.indexOf("ServiceGlobalIdList")
                 val ind_of_prod_list_c = tbl.Columns.indexOf("ServiceProductGlobalIdList")
                 val ind_of_prise_list_c = tbl.Columns.indexOf("PriceList")
+                val ind_of_user_list_c = tbl.Columns.indexOf("UserTurn")
 
-                val ind_row_delete = mutableListOf<Int>()
+                val ind_row_delete = mutableListOf<MutableList<String>>()
 
                 for (all_ser in tbl.Rows){
                     val sers = all_ser[ind_of_ser_list_c] // ser1, ser2
                     val prds = all_ser[ind_of_prod_list_c] // prd1, prd2
                     val prss = all_ser[ind_of_prise_list_c] // 1.0, 0.1
+                    val usrtrn = all_ser[ind_of_user_list_c] // user1, user2
 
                     val sers_list = mutableListOf<String>()
                     val prds_list = mutableListOf<String>()
                     val prss_list = mutableListOf<String>()
+                    val user_turn_list = mutableListOf<String>()
 
                     for (eser in sers.split(',')){ // service added in list
                         sers_list.add(eser.trim())
@@ -628,10 +646,14 @@ internal class Database {
                         prss_list.add(eser.trim())
                     }
 
+                    for (eser in usrtrn.split(',')){ // user turn  added in list
+                        user_turn_list.add(eser.trim())
+                    }
+
                     // got common services
                     val int_service = vendor_services.intersect(sers_list)
                     if(int_service.size == 0) {
-                        ind_row_delete.add(tbl.Rows.indexOf(all_ser))
+                        ind_row_delete.add(all_ser)
                         continue
                     }
                     all_ser[ind_of_ser_list_c] = int_service.joinToString()
@@ -661,13 +683,20 @@ internal class Database {
                         new_price_list.add(prss_list[ind])
                     }
 
+                    // create new user turn list
+                    val new_user_turn_list = mutableListOf<String>()
+                    for (ind in indes_of_common_product){
+                        new_user_turn_list.add(user_turn_list[ind])
+                    }
+
                     // update price
                     all_ser[ind_of_prise_list_c] = new_price_list.joinToString()
+                    all_ser[ind_of_user_list_c] = new_user_turn_list.joinToString()
                 }
 
                 for (dr in ind_row_delete){
-                    if(dr<tbl.Rows.size)
-                        tbl.Rows.removeAt(dr)
+                    if(tbl.Rows.contains(dr))
+                        tbl.Rows.remove(dr)
                 }
 
                 if(tbl.Rows.count()==0){
@@ -681,7 +710,7 @@ internal class Database {
                     val c1 = sqlite.rawQuery(
                         "Select Title from Service_Product Where GlobalId in ('${
                             row[tbl.Columns.indexOf("ServiceProductGlobalIdList")].replace(
-                                ",",
+                                ", ",
                                 "','"
                             )
                         }')", null

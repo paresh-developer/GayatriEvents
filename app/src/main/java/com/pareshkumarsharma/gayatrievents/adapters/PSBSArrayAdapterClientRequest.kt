@@ -126,7 +126,7 @@ internal class PSBSArrayAdapterClientRequest(
             }
 
             var str_turn = ""
-            if(data[position][20]!= null && data[position][20].trim().replace(",","").length>0)
+            if(data[position][20]!= null && data[position][20].replace(",","").trim().length>0)
                 str_turn = "बारी - "+data[position][20]
             txtEventPrice?.text = "मुल्य :- " + sum_price + " /-"
             txtEventId?.text = "प्रसंग नं :- EV" + data[position][16].substring(

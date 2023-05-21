@@ -83,8 +83,14 @@ internal class Setting : AppCompatActivity() {
                 }).start()
             }
         }
-        982494
+
         findViewById<TextView>(R.id.tv_link_privacyPolice).setOnClickListener {
+            PrivacyPolicy.Browser = 0
+            startActivity(Intent(this, PrivacyPolicy::class.java))
+        }
+
+        findViewById<TextView>(R.id.tv_link_deleteUser).setOnClickListener {
+            PrivacyPolicy.Browser = 1
             startActivity(Intent(this, PrivacyPolicy::class.java))
         }
     }

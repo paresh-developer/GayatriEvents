@@ -29,8 +29,8 @@ internal class APICalls {
 
         //        internal var HOST = "http://10.0.2.2/GayatriEvents/api/"
 //        internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
-        var HOST = "http://192.168.1.5/GayatriEvents/api/"
-//        internal var HOST = "http://10.0.2.2/GayatriEventsDemo/api/"
+//        var HOST = "http://192.168.1.5/GayatriEvents/api/"
+        internal var HOST = "http://10.0.2.2/GayatriEventsDemo/api/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"
@@ -1220,7 +1220,7 @@ internal class APICalls {
 
         internal fun sendClientEventRequestResponse(
             eventGlobalId: String,
-            response: Int,
+            response: String,
             reason: String
         ): Boolean {
             var isSuccess = false
@@ -1279,7 +1279,7 @@ internal class APICalls {
 
         internal fun sendDeleteEventRequest(
             eventGlobalId: String,
-            response: Int,
+            response: String,
             reason: String
         ): Boolean {
             var isSuccess = false

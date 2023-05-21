@@ -17,5 +17,6 @@ data class EventDisplayModel(
     val Reason:String,
     val PaymentStatus: Short,
     val RequestStatus:Short,
-    val UserTurn:String
+    val UserTurn:String,
+    val OrderRead:Short
 )

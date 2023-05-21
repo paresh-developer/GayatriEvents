@@ -442,37 +442,51 @@ internal class MainActivity : AppCompatActivity() {
                         )
 
                     val res1 = res[i].Product
-                    val c1 = ContentValues()
-                    var nul_field1 = "Id"
-                    c1.put("GlobalId", res[i].GlobalId)
-                    c1.put("UserGlobalId", res[i].UserGlobalId)
-                    val tbl3 =
-                        Database.query("Select Id from Users where GlobalId='${res[i].UserGlobalId}'")
-                    if (tbl3.Rows.size > 0 && !tbl3.Columns.contains("Error"))
-                        c1.put("UserId", tbl3.Rows[0][0].toInt())
-                    else
-                        nul_field1 += ",UserId"
-                    c1.put("PartnerUserIdList", res[i].PartnerUserGlobalIdList)
-                    c1.put("PartnershipShare", res[i].PartnershipShare)
-                    c1.put("PartnershipType", res[i].PatnershipType)
-                    c1.put("CreatedOn", res[i].CreatedOn)
-                    c1.put("Approval", res[i].Approval)
-                    c1.put("RequestStatus", res[i].RequestStatus)
-                    nul_field1 += ",ApprovedOn"
-                    if (Database.getRowCount(
-                            "Partnership",
-                            "GlobalId",
-                            c1.getAsString("GlobalId").toString()
-                        ) == 0
-                    )
-                        Database.insertTo("Partnership", c, nul_field1)
-                    else
-                        Database.updateTo(
-                            "Partnership",
-                            c1,
-                            "GlobalId=?",
-                            listOf(res1[i].GlobalId).toTypedArray()
+                    for(rr in res1) {
+                        val c1 = ContentValues()
+                        var nul_field1 = "Id"
+                        c1.put("GlobalId", rr.GlobalId)
+                        c1.put("ServiceGlobalId", rr.ServiceGlobalId)
+                        c1.put("ProductGlobalId", rr.ProductGlobalId)
+                        c1.put("Partnership_Request_GlobalId", res[i].GlobalId)
+                        c1.put("Turn", rr.Turn)
+                        c1.put("CreatedOn", rr.CreatedOn)
+                        var tbl3 =
+                            Database.query("Select Id from Partnership Where GlobalId='${res[i].GlobalId}'")
+                        if (tbl3.Rows.size > 0 && !tbl3.Columns.contains("Error"))
+                            c1.put("Partnership_Request_Id", tbl3.Rows[0][0].toInt())
+                        else
+                            nul_field1 += ",Partnership_Request_Id"
+
+                        tbl3 =
+                            Database.query("Select Id from Service Where GlobalId='${rr.ServiceGlobalId}'")
+                        if (tbl3.Rows.size > 0 && !tbl3.Columns.contains("Error"))
+                            c1.put("ServiceId", tbl3.Rows[0][0].toInt())
+                        else
+                            nul_field1 += ",ServiceId"
+
+                        tbl3 =
+                            Database.query("Select Id from Service_Product Where GlobalId='${rr.ProductGlobalId}'")
+                        if (tbl3.Rows.size > 0 && !tbl3.Columns.contains("Error"))
+                            c1.put("ProductId", tbl3.Rows[0][0].toInt())
+                        else
+                            nul_field1 += ",ProductId"
+
+                        if (Database.getRowCount(
+                                "Partnership_Product",
+                                "GlobalId",
+                                c1.getAsString("GlobalId").toString()
+                            ) == 0
                         )
+                            Database.insertTo("Partnership_Product", c1, nul_field1)
+                        else
+                            Database.updateTo(
+                                "Partnership_Product",
+                                c1,
+                                "GlobalId=?",
+                                listOf(c1.getAsString("GlobalId")).toTypedArray()
+                            )
+                    }
                 }
             }
         }).start()
