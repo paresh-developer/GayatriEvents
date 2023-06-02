@@ -35,11 +35,6 @@ internal class ServiceProductForEvent : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_product_for_event)
 
-        if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
-            onBackPressed()
-            finish()
-        }
-
         findViewById<Button>(R.id.btnSaveSelected).setOnClickListener {
             SelectedProductId = adapterService.SelectedProductId
             SelectedProductName = adapterService.SelectedProductNames
@@ -54,7 +49,6 @@ internal class ServiceProductForEvent : AppCompatActivity() {
         adapterService.SelectedProductId = SelectedProductId
         listViewServiceProduct.adapter = adapterService
         listViewServiceProduct.setOnItemClickListener { adapterView, view, i, l ->
-            ServiceProductDetailsForEvent.selectedServiceProductId = existingServiceProducts.Rows[i][existingServiceProducts.Columns.indexOf("GlobalId")]
             NewEvent.Selected_Service_Product_Global_Id = existingServiceProducts.Rows[i][1]
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingServiceProducts.Rows[i][2])

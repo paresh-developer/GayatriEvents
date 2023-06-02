@@ -29,11 +29,6 @@ internal class ServiceForEvent : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service_for_event)
 
-        if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
-            onBackPressed()
-            finish()
-        }
-
         findViewById<Button>(R.id.btnSaveSelected).setOnClickListener {
             SelectedServiceIds = adapterService.Selected_Ids
             SelectedServiceNames = adapterService.Selected_Name

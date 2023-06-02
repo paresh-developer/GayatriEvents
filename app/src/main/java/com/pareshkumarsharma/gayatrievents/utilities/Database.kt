@@ -189,9 +189,6 @@ internal class Database {
                                 "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
-                                "DateFixed int," +
-                                "DateStart datetime," +
-                                "DateEnd datetime," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
@@ -216,9 +213,6 @@ internal class Database {
                                 "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
-                                "DateFixed int," +
-                                "DateStart datetime," +
-                                "DateEnd datetime," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
@@ -229,7 +223,8 @@ internal class Database {
                                 "RequestStatus int," +
                                 "PaymentStatus int," +
                                 "UserTurn text," +
-                                "OrderReady int" +
+                                "OrderReady int," +
+                                "ClientMobile text" +
                                 ");")
                 }
 
@@ -246,9 +241,6 @@ internal class Database {
                                 "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
-                                "DateFixed int," +
-                                "DateStart datetime," +
-                                "DateEnd datetime," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
@@ -274,9 +266,6 @@ internal class Database {
                                 "ServiceIdList text," +
                                 "Title text," +
                                 "Details text," +
-                                "DateFixed int," +
-                                "DateStart datetime," +
-                                "DateEnd datetime," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
@@ -533,7 +522,7 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events where UserGlobalId = '$userGlobalId'",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events where UserGlobalId = '$userGlobalId'",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -609,7 +598,7 @@ internal class Database {
 
                 // if vendor has any services
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,DateFixed,DateStart,DateEnd,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn,OrderReady from Client_EVENTS_Request",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn,OrderReady,ClientMobile from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)

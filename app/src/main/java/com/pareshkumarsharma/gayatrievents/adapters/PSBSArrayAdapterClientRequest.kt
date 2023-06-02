@@ -46,10 +46,10 @@ internal class PSBSArrayAdapterClientRequest(
 
         val txtTitle =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventTitle)
-        val txtDesc =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventDescription)
-        val txtDateStartEnd =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtDateStart_End)
+//        val txtDesc =
+//            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventDescription)
+//        val txtDateStartEnd =
+//            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtDateStart_End)
         val txtEventRegisteredOn =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventRegisteredOn)
         val txtApproval =
@@ -85,58 +85,58 @@ internal class PSBSArrayAdapterClientRequest(
 //            txtEventId?.text = "Event Id :- EV"+data[position][16].substring(2,4)+data[position][1].substring(3)
 
             txtTitle?.text = data[position][6]
-            txtDesc?.text = "> विवरण :- " + data[position][7].replace(
-                "\n",
-                " "
-            ) + "\n> उपसेवाए :- " + data[position][data[position].size - 1]
-            if (data[position][8] == "1")
-                txtDateStartEnd?.text = "निश्र्चित तारीख :- " + data[position][9].substring(0, 10)
-            else
-                txtDateStartEnd?.text = "अनिश्र्चित तारीख सीमा :- " + data[position][9].substring(
-                    0,
-                    10
-                ) + " से " + data[position][10].substring(0, 10) + " तक"
+//            txtDesc?.text = "> विवरण :- " + data[position][7].replace(
+//                "\n",
+//                " "
+//            ) + "\n> उपसेवाए :- " + data[position][data[position].size - 1]
+//            if (data[position][8] == "1")
+//                txtDateStartEnd?.text = "निश्र्चित तारीख :- " + data[position][9].substring(0, 10)
+//            else
+//                txtDateStartEnd?.text = "अनिश्र्चित तारीख सीमा :- " + data[position][9].substring(
+//                    0,
+//                    10
+//                ) + " से " + data[position][10].substring(0, 10) + " तक"
             txtEventRegisteredOn?.text =
-                "दर्ज कीया है तारीख : " + data[position][16].replace('T', ' ').substring(0, 10)
+                "दर्ज कीया है तारीख : " + data[position][13].replace('T', ' ').substring(0, 10)
 
             txtApproval?.setTextColor(Color.BLACK)
 
             txtPayment?.setTextColor(Color.BLACK)
             var paymentStatus = "मुल्य चुकाना बाकी है"
-            if (data[position][19] == "2") {
+            if (data[position][16] == "2") {
                 paymentStatus = "मुल्य चुका दिया गया है"
                 txtPayment?.setTextColor(Color.BLUE)
             }
 
             txtPayment?.text = paymentStatus
 
-            if (data[position][18] == "0")
-                txtApproval?.text = "- स्विकार अपुर्ण - " + data[position][17]
-            else if (data[position][18] == "1" && data[position][12] == "0") {
-                txtApproval?.text = "- अस्विकार - " + data[position][17]
+            if (data[position][15] == "0")
+                txtApproval?.text = "- स्विकार अपुर्ण - " + data[position][14]
+            else if (data[position][15] == "1" && data[position][9] == "0") {
+                txtApproval?.text = "- अस्विकार - " + data[position][14]
                 txtApproval?.setTextColor(Color.RED)
-            } else if (data[position][18] == "1" && data[position][12] == "1") {
-                txtApproval?.text = "- स्विकारीत - " + data[position][17]
+            } else if (data[position][15] == "1" && data[position][9] == "1") {
+                txtApproval?.text = "- स्विकारीत - " + data[position][14]
                 txtApproval?.setTextColor(Color.BLUE)
             }
 
             var sum_price = 0.0
-            for (pri in data[position][11].split(',')) {
+            for (pri in data[position][8].split(',')) {
                 sum_price += pri.trim().toFloat()
             }
 
             var str_turn = ""
-            if(data[position][20]!= null && data[position][20].replace(",","").trim().length>0)
-                str_turn = "बारी - "+data[position][20]
+            if(data[position][17]!= null && data[position][17].replace(",","").trim().length>0)
+                str_turn = "बारी - "+data[position][17]
             txtEventPrice?.text = "मुल्य :- " + sum_price + " /-"
-            txtEventId?.text = "प्रसंग नं :- EV" + data[position][16].substring(
+            txtEventId?.text = "प्रसंग नं :- EV" + data[position][13].substring(
                 2,
                 4
             ) + data[position][1].substring(3) + " " + str_turn
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"
-            txtDesc?.text = "Error Message: "+Ex.message
+//            txtDesc?.text = "Error Message: "+Ex.message
         }
 
         return currentItemView!!

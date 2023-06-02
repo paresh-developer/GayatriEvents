@@ -2,6 +2,8 @@ package com.pareshkumarsharma.gayatrievents.activities
 
 import android.content.ContentValues
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ListView
@@ -15,6 +17,7 @@ import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
+
 
 internal class ClientEventRequestEdit : AppCompatActivity() {
 
@@ -45,7 +48,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
         listViewClientEventRequests.setOnItemClickListener { adapterView, view, i, l ->
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingClientRequests.Rows[i][6])
-            builder.setMessage(existingClientRequests.Rows[i][7])
+            builder.setMessage(existingClientRequests.Rows[i][7]+"\n\nउपसेवाए:\n"+existingClientRequests.Rows[i][existingClientRequests.Rows[i].size - 1].toString().replace(',','\n'))
             val product_Col = existingClientRequests.Columns.indexOf("ProductName")
             val products = existingClientRequests.Rows[i][product_Col]
             val product_arr = products.split(",")
@@ -57,7 +60,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                 bool_list.add(false)
                 approval_list.add(0)
             }
-            if (existingClientRequests.Rows[i][18].toInt() == 0) {
+            if (existingClientRequests.Rows[i][15].toInt() == 0) {
                 builder.setNegativeButton(
                     "अस्विकार करे",
                     DialogInterface.OnClickListener { dialogInterface, j ->
@@ -203,10 +206,15 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     })
             }
             builder.setNeutralButton(
-                "Ok",
-                DialogInterface.OnClickListener { dialogInterface, j -> dialogInterface.dismiss() })
+                "Call",
+                DialogInterface.OnClickListener { dialogInterface, j ->
+                    dialogInterface.dismiss();
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${existingClientRequests.Rows[i][19]}")
+                    startActivity(intent)
+                })
             builder.show()
-            if (existingClientRequests.Rows[i][18].toInt() == 1 && existingClientRequests.Rows[i][12].toInt() == 1) {
+            if (existingClientRequests.Rows[i][15].toInt() == 1 && existingClientRequests.Rows[i][9].toInt() == 1) {
                 builder.setNegativeButton(
                     "ओर्डर तैयार है",
                     DialogInterface.OnClickListener { dialogInterface, j ->
@@ -270,9 +278,6 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     if (tbl1.Rows.size > 0 && !tbl1.Columns.contains("Error"))
                         c.put("ServiceIdList", tbl1.Rows[0][0])
                     c.put("ServiceGlobalIdList", res[i].ServiceGlobalIdList)
-                    c.put("DateFixed", res[i].EventDateFixed)
-                    c.put("DateStart", res[i].EventDateStart)
-                    c.put("DateEnd", res[i].EventDateEnd)
                     c.put("PriceList", res[i].EventPriceList)
                     c.put("Approved", res[i].Approved)
                     c.put("PaymentStatus", res[i].PaymentStatus)
@@ -280,6 +285,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     c.put("UserGlobalId", res[i].UserGlobalId)
                     c.put("UserTurn", res[i].UserTurn)
                     c.put("OrderReady", res[i].OrderRead)
+                    c.put("ClientMobile", res[i].ClientMobile)
                     if (res[i].Reason != null)
                         c.put("Reason", res[i].Reason)
                     else

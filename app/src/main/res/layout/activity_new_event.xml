@@ -50,72 +50,73 @@
             android:lines="3"
             android:hint="प्रसंग का\nविवरण"
             />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-            android:text="प्रसंग की तारीख :-"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            />
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/chkEventDateFixed"
-                android:text="निश्र्चित"
-                android:textSize="15dp"
-                android:checked="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <RadioButton
-                android:id="@+id/chkEventDateNotFixed"
-                android:text="अनिश्र्चित"
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RadioGroup>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/txtEventStartDateLabel"
-            android:text="तारीख पसंद करेें :-"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="top"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+<!--        <TextView-->
+<!--            android:text="प्रसंग की तारीख :-"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            />-->
+<!--        <RadioGroup-->
+<!--            android:id="@+id/radioGroup"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/chkEventDateFixed"-->
+<!--                android:text="निश्र्चित"-->
+<!--                android:textSize="15dp"-->
+<!--                android:checked="true"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
+<!--            <RadioButton-->
+<!--                android:id="@+id/chkEventDateNotFixed"-->
+<!--                android:text="अनिश्र्चित"-->
+<!--                android:textSize="15dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
+<!--        </RadioGroup>-->
+<!--        </LinearLayout>-->
+<!--        <TextView-->
+<!--            android:id="@+id/txtEventStartDateLabel"-->
+<!--            android:text="तारीख पसंद करेें :-"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            />-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:gravity="top"-->
+<!--            android:orientation="horizontal">-->
 
-            <NumberPicker
-                android:id="@+id/nmDay_Start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:focusedByDefault="false" />
+<!--            <NumberPicker-->
+<!--                android:id="@+id/nmDay_Start"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:focusedByDefault="false" />-->
 
-            <NumberPicker
-                android:id="@+id/nmMonth_Start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+<!--            <NumberPicker-->
+<!--                android:id="@+id/nmMonth_Start"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1" />-->
 
-            <NumberPicker
-                android:id="@+id/nmYear_Start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" />
-        </LinearLayout>
+<!--            <NumberPicker-->
+<!--                android:id="@+id/nmYear_Start"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="3" />-->
+<!--        </LinearLayout>-->
+
         <TextView
             android:id="@+id/txtEventEndDateLabel"
             android:text="तारीख की अंतिम सीमा :-"

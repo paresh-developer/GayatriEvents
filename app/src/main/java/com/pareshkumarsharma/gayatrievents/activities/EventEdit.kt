@@ -44,8 +44,8 @@ internal class EventEdit : AppCompatActivity() {
                 existingEvents.Rows[i][existingEvents.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
             builder.setTitle(existingEvents.Rows[i][6])
-            builder.setMessage(existingEvents.Rows[i][7])
-            if (!existingEvents.Rows[i][18].equals("1") && !existingEvents.Rows[i][18].equals("0")) {
+            builder.setMessage(existingEvents.Rows[i][7]+"\n\nउपसेवाए:\n"+existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString().replace(',','\n'))
+            if (!existingEvents.Rows[i][15].equals("1") && !existingEvents.Rows[i][15].equals("0")) {
 //                builder.setNegativeButton(
 //                    "Edit",
 //                    DialogInterface.OnClickListener { dialogInterface, j ->
@@ -65,7 +65,7 @@ internal class EventEdit : AppCompatActivity() {
 //                        NewEvent.Operation = 'U'
 //                        CurrentActivity.startActivity(Intent(CurrentActivity, NewEvent::class.java))
 //                    })
-                if(existingEvents.Rows[i][18].equals("1") && existingEvents.Rows[i][18].equals("1")){
+                if(existingEvents.Rows[i][15].equals("1") && existingEvents.Rows[i][15].equals("1")){
                     // TODO: Create refund logic for 50%
                 }
                 else {
@@ -92,7 +92,7 @@ internal class EventEdit : AppCompatActivity() {
                                 )
                                 if (APICalls.sendDeleteEventRequest(
                                         existingEvents.Rows[i][1],
-                                        0,
+                                        "0",
                                         "Deleted By Client"
                                     )
                                 ) {
@@ -110,7 +110,7 @@ internal class EventEdit : AppCompatActivity() {
                         })
                 }
             }
-            if (existingEvents.Rows[i][19].toShort() != 2.toShort() && existingEvents.Rows[i][18].toInt() <= existingEvents.Rows[i][12].toInt()) {
+            if (existingEvents.Rows[i][16].toShort() != 2.toShort() && existingEvents.Rows[i][15].toInt() <= existingEvents.Rows[i][9].toInt()) {
                 var prices = 0.0F
                 for (pri in existingEvents.Rows[i][11].split(',')) {
                     prices += pri.trim().toFloat()
@@ -198,9 +198,6 @@ internal class EventEdit : AppCompatActivity() {
                         nul_field += ",ServiceIdList"
 
                     c.put("ServiceGlobalIdList", res[i].ServiceGlobalIdList)
-                    c.put("DateFixed", res[i].EventDateFixed)
-                    c.put("DateStart", res[i].EventDateStart)
-                    c.put("DateEnd", res[i].EventDateEnd)
                     c.put("PriceList", res[i].EventPriceList)
                     c.put("Approved", res[i].Approved)
                     c.put("UserGlobalId", res[i].UserGlobalId)

@@ -185,6 +185,8 @@ class NewPayment : AppCompatActivity() {
                 }
             }
         }).start()
+        if(selectedPaymentMethod == 0)
+            finish()
     }
 
     fun openPayment(intent: Intent) {

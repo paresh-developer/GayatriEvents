@@ -3,9 +3,6 @@ package com.pareshkumarsharma.gayatrievents.api.model
 data class EventDisplayModel(
     val EventGlobalId: String,
     val EventName: String,
-    val EventDateFixed: Boolean,
-    val EventDateStart: String,
-    val EventDateEnd: String,
     val EventPriceList: String,
     val ServiceGlobalIdList: String,
     val ServiceProductGlobalIdList: String,
@@ -18,5 +15,6 @@ data class EventDisplayModel(
     val PaymentStatus: Short,
     val RequestStatus:Short,
     val UserTurn:String,
-    val OrderRead:Short
+    val OrderRead:Short,
+    val ClientMobile: String
 )

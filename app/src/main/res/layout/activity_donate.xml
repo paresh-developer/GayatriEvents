@@ -33,6 +33,43 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical">
+            <RadioGroup
+                android:id="@+id/rdo_grp_donation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rdo_btn_monthly"
+                    android:text="मासिक दान"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/rdo_btn_agyaras"
+                    android:text="अग्यारस दान"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton
+                    android:id="@+id/rdo_btn_pitar"
+                    android:text="पित्रौ हेतु दान"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RadioGroup>
+            <Button
+                android:id="@+id/btn_remove_selected"
+                android:enabled="false"
+                android:text="पसंद मिटाएं"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
         <EditText
             android:id="@+id/edt_Title"
             android:layout_width="match_parent"
