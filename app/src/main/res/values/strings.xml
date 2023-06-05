@@ -36,4 +36,5 @@
 
     </string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_samagri_scrolling">SamagriScrollingActivity</string>
 </resources>

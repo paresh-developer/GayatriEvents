@@ -18,6 +18,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SamagriScrollingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_samagri_scrolling"
+            android:theme="@style/Theme.GayatriEvents.NoActionBar" />
+        <activity
             android:name=".activities.PrivacyPolicy"
             android:exported="false" />
         <activity

@@ -1067,6 +1067,58 @@ internal class Database {
             return tbl
         }
 
+        internal fun getSamagriEvents(): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection(1)
+                val c = sqlite.query(
+                    "Table1",
+                    listOf("id", "F03").toTypedArray(),
+                    null,
+                    null,
+                    "F03",
+                    null,
+                    "id"
+                )
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
+            return tbl
+        }
+
+        internal fun getSamagriEventsWise(EventId:Int): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection(1)
+                val c = sqlite.rawQuery("Select T1.Id EId,T3.Id SID,T1.F03 EName,T3.F03 SName from Table1 t1 join Table2 t2 on t1.Id = t2.T1id join Table3 T3 on t3.id = t2.T3ID Where T1.Id in ($EventId)",null)
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null)
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf<MutableList<String>>(mutableListOf("Error")),
+                    "Error"
+                )
+            return tbl
+        }
+
         // region Utility
 
         private fun getDataTableFromCursor(c: Cursor): DataTable {

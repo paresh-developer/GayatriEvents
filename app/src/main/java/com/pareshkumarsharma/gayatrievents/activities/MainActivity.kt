@@ -100,6 +100,19 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnService).setOnClickListener {
+            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+                    "F002",
+                    false
+                ) && !Panchang.downloadStarted
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पहले पंचाग डाऊनलोड करें",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
                 startActivity(Intent(this, ServiceEdit::class.java))
             } else
@@ -108,10 +121,37 @@ internal class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnEvent).setOnClickListener {
+            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+                    "F002",
+                    false
+                ) && !Panchang.downloadStarted
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पहले पंचाग डाऊनलोड करें",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             startActivity(Intent(this, EventEdit::class.java))
         }
 
         findViewById<Button>(R.id.btnSaleRequests).setOnClickListener {
+
+            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+                    "F002",
+                    false
+                ) && !Panchang.downloadStarted
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पहले पंचाग डाऊनलोड करें",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
                 startActivity(Intent(this, ClientEventRequestEdit::class.java))
             } else
@@ -136,19 +176,50 @@ internal class MainActivity : AppCompatActivity() {
                 ).show()
                 return@setOnClickListener
             }
+
             startActivity(Intent(this, LogActivity::class.java))
         }
 
         findViewById<Button>(R.id.btnMuhurat).setOnClickListener {
+            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+                    "F002",
+                    false
+                ) && !Panchang.downloadStarted
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पहले पंचाग डाऊनलोड करें",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             startActivity(Intent(this, Muhurat::class.java))
+        }
+
+        findViewById<Button>(R.id.btnSamagri).setOnClickListener {
+            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+                    "F002",
+                    false
+                ) && !Panchang.downloadStarted
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पहले पंचाग डाऊनलोड करें",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            startActivity(Intent(this, SamagriScrollingActivity::class.java))
         }
 
         findViewById<Button>(R.id.btnPartnership).setOnClickListener {
             Toast.makeText(
-                    applicationContext,
-                    "this is Under development",
-                    Toast.LENGTH_LONG
-                ).show()
+                applicationContext,
+                "this is Under development",
+                Toast.LENGTH_LONG
+            ).show()
 //            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
 //                Toast.makeText(
 //                    applicationContext,
@@ -442,7 +513,7 @@ internal class MainActivity : AppCompatActivity() {
                         )
 
                     val res1 = res[i].Product
-                    for(rr in res1) {
+                    for (rr in res1) {
                         val c1 = ContentValues()
                         var nul_field1 = "Id"
                         c1.put("GlobalId", rr.GlobalId)
