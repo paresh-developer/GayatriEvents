@@ -187,8 +187,6 @@ internal class Database {
                                 "ServiceProductIdList text," +
                                 "ServiceGlobalIdList text," +
                                 "ServiceIdList text," +
-                                "Title text," +
-                                "Details text," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +
@@ -211,8 +209,6 @@ internal class Database {
                                 "ServiceProductIdList text," +
                                 "ServiceGlobalIdList text," +
                                 "ServiceIdList text," +
-                                "Title text," +
-                                "Details text," +
                                 "PriceList text," +
                                 "Approved int," +
                                 "Approval_Time datetime," +

@@ -24,16 +24,11 @@ internal class NewEvent : AppCompatActivity() {
         var Operation = 'I'
         var Event_Id = ""
         var Event_Global_Id = ""
-        var Event_Name = ""
-//        var Event_Date_Fixed = false
-//        var Event_Date_Start = ""
-//        var Event_Date_End = ""
         var Event_Price = 0.0
         var Service_Id = 0
         var Service_GlobalId = ""
         var ServiceProduct_Id = 0
         var ServiceProduct_GlobalId = ""
-        var Event_Details = ""
         var SelectedServiceIds = mutableListOf<String>()
         var SelectedServiceProductIds = mutableListOf<String>()
         var SelectedServiceProductPriceList = mutableListOf<Float>()
@@ -179,24 +174,6 @@ internal class NewEvent : AppCompatActivity() {
         }
 
         if (Operation == 'U') {
-            findViewById<EditText>(R.id.eventName).setText(Event_Name)
-            findViewById<EditText>(R.id.eventDesc).setText(Event_Details)
-//            if (Event_Date_Fixed)
-//                findViewById<RadioButton>(R.id.chkEventDateFixed).isChecked = true
-//            else
-//                findViewById<RadioButton>(R.id.chkEventDateNotFixed).isChecked = true
-//            findViewById<NumberPicker>(R.id.nmDay_Start).value =
-//                Event_Date_Start.substring(8, 10).toInt()
-//            findViewById<NumberPicker>(R.id.nmMonth_Start).value =
-//                Event_Date_Start.substring(5, 7).toInt()
-//            findViewById<NumberPicker>(R.id.nmYear_Start).value =
-//                Event_Date_Start.substring(0, 4).toInt()
-//            findViewById<NumberPicker>(R.id.nmDay_End).value =
-//                Event_Date_End.substring(8, 10).toInt()
-//            findViewById<NumberPicker>(R.id.nmMonth_End).value =
-//                Event_Date_End.substring(5, 7).toInt()
-//            findViewById<NumberPicker>(R.id.nmYear_End).value =
-//                Event_Date_End.substring(0, 4).toInt()
             findViewById<TextView>(R.id.txt_price).text = "" + Event_Price
             findViewById<Button>(R.id.btnSaveNewEvent).text = "Update"
             Selected_Service_Global_Id = Service_GlobalId
@@ -214,24 +191,6 @@ internal class NewEvent : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnSaveNewEvent).setOnClickListener {
             findViewById<Button>(R.id.btnSaveNewEvent).isEnabled = false
-            val event_name = findViewById<EditText>(R.id.eventName).text.toString()
-            val event_desc = findViewById<EditText>(R.id.eventDesc).text.toString()
-//            val event_date_fixed =
-//                findViewById<RadioButton>(R.id.chkEventDateFixed).isChecked
-//            val event_date_start_day =
-//                findViewById<NumberPicker>(R.id.nmDay_Start).value
-//            val event_date_start_month =
-//                findViewById<NumberPicker>(R.id.nmMonth_Start).value
-//            val event_date_start_year =
-//                findViewById<NumberPicker>(R.id.nmYear_Start).value
-//            val event_date_end_day = findViewById<NumberPicker>(R.id.nmDay_End).value
-//            val event_date_end_month =
-//                findViewById<NumberPicker>(R.id.nmMonth_End).value
-//            val event_date_end_year = findViewById<NumberPicker>(R.id.nmYear_End).value
-//            val event_date_start =
-//                "$event_date_start_year-$event_date_start_month-$event_date_start_day"
-//            val event_date_end =
-//                "$event_date_end_year-$event_date_end_month-$event_date_end_day"
             Thread(Runnable {
                 APICalls.setContext(this)
                 APICalls.cookies = mapOf<String, String>(
@@ -255,11 +214,9 @@ internal class NewEvent : AppCompatActivity() {
                 if (Operation == 'I') {
                     if (APICalls.requestNewEventRegistration(
                             EventRegistrationModel(
-                                event_name,
                                 SelectedServiceProductPriceList.joinToString(),
                                 SelectedServiceIds.joinToString(),
-                                SelectedServiceProductIds.joinToString(),
-                                event_desc
+                                SelectedServiceProductIds.joinToString()
                             )
                         )
                     ) {
@@ -279,7 +236,7 @@ internal class NewEvent : AppCompatActivity() {
                                 EventAmount += am.toFloat()
                             }
                             NewPayment.RefCode = 'E'
-                            NewPayment.RefName = event_name
+                            NewPayment.RefName = EventId
                             NewPayment.RefAmount = EventAmount
                             NewPayment.RefId = EventId
                             startActivity(Intent(this, NewPayment::class.java))

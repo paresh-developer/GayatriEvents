@@ -15,8 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top"
             android:layout_margin="5dp"
+            android:gravity="top"
             android:orientation="horizontal">
 
             <TextView
@@ -39,15 +39,6 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:minWidth="150dp"
-                android:text="Logout"
-                android:textSize="15dp"
-                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -192,30 +183,53 @@
                 android:layout_weight="3" />
         </LinearLayout>
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ListView
-                    android:id="@+id/monthFestivalList"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content" />
-
-                <ListView
-                    android:id="@+id/panchangListView"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content" />
-
-                <CalendarView
-                    android:id="@+id/calendarView"
+            <RadioGroup
+                android:id="@+id/rdo_grp_panchang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:checked="true"
+                    android:id="@+id/rdo_daily_panchang"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </HorizontalScrollView>
+                    android:layout_height="wrap_content"
+                    android:text="दैनिक पंचांग"
+                    />
+                <RadioButton
+                    android:id="@+id/rdo_monthly_panchang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="मासिक तहेवार"
+                    />
+                <RadioButton
+                    android:id="@+id/rdo_calendar_panchang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="केलेंडर"
+                    />
+            </RadioGroup>
+
+            <ListView
+                android:id="@+id/monthFestivalList"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
+
+            <ListView
+                android:id="@+id/panchangListView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content" />
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

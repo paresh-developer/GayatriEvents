@@ -62,40 +62,6 @@ internal class PSBSArrayAdapterClientRequest(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtPayment)
 
         try {
-//            txtTitle?.text = data[position][6]
-//            txtDesc?.text = "> Desc. :- "+data[position][7].replace("\n"," ") + "\n> Prod. :- " + data[position][data[position].size-1]
-//            if(data[position][8]=="1")
-//                txtDateStartEnd?.text = "Date :- Fixed "+data[position][9].substring(0,10)
-//            else
-//                txtDateStartEnd?.text = "Date :- From "+data[position][9].substring(0,10)+" to "+data[position][10].substring(0,10)
-//            txtEventRegisteredOn?.text = "Requested On :- "+data[position][16].replace('T',' ')
-//
-//            if((data[position][13]==null || data[position][13].startsWith("000")) && data[position][12]=="0")
-//                txtApproval?.text = "- Pending Approval - "+data[position][17]
-//            else if(data[position][13]!=null && data[position][12]=="0")
-//                txtApproval?.text = "- Rejected - "+data[position][17]
-//            else if(data[position][13]!=null && data[position][12]=="1")
-//                txtApproval?.text = "- Approved - "+data[position][17]
-//
-//            var sum_price = 0.0
-//            for (pri in data[position][11].split(',')){
-//                sum_price += pri.trim().toFloat()
-//            }
-//            txtEventPrice?.text = "Price :- "+sum_price+ " /-"
-//            txtEventId?.text = "Event Id :- EV"+data[position][16].substring(2,4)+data[position][1].substring(3)
-
-            txtTitle?.text = data[position][6]
-//            txtDesc?.text = "> विवरण :- " + data[position][7].replace(
-//                "\n",
-//                " "
-//            ) + "\n> उपसेवाए :- " + data[position][data[position].size - 1]
-//            if (data[position][8] == "1")
-//                txtDateStartEnd?.text = "निश्र्चित तारीख :- " + data[position][9].substring(0, 10)
-//            else
-//                txtDateStartEnd?.text = "अनिश्र्चित तारीख सीमा :- " + data[position][9].substring(
-//                    0,
-//                    10
-//                ) + " से " + data[position][10].substring(0, 10) + " तक"
             txtEventRegisteredOn?.text =
                 "दर्ज कीया है तारीख : " + data[position][13].replace('T', ' ').substring(0, 10)
 

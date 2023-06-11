@@ -32,13 +32,6 @@ internal class Panchang : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_panchang)
 
-        findViewById<Button>(R.id.btnLogout).setOnClickListener {
-//            MainActivity.IsLoginDone = 5
-//            getSharedPreferences()
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-        }
-
         val nmDay = findViewById<NumberPicker>(R.id.nmDay)
         val nmMonth = findViewById<NumberPicker>(R.id.nmMonth)
         val nmYear = findViewById<NumberPicker>(R.id.nmYear)
@@ -218,11 +211,6 @@ internal class Panchang : AppCompatActivity() {
             listView.adapter = psbArrayAdadaper
             listView_festival.adapter = psbFestivalArrayAdadaper
         }
-
-//        c.set(1422,1,1)
-//        calendar.minDate = c.time.time
-//        c.set(1823,1,1)
-//        calendar.maxDate = c.time.time
 
         nmDay.minValue = 1
         nmMonth.minValue = 1
@@ -472,5 +460,26 @@ internal class Panchang : AppCompatActivity() {
                     findViewById<TextView>(R.id.txtNavigation).text = monthStr
                 }
             }.start()
+
+        val rdo_group = findViewById<RadioGroup>(R.id.rdo_grp_panchang)
+        val rdo_daily_panchang = findViewById<RadioButton>(R.id.rdo_daily_panchang)
+        val rdo_monthly_panchang = findViewById<RadioButton>(R.id.rdo_monthly_panchang)
+        val rdo_calendar = findViewById<RadioButton>(R.id.rdo_calendar_panchang)
+
+        rdo_group.setOnCheckedChangeListener { radioGroup, i ->
+            if(i==rdo_daily_panchang.id){
+                listView_festival.visibility = View.GONE
+                listView.visibility = View.VISIBLE
+                calendar.visibility = View.GONE
+            } else if(i==rdo_monthly_panchang.id){
+                listView_festival.visibility = View.VISIBLE
+                listView.visibility = View.GONE
+                calendar.visibility = View.GONE
+            } else if(i==rdo_calendar.id){
+                listView_festival.visibility = View.GONE
+                listView.visibility = View.GONE
+                calendar.visibility = View.VISIBLE
+            }
+        }
     }
 }

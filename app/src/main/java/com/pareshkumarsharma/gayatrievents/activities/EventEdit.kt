@@ -166,8 +166,6 @@ internal class EventEdit : AppCompatActivity() {
                     var nul_field = "Id"
                     val c = ContentValues()
                     c.put("GlobalId", res[i].EventGlobalId)
-                    c.put("Title", res[i].EventName)
-                    c.put("Details", res[i].EventDetails)
                     c.put("ServiceProductGlobalIdList", res[i].ServiceProductGlobalIdList)
                     val tbl =
                         Database.query(

@@ -63,20 +63,6 @@ internal class PSBSArrayAdapterEvent(
 
         try {
 
-            txtTitle?.text = data[position][6]
-//            txtDesc?.text = "> विवरण :- " + data[position][7].replace(
-//                "\n",
-//                " "
-//            ) + "\n> उपसेवाए :- " + data[position][data[position].size - 1]
-
-//            if (data[position][8] == "1")
-//                txtDateStartEnd?.text = "निश्र्चित तारीख :- " + data[position][9].substring(0, 10)
-//            else
-//                txtDateStartEnd?.text = "अनिश्र्चित तारीख सीमा :- " + data[position][9].substring(
-//                    0,
-//                    10
-//                ) + " से " + data[position][10].substring(0, 10) + " तक"
-
             txtEventRegisteredOn?.text =
                 "दर्ज कीया है तारीख : " + data[position][13].replace('T', ' ').substring(0, 10)
 
