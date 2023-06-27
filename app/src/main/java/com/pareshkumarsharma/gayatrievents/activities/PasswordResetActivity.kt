@@ -50,7 +50,7 @@ internal class PasswordResetActivity : AppCompatActivity() {
                 val model = PasswordResetRequestModel(
                     "",
                     "",
-                    edt1.text.toString(),
+                    APICalls.encodeStringComplex(edt1.text.toString()),
                     spin.selectedItemPosition == 0,
                     edt.text.toString(),
                     ForgotPasswordActivity.resetRequestId

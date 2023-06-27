@@ -468,18 +468,19 @@ internal class Panchang : AppCompatActivity() {
 
         rdo_group.setOnCheckedChangeListener { radioGroup, i ->
             if(i==rdo_daily_panchang.id){
-                listView_festival.visibility = View.GONE
                 listView.visibility = View.VISIBLE
+                listView_festival.visibility = View.GONE
                 calendar.visibility = View.GONE
             } else if(i==rdo_monthly_panchang.id){
                 listView_festival.visibility = View.VISIBLE
                 listView.visibility = View.GONE
                 calendar.visibility = View.GONE
             } else if(i==rdo_calendar.id){
+                calendar.visibility = View.VISIBLE
                 listView_festival.visibility = View.GONE
                 listView.visibility = View.GONE
-                calendar.visibility = View.VISIBLE
             }
         }
+        rdo_monthly_panchang.isChecked = true
     }
 }

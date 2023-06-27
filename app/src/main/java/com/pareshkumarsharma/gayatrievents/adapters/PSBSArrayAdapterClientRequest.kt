@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.pareshkumarsharma.gayatrievents.utilities.LogManagement
 
 
 internal class PSBSArrayAdapterClientRequest(
@@ -44,12 +45,6 @@ internal class PSBSArrayAdapterClientRequest(
             )
         }
 
-        val txtTitle =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventTitle)
-//        val txtDesc =
-//            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventDescription)
-//        val txtDateStartEnd =
-//            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtDateStart_End)
         val txtEventRegisteredOn =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventRegisteredOn)
         val txtApproval =
@@ -62,47 +57,74 @@ internal class PSBSArrayAdapterClientRequest(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtPayment)
 
         try {
+
+            var product_status = "\n"
+            val product_name = data[position][data[0].size - 1].split(',')
+            val product_st = data[position][7].split(',')
+
+            for (p in 0..product_name.size - 1) {
+                product_status += product_name[p] + " "
+                if (product_st.size > 1) {
+                    if (product_st[p] == "0")
+                        product_status += "Pending"
+                    else if (product_st[p] == "1")
+                        product_status += "Rejected"
+                    else if (product_st[p] == "2")
+                        product_status += "Approved"
+                } else {
+                    if (product_st[0] == "0")
+                        product_status += "Pending"
+                    else if (product_st[0] == "1")
+                        product_status += "Rejected"
+                    else if (product_st[0] == "2")
+                        product_status += "Approved"
+                }
+                product_status += "\n"
+            }
+
             txtEventRegisteredOn?.text =
-                "दर्ज कीया है तारीख : " + data[position][13].replace('T', ' ').substring(0, 10)
+                "तारीख : " + data[position][11].replace('T', ' ').substring(0, 10) + product_status
 
             txtApproval?.setTextColor(Color.BLACK)
 
             txtPayment?.setTextColor(Color.BLACK)
             var paymentStatus = "मुल्य चुकाना बाकी है"
-            if (data[position][16] == "2") {
+            if (data[position][14] == "2") {
                 paymentStatus = "मुल्य चुका दिया गया है"
                 txtPayment?.setTextColor(Color.BLUE)
             }
 
             txtPayment?.text = paymentStatus
 
-            if (data[position][15] == "0")
-                txtApproval?.text = "- स्विकार अपुर्ण - " + data[position][14]
-            else if (data[position][15] == "1" && data[position][9] == "0") {
-                txtApproval?.text = "- अस्विकार - " + data[position][14]
-                txtApproval?.setTextColor(Color.RED)
-            } else if (data[position][15] == "1" && data[position][9] == "1") {
-                txtApproval?.text = "- स्विकारीत - " + data[position][14]
-                txtApproval?.setTextColor(Color.BLUE)
-            }
+//            txtApproval?.text = "Sts: " + data[position][13] + " Apr: " + data[position][7]
+            if (data[position][13] == "0")
+                txtApproval?.text = "- Pending - " + data[position][12]
+            else if (data[position][13] == "1")
+                txtApproval?.text = data[position][12]
+//            else if (data[position][13] == "1" && data[position][7] == "0") {
+//                txtApproval?.text = "- अस्विकार - " + data[position][12]
+//                txtApproval?.setTextColor(Color.RED)
+//            } else if (data[position][13] == "1" && data[position][7] == "1") {
+//                txtApproval?.text = "- स्विकारीत - " + data[position][12]
+//                txtApproval?.setTextColor(Color.BLUE)
+//            }
 
             var sum_price = 0.0
-            for (pri in data[position][8].split(',')) {
+            for (pri in data[position][6].split(',')) {
                 sum_price += pri.trim().toFloat()
             }
 
             var str_turn = ""
-            if(data[position][17]!= null && data[position][17].replace(",","").trim().length>0)
-                str_turn = "बारी - "+data[position][17]
+            if(data[position][15]!= null && data[position][15].replace(",","").trim().length>0)
+                str_turn = "बारी - "+data[position][15]
             txtEventPrice?.text = "मुल्य :- " + sum_price + " /-"
-            txtEventId?.text = "प्रसंग नं :- EV" + data[position][13].substring(
+            txtEventId?.text = "प्रसंग नं :- EV" + data[position][11].substring(
                 2,
                 4
             ) + data[position][1].substring(3) + " " + str_turn
         }
         catch (Ex:Exception){
-            txtTitle?.text = "Error"
-//            txtDesc?.text = "Error Message: "+Ex.message
+            LogManagement.Log("Adapter error : ",Ex.message+"\n"+Ex.stackTraceToString())
         }
 
         return currentItemView!!

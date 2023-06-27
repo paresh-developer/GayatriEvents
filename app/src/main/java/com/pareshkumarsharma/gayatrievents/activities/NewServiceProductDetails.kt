@@ -50,6 +50,8 @@ internal class NewServiceProductDetails : AppCompatActivity() {
                 Type = 1
             else if (findViewById<RadioButton>(R.id.chk_ListviewType).isChecked)
                 Type = 2
+            else if (findViewById<RadioButton>(R.id.chk_Input).isChecked)
+                Type = 3
 
             Thread(Runnable {
                 APICalls.setContext(this)

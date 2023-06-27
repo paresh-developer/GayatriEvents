@@ -47,8 +47,11 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
         listViewClientEventRequests.adapter = adapterClientEventRequests
         listViewClientEventRequests.setOnItemClickListener { adapterView, view, i, l ->
             val builder = AlertDialog.Builder(this)
-            builder.setTitle(existingClientRequests.Rows[i][6])
-            builder.setMessage(existingClientRequests.Rows[i][7]+"\n\nउपसेवाए:\n"+existingClientRequests.Rows[i][existingClientRequests.Rows[i].size - 1].toString().replace(',','\n'))
+            builder.setTitle("GE : " + existingClientRequests.Rows[i][1])
+            builder.setMessage(
+                "\n\nउपसेवाए:\n" + existingClientRequests.Rows[i][existingClientRequests.Rows[i].size - 1].toString()
+                    .replace(',', '\n')
+            )
             val product_Col = existingClientRequests.Columns.indexOf("ProductName")
             val products = existingClientRequests.Rows[i][product_Col]
             val product_arr = products.split(",")
@@ -60,7 +63,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                 bool_list.add(false)
                 approval_list.add(0)
             }
-            if (existingClientRequests.Rows[i][15].toInt() == 0) {
+            if (existingClientRequests.Rows[i][13].toInt() == 0) {
                 builder.setNegativeButton(
                     "अस्विकार करे",
                     DialogInterface.OnClickListener { dialogInterface, j ->
@@ -81,56 +84,58 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                                         selectedProductList.remove(i)
                                 }
                             })
-                        builder.setOnDismissListener {
-                            Thread(Runnable {
-                                APICalls.setContext(this)
-                                APICalls.cookies = mapOf<String, String>(
-                                    Pair(
-                                        "token",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("token", "").toString()
-                                    ),
-                                    Pair(
-                                        "expires",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("expires", "").toString()
+                        builder.setPositiveButton(
+                            "Submit",
+                            DialogInterface.OnClickListener { dialogInterface, i3 ->
+                                Thread(Runnable {
+                                    APICalls.setContext(this)
+                                    APICalls.cookies = mapOf<String, String>(
+                                        Pair(
+                                            "token",
+                                            getSharedPreferences(
+                                                Database.SHAREDFILE,
+                                                MODE_PRIVATE
+                                            ).getString("token", "").toString()
+                                        ),
+                                        Pair(
+                                            "expires",
+                                            getSharedPreferences(
+                                                Database.SHAREDFILE,
+                                                MODE_PRIVATE
+                                            ).getString("expires", "").toString()
+                                        )
                                     )
-                                )
-                                for (i in 0..approval_list.size){
-                                    if(selectedProductList.contains(i))
-                                        approval_list[i] = 1
-                                    else
-                                        approval_list[i] = 0
-                                }
-                                if (APICalls.sendClientEventRequestResponse(
-                                        existingClientRequests.Rows[i][1],
-                                        "0",
-                                        findViewById<EditText>(R.id.edt_Reason).text.toString()
-                                    )
-                                ) {
-                                    runOnUiThread {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            APICalls.lastCallMessage,
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    for (i2 in 0..approval_list.size-1) {
+                                        if (selectedProductList.contains(i2))
+                                            approval_list[i2] = 1
+                                        else
+                                            approval_list[i2] = 1
                                     }
-                                    RefreshData()
-                                } else {
-                                    runOnUiThread {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            APICalls.lastCallMessage,
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    if (APICalls.sendClientEventRequestResponse(
+                                            existingClientRequests.Rows[i][1],
+                                            approval_list.joinToString(","),
+                                            findViewById<EditText>(R.id.edt_Reason).text.toString()
+                                        )
+                                    ) {
+                                        runOnUiThread {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                APICalls.lastCallMessage,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                        RefreshData()
+                                    } else {
+                                        runOnUiThread {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                APICalls.lastCallMessage,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     }
-                                }
-                            }).start()
-                        }
+                                }).start()
+                            })
                         builder.show()
                     })
                 builder.setPositiveButton(
@@ -152,56 +157,58 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                                         selectedProductList.remove(i)
                                 }
                             })
-                        builder.setOnDismissListener {
-                            Thread(Runnable {
-                                APICalls.setContext(this)
-                                APICalls.cookies = mapOf<String, String>(
-                                    Pair(
-                                        "token",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("token", "").toString()
-                                    ),
-                                    Pair(
-                                        "expires",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("expires", "").toString()
+                        builder.setPositiveButton(
+                            "Submit",
+                            DialogInterface.OnClickListener { dialogInterface, i3 ->
+                                Thread(Runnable {
+                                    APICalls.setContext(this)
+                                    APICalls.cookies = mapOf<String, String>(
+                                        Pair(
+                                            "token",
+                                            getSharedPreferences(
+                                                Database.SHAREDFILE,
+                                                MODE_PRIVATE
+                                            ).getString("token", "").toString()
+                                        ),
+                                        Pair(
+                                            "expires",
+                                            getSharedPreferences(
+                                                Database.SHAREDFILE,
+                                                MODE_PRIVATE
+                                            ).getString("expires", "").toString()
+                                        )
                                     )
-                                )
-                                for (i in 0..approval_list.size){
-                                    if(selectedProductList.contains(i))
-                                        approval_list[i] = 2
-                                    else
-                                        approval_list[i] = 0
-                                }
-                                if (APICalls.sendClientEventRequestResponse(
-                                        existingClientRequests.Rows[i][1],
-                                        "1",
-                                        findViewById<EditText>(R.id.edt_Reason).text.toString()
-                                    )
-                                ) {
-                                    runOnUiThread {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            APICalls.lastCallMessage,
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    for (i1 in 0..approval_list.size - 1) {
+                                        if (selectedProductList.contains(i1))
+                                            approval_list[i1] = 2
+                                        else
+                                            approval_list[i1] = 1
                                     }
-                                    RefreshData()
-                                } else {
-                                    runOnUiThread {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            APICalls.lastCallMessage,
-                                            Toast.LENGTH_LONG
-                                        ).show()
+                                    if (APICalls.sendClientEventRequestResponse(
+                                            existingClientRequests.Rows[i][1],
+                                            approval_list.joinToString(","),
+                                            findViewById<EditText>(R.id.edt_Reason).text.toString()
+                                        )
+                                    ) {
+                                        runOnUiThread {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                APICalls.lastCallMessage,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                        RefreshData()
+                                    } else {
+                                        runOnUiThread {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                APICalls.lastCallMessage,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     }
-                                }
-                            }).start()
-                        }
+                                }).start()
+                            })
                         builder.show()
                     })
             }
@@ -210,16 +217,16 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                 DialogInterface.OnClickListener { dialogInterface, j ->
                     dialogInterface.dismiss();
                     val intent = Intent(Intent.ACTION_DIAL)
-                    intent.data = Uri.parse("tel:${existingClientRequests.Rows[i][19]}")
+                    intent.data = Uri.parse("tel:${existingClientRequests.Rows[i][17]}")
                     startActivity(intent)
                 })
-            builder.show()
-            if (existingClientRequests.Rows[i][15].toInt() == 1 && existingClientRequests.Rows[i][9].toInt() == 1) {
+            if (existingClientRequests.Rows[i][13].toInt() == 1) {
                 builder.setNegativeButton(
                     "ओर्डर तैयार है",
                     DialogInterface.OnClickListener { dialogInterface, j ->
                     })
             }
+            builder.show()
         }
     }
 

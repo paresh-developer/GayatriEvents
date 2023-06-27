@@ -518,7 +518,7 @@ internal class Database {
             try {
                 openConnection()
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events where UserGlobalId = '$userGlobalId'",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus from Events where UserGlobalId = '$userGlobalId'",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -594,7 +594,7 @@ internal class Database {
 
                 // if vendor has any services
                 val c = sqlite.rawQuery(
-                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,Title,Details,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn,OrderReady,ClientMobile from Client_EVENTS_Request",
+                    "Select Id,GlobalId,ServiceProductGlobalIdList,ServiceProductIdList,ServiceGlobalIdList,ServiceIdList,PriceList,Approved,Approval_Time,UserId,UserGlobalId,CreationDate,Reason,RequestStatus,PaymentStatus,UserTurn,OrderReady,ClientMobile from Client_EVENTS_Request",
                     null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -875,6 +875,32 @@ internal class Database {
                 openConnection()
                 val c = sqlite.rawQuery(
                     "Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductGlobalId='$serviceProductGlobalId'",
+                    null
+                )
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            if (tbl == null) {
+                tbl = DataTable(
+                    mutableListOf("Error"),
+                    mutableListOf(mutableListOf("Error")),
+                    "No Values"
+                )
+            }
+            return tbl
+        }
+
+        internal fun getServicesProductInputDetails(serviceProductGlobalId: String): DataTable {
+            var tbl: DataTable? = null
+            try {
+                openConnection()
+                val c = sqlite.rawQuery(
+                    "Select Id, GlobalId,Title,SmallDesc,Type,CreationDate,ServiceProductId,ServiceProductGlobalId from Service_Product_Detail Where ServiceProductGlobalId='$serviceProductGlobalId' And Type = 3",
                     null
                 )
                 tbl = getDataTableFromCursor(c)

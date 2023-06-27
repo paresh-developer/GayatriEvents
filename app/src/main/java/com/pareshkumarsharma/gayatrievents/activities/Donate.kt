@@ -56,6 +56,7 @@ class Donate : AppCompatActivity() {
             rdo_grp.clearCheck()
             txt_motive.text.clear()
             txt_desc.text.clear()
+            txt_amount.text.clear()
             btn_clear.isEnabled = false
         }
 

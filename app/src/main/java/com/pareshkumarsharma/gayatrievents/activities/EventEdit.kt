@@ -43,29 +43,11 @@ internal class EventEdit : AppCompatActivity() {
             ServiceProductEdit.selectedServiceId =
                 existingEvents.Rows[i][existingEvents.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
-            builder.setTitle(existingEvents.Rows[i][6])
-            builder.setMessage(existingEvents.Rows[i][7]+"\n\nउपसेवाए:\n"+existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString().replace(',','\n'))
-            if (!existingEvents.Rows[i][15].equals("1") && !existingEvents.Rows[i][15].equals("0")) {
-//                builder.setNegativeButton(
-//                    "Edit",
-//                    DialogInterface.OnClickListener { dialogInterface, j ->
-//                        NewEvent.Event_Id = existingEvents.Rows[i][0]
-//                        NewEvent.Event_Global_Id = existingEvents.Rows[i][1]
-//                        NewEvent.ServiceProduct_GlobalId = existingEvents.Rows[i][2]
-//                        NewEvent.ServiceProduct_Id = existingEvents.Rows[i][3].toInt()
-//                        NewEvent.Service_GlobalId = existingEvents.Rows[i][4]
-//                        NewEvent.Service_Id = existingEvents.Rows[i][5].toInt()
-//                        NewEvent.Event_Name = existingEvents.Rows[i][6]
-//                        NewEvent.Event_Details = existingEvents.Rows[i][7]
-//                        NewEvent.Event_Date_Fixed =
-//                            existingEvents.Rows[i][8].toString().trim() == "1"
-//                        NewEvent.Event_Date_Start = existingEvents.Rows[i][9]
-//                        NewEvent.Event_Date_End = existingEvents.Rows[i][10]
-//                        NewEvent.Event_Price = existingEvents.Rows[i][11].toDouble()
-//                        NewEvent.Operation = 'U'
-//                        CurrentActivity.startActivity(Intent(CurrentActivity, NewEvent::class.java))
-//                    })
-                if(existingEvents.Rows[i][15].equals("1") && existingEvents.Rows[i][15].equals("1")){
+            builder.setTitle("GE : "+existingEvents.Rows[i][1])
+            builder.setMessage("\n\nउपसेवाए:\n"+existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString().replace(',','\n'))
+            if (!existingEvents.Rows[i][13].equals("1") && !existingEvents.Rows[i][13].equals("0")) {
+
+                if(existingEvents.Rows[i][13].equals("1") && existingEvents.Rows[i][13].equals("1")){
                     // TODO: Create refund logic for 50%
                 }
                 else {
@@ -110,13 +92,13 @@ internal class EventEdit : AppCompatActivity() {
                         })
                 }
             }
-            if (existingEvents.Rows[i][16].toShort() != 2.toShort() && existingEvents.Rows[i][15].toInt() <= existingEvents.Rows[i][9].toInt()) {
+            if (existingEvents.Rows[i][14].toShort() != 2.toShort()) {
                 var prices = 0.0F
-                for (pri in existingEvents.Rows[i][11].split(',')) {
+                for (pri in existingEvents.Rows[i][6].split(',')) {
                     prices += pri.trim().toFloat()
                 }
                 val refId = existingEvents.Rows[i][1]
-                val refName = existingEvents.Rows[i][6]
+                val refName = existingEvents.Rows[i][1]
                 builder.setPositiveButton(
                     "मुल्य चुकायें",
                     DialogInterface.OnClickListener { dialogInterface, i ->

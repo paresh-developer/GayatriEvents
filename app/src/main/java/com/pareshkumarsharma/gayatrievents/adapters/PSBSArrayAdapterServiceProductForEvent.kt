@@ -1,13 +1,16 @@
 package com.pareshkumarsharma.gayatrievents.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import com.pareshkumarsharma.gayatrievents.Product_Input
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 
 internal class PSBSArrayAdapterServiceProductForEvent(
@@ -91,9 +94,14 @@ internal class PSBSArrayAdapterServiceProductForEvent(
             if(b){
                 if(!SelectedProductId.contains(data[position][1]))
                     SelectedProductId.add(data[position][1])
-                if(!SelectedProductNames.contains(data[position][2]))
+                if(!SelectedProductNames.contains(data[position][2])) {
                     SelectedProductNames.add(data[position][2])
                     SelectedProductPrices.add(data[position][4].toFloat())
+                }
+
+                Product_Input.PRODUCT_NAME = data[position][2]
+                Product_Input.INPUT_FIELDS = Database.getServicesProductInputDetails(data[position][1])
+                context.startActivity(Intent(context,Product_Input::class.java))
             }
             else{
                 if(SelectedProductId.contains(data[position][1])) {

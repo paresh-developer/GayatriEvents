@@ -75,8 +75,6 @@ internal class LoginActivity : AppCompatActivity() {
                             .putBoolean("LLDone",true)
                             .apply()
 
-                    GlobalData.setUserGlobalId(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE))
-
                     val values = ContentValues()
                     values.put("Uname",userModel.User_Name)
                     values.put("Email",userModel.User_Email)
@@ -92,9 +90,12 @@ internal class LoginActivity : AppCompatActivity() {
                         Database.updateTo("USERS",values,"GlobalId = ?",listOf(userModel.User_GlobalId).toTypedArray())
                     }
 
+                    runOnUiThread { GlobalData.setUserGlobalId(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)) }
+
                     if(!MainActivity.IsRunning)
                         startActivity(Intent(applicationContext, MainActivity::class.java))
                     MainActivity.IsLoginDone = 2
+
                     finish()
                 } else {
                     runOnUiThread {

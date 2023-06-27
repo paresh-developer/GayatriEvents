@@ -195,7 +195,6 @@
                 android:orientation="horizontal"
                 >
                 <RadioButton
-                    android:checked="true"
                     android:id="@+id/rdo_daily_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -217,18 +216,22 @@
 
             <ListView
                 android:id="@+id/monthFestivalList"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <ListView
                 android:id="@+id/panchangListView"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <CalendarView
                 android:id="@+id/calendarView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+            </ScrollView>
         </LinearLayout>
 
     </LinearLayout>

@@ -5,7 +5,7 @@ data class EventDisplayModel(
     val EventPriceList: String,
     val ServiceGlobalIdList: String,
     val ServiceProductGlobalIdList: String,
-    val Approved: Boolean,
+    val Approved: String,
     val Approval_Time: String,
     val UserGlobalId: String,
     val CreationTime:String,

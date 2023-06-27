@@ -54,7 +54,12 @@ internal class PSBSArrayAdapterServiceProductDetails(
         val listViewDesc = currentItemView?.findViewById<ListView>(com.pareshkumarsharma.gayatrievents.R.id.txtServiceProductDetailsDescriptionListView)
 
         try {
-            txtTitle?.text = data[position][2]
+            var titletxt = ""
+            if(data[position][4].toInt()==3)
+                titletxt = "Input : "
+            titletxt += data[position][2]
+            txtTitle?.text = titletxt
+//            txtTitle?.text = data[position][2]
             txtOwnerAt?.text = " On "+data[position][5].replace('T',' ')
 
             if(data[position][4].toInt()==1){
@@ -63,7 +68,6 @@ internal class PSBSArrayAdapterServiceProductDetails(
             else if(data[position][4].toInt()==2) {
                 txtDesc?.text = "> "+data[position][3].replace("\n","\n> ")
             }
-
         }
         catch (Ex:Exception){
             txtTitle?.text = "Error"

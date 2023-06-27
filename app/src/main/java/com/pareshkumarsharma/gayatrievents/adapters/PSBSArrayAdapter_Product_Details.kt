@@ -49,7 +49,11 @@ internal class PSBSArrayAdapter_Product_Details(
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
 
-        txt1?.text = data[position][2]
+        var titletxt = ""
+        if(data[position][4]=="3")
+            titletxt = "Input : "
+        titletxt += data[position][2]
+        txt1?.text = titletxt
         txt2?.text = data[position][3]
         return currentItemView!!
     }
