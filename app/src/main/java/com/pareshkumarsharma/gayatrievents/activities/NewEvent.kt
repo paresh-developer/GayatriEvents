@@ -19,6 +19,8 @@ internal class NewEvent : AppCompatActivity() {
     private var Payment_Id = ""
 
     internal companion object {
+        var INPUT_FILEDS = mutableMapOf<String,MutableList<String>>()
+        var INPUT_FIELDS_VALUES = mutableMapOf<String,MutableList<String>>()
         var Selected_Service_Global_Id = ""
         var Selected_Service_Product_Global_Id = ""
         var Operation = 'I'
@@ -216,7 +218,9 @@ internal class NewEvent : AppCompatActivity() {
                             EventRegistrationModel(
                                 SelectedServiceProductPriceList.joinToString(),
                                 SelectedServiceIds.joinToString(),
-                                SelectedServiceProductIds.joinToString()
+                                SelectedServiceProductIds.joinToString(),
+                                INPUT_FILEDS.joinToString(","),
+                                INPUT_FIELDS_VALUES.joinToString(",")
                             )
                         )
                     ) {
