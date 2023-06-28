@@ -4,6 +4,5 @@ data class EventRegistrationModel(
     val EventPriceList: String,
     val ServiceGlobalIdList: String,
     val ServiceProductGlobalIdList: String,
-    val InputFields:String,
-    val InputFieldValues:String
+    val InputFieldValues: MutableMap<String, MutableMap<String,String>>
 )

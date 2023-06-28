@@ -14,5 +14,6 @@ data class EventDisplayModel(
     val RequestStatus:Short,
     val UserTurn:String,
     val OrderRead:Short,
-    val ClientMobile: String
+    val ClientMobile: String,
+    val InputFields:MutableMap<String,MutableMap<String,String>>
 )

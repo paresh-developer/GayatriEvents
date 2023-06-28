@@ -200,6 +200,21 @@ internal class Database {
                                 ");")
                 }
 
+                if (!checkTableExists("ProductFieldValues")) {
+                    sqlite.execSQL(
+                        "Create table ProductFieldValues (" +
+                                "Id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                "Event_Id int," +
+                                "Event_Global_Id text," +
+                                "Product_Id int," +
+                                "Product_Global_Id text," +
+                                "SPD_Id int," +
+                                "SPD_Global_Id text," +
+                                "Value text," +
+                                "CreationDate datetime default CURRENT_TIMESTAMP" +
+                                ");")
+                }
+
                 if (!checkTableExists("Client_EVENTS_Request")) {
                     sqlite.execSQL(
                         "Create table Client_EVENTS_Request (" +
@@ -1197,6 +1212,21 @@ internal class Database {
             return rowCount
         }
 
+        internal fun getRowCount(query: String): Int {
+            var rowCount = 0
+            try {
+                openConnection()
+                val c = sqlite.rawQuery(query, null)
+                rowCount = getDataTableFromCursor(c).Rows[0][0].toInt()
+                c.close()
+            } catch (ex: Exception) {
+                lastError = ex.message.toString()
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+            } finally {
+                closeConnection()
+            }
+            return rowCount
+        }
         // endregion
     }
 }

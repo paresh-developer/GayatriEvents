@@ -1,4 +1,4 @@
-package com.pareshkumarsharma.gayatrievents
+package com.pareshkumarsharma.gayatrievents.activities
 
 import android.app.ActionBar.LayoutParams
 import android.graphics.Color
@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.pareshkumarsharma.gayatrievents.activities.NewEvent
+import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 
 class Product_Input : AppCompatActivity() {
@@ -35,19 +35,13 @@ class Product_Input : AppCompatActivity() {
         tv_product_name = findViewById(R.id.product_name)
         tv_product_name.setText(PRODUCT_NAME)
 
-        val ll = LinearLayout(this)
-        ll.layoutParams =
-            ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        ll.orientation = LinearLayout.HORIZONTAL
-
-        if (NewEvent.INPUT_FILEDS[PRODUCT_GLOBAL_ID] == null)
-            NewEvent.INPUT_FILEDS[PRODUCT_GLOBAL_ID] = mutableListOf<String>()
-        else
-            NewEvent.INPUT_FILEDS[PRODUCT_GLOBAL_ID]?.clear()
 
         for (fl in INPUT_FIELDS.Rows) {
 
-            NewEvent.INPUT_FILEDS[PRODUCT_GLOBAL_ID]?.add(fl[1])
+            val ll = LinearLayout(this)
+            ll.layoutParams =
+                ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            ll.orientation = LinearLayout.HORIZONTAL
 
             val tv = TextView(this)
             tv.setText("> " + fl[2] + " :- ")
@@ -61,6 +55,7 @@ class Product_Input : AppCompatActivity() {
 
             val tv1 = EditText(this)
             tv1.setHint(fl[3])
+            tv1.inputType = EditText.AUTOFILL_TYPE_TEXT
             tv1.layoutParams =
                 ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
 //            tv1.setTextColor(Color.BLACK)
@@ -68,20 +63,22 @@ class Product_Input : AppCompatActivity() {
 
             all_edt.add(tv1)
             ll.addView(tv1)
-        }
 
-        mll.addView(ll)
+            mll.addView(ll)
+        }
 
         btn_submit = findViewById(R.id.btn_submit)
         btn_submit.setOnClickListener {
             if(NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID]==null)
-                NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID] = mutableListOf()
+                NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID] = mutableMapOf()
             else
                 NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID]?.clear()
 
-            for (vl in all_edt) {
-                NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID]?.add(vl.text.toString())
+            for (i in 0..INPUT_FIELDS.Rows.size-1){
+                NewEvent.INPUT_FIELDS_VALUES[PRODUCT_GLOBAL_ID]?.put(INPUT_FIELDS.Rows[i][1],all_edt[i].text.toString())
             }
+
+            finish()
         }
     }
 }

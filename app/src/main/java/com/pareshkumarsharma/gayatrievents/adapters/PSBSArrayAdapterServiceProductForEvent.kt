@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import com.pareshkumarsharma.gayatrievents.Product_Input
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.activities.Product_Input
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 
 
@@ -102,7 +102,7 @@ internal class PSBSArrayAdapterServiceProductForEvent(
                 Product_Input.PRODUCT_GLOBAL_ID = data[position][1]
                 Product_Input.PRODUCT_NAME = data[position][2]
                 Product_Input.INPUT_FIELDS = Database.getServicesProductInputDetails(data[position][1])
-                context.startActivity(Intent(context,Product_Input::class.java))
+                context.startActivity(Intent(context, Product_Input::class.java))
             }
             else{
                 if(SelectedProductId.contains(data[position][1])) {

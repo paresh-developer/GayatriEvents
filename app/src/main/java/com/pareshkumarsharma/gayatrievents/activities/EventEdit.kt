@@ -43,14 +43,16 @@ internal class EventEdit : AppCompatActivity() {
             ServiceProductEdit.selectedServiceId =
                 existingEvents.Rows[i][existingEvents.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("GE : "+existingEvents.Rows[i][1])
-            builder.setMessage("\n\nउपसेवाए:\n"+existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString().replace(',','\n'))
+            builder.setTitle("GE : " + existingEvents.Rows[i][1])
+            builder.setMessage(
+                "\n\nउपसेवाए:\n" + existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString()
+                    .replace(',', '\n')
+            )
             if (!existingEvents.Rows[i][13].equals("1") && !existingEvents.Rows[i][13].equals("0")) {
 
-                if(existingEvents.Rows[i][13].equals("1") && existingEvents.Rows[i][13].equals("1")){
+                if (existingEvents.Rows[i][13].equals("1") && existingEvents.Rows[i][13].equals("1")) {
                     // TODO: Create refund logic for 50%
-                }
-                else {
+                } else {
                     builder.setNegativeButton(
                         "Delete",
                         DialogInterface.OnClickListener { dialogInterface, i123 ->
@@ -217,7 +219,72 @@ internal class EventEdit : AppCompatActivity() {
                         )
                     }
 
+                    if (res[i].InputFields != null) {
+                        // all product + inputfields
+                        for (j in 0..res[i].InputFields.size - 1) {
+                            // all inputfields
+                            for (k in 0..res[i].InputFields.values.elementAt(j).size - 1) {
+                                // 1 inputfield
+                                val cv1 = ContentValues()
+                                var nul_field1 = "Id"
+                                cv1.put("Event_Global_Id", res[i].EventGlobalId)
+                                val eventId = Database.getRowCount("Select Id from EVENTS where GlobalId='${res[i].EventGlobalId}'")
+                                if (eventId != 0)
+                                    cv1.put("Event_Id", eventId)
+                                else
+                                    nul_field1 += ",Event_Id"
+                                cv1.put("Product_Global_Id", res[i].InputFields.keys.elementAt(j))
+
+                                val productId = Database.getRowCount("Select Id from Service_Product where GlobalId='${res[i].InputFields.keys.elementAt(j)}'")
+                                if (productId != 0)
+                                    cv1.put("Product_Id", productId)
+                                else
+                                    nul_field1 += ",Product_Id"
+
+                                cv1.put(
+                                    "SPD_Global_Id",
+                                    res[i].InputFields.values.elementAt(j).keys.elementAt(k)
+                                )
+                                val SPDId = Database.getRowCount("Select Id from Service_Product_Detail where GlobalId='${res[i].InputFields.values.elementAt(j).keys.elementAt(k)}'")
+                                if (SPDId != 0)
+                                    cv1.put("SPD_Id", SPDId)
+                                else
+                                    nul_field1 += ",SPD_Id"
+
+                                cv1.put(
+                                    "Value",
+                                    res[i].InputFields.values.elementAt(j).values.elementAt(k)
+                                )
+
+                                val cnt = Database.getRowCount(
+                                    "Select count(id) From ProductFieldValues where Event_Global_Id = '${res[i].EventGlobalId}' and Product_Global_Id = '${
+                                        res[i].InputFields.keys.elementAt(j)
+                                    }' and SPD_Global_Id = '${
+                                        res[i].InputFields.values.elementAt(j).keys.elementAt(
+                                            k
+                                        )
+                                    }'"
+                                )
+
+                                if (cnt == 0) {
+                                    Database.insertTo("ProductFieldValues", cv1, nul_field1)
+                                } else {
+                                    Database.updateTo(
+                                        "ProductFieldValues",
+                                        cv1,
+                                        " Event_Global_Id = ? And Product_Global_Id = ? And SPD_Global_Id = ?",
+                                        listOf(
+                                            res[i].EventGlobalId,
+                                            res[i].InputFields.keys.elementAt(j),
+                                            res[i].InputFields.values.elementAt(j).keys.elementAt(k)
+                                        ).toTypedArray()
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
+
                 existingEvents = Database.getEvents(GlobalData.getUserGlobalId())
 
                 runOnUiThread {
