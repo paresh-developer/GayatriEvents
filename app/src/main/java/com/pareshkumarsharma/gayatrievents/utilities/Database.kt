@@ -733,6 +733,25 @@ internal class Database {
             return tbl
         }
 
+        internal fun getInputFiledsForEvents(EGID:String): DataTable {
+            var tbl = DataTable(mutableListOf(), mutableListOf(mutableListOf()), "")
+            try {
+                openConnection()
+                val c = sqlite.rawQuery(
+                    "Select SPD.Title,P.VALUE from ProductFieldValues P, Events e, SERVICE_PRODUCT SP, SERVICE_PRODUCT_DETAIL SPD where P.Event_Global_Id = e.GlobalId and P.Product_Global_Id = SP.GlobalId And P.SPD_Global_Id = SPD.GlobalId and Event_Global_Id = '$EGID'",
+                    null
+                )
+                tbl = getDataTableFromCursor(c)
+                c.close()
+            } catch (ex: Exception) {
+                LogManagement.Log(ex.message+" "+ex.stackTraceToString(),"Error")
+                lastError = ex.message.toString()
+            } finally {
+                closeConnection()
+            }
+            return tbl
+        }
+
         internal fun getServices(userGlobalId:String): DataTable {
             var tbl: DataTable? = null
             try {

@@ -45,6 +45,11 @@ internal class PSBSArrayAdapterEvent(
             )
         }
 
+        if(position%2==0)
+            currentItemView?.setBackgroundColor(Color.LTGRAY)
+        else
+            currentItemView?.setBackgroundColor(Color.WHITE)
+
         val txtEventRegisteredOn =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventRegisteredOn)
         val txtApproval =
@@ -85,29 +90,27 @@ internal class PSBSArrayAdapterEvent(
                 "तारीख : " + data[position][11].replace('T', ' ')
                     .substring(0, 10) + product_status
 
-            txtApproval?.setTextColor(Color.BLACK)
-
-            txtPayment?.setTextColor(Color.BLACK)
-            var paymentStatus = "मुल्य चुकाना बाकी है"
-            if (data[position][14] == "2") {
-                paymentStatus = "मुल्य चुका दिया गया है"
-                txtPayment?.setTextColor(Color.BLUE)
+            var approval_status = false
+            for (ap_st in data[position][7].split(',')){
+                if(ap_st.toInt()!=1)
+                    approval_status = true
             }
 
-            txtPayment?.text = paymentStatus
+            txtPayment?.visibility = View.GONE
+            if(approval_status) {
+                var paymentStatus = "मुल्य चुकाना बाकी है"
+                if (data[position][14] == "2") {
+                    paymentStatus = "मुल्य चुका दिया गया है"
+                    txtPayment?.setTextColor(Color.BLUE)
+                }
+                txtPayment?.visibility = View.VISIBLE
+                txtPayment?.text = paymentStatus
+            }
 
-//            txtApproval?.text = "Sts: " + data[position][13] + " Apr: " + data[position][7]
             if (data[position][13] == "0")
                 txtApproval?.text = "- Pending - " + data[position][12]
             else if (data[position][13] == "1")
                 txtApproval?.text = data[position][12]
-//            else if (data[position][13] == "1" && data[position][7] == "0") {
-//                txtApproval?.text = "- अस्विकार - " + data[position][12]
-//                txtApproval?.setTextColor(Color.RED)
-//            } else if (data[position][13] == "1" && data[position][7] == "1") {
-//                txtApproval?.text = "- स्विकारीत - " + data[position][12]
-//                txtApproval?.setTextColor(Color.BLUE)
-//            }
 
             var sum_price = 0.0
             for (pri in data[position][6].split(',')) {
@@ -115,10 +118,8 @@ internal class PSBSArrayAdapterEvent(
             }
 
             txtEventPrice?.text = "मुल्य :- " + Math.ceil(sum_price) + " /-"
-            txtEventId?.text = "प्रसंग नं :- EV" + data[position][11].substring(
-                2,
-                4
-            ) + data[position][1].substring(3)
+            txtEventId?.text = "प्रसंग नं :- EV" + data[position][11].substring(2, 4) + data[position][1].substring(3)
+
         } catch (Ex: Exception) {
             LogManagement.Log("Adapter error : ", Ex.message + "\n" + Ex.stackTraceToString())
         }

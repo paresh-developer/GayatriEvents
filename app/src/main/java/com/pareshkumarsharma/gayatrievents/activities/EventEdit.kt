@@ -44,57 +44,69 @@ internal class EventEdit : AppCompatActivity() {
                 existingEvents.Rows[i][existingEvents.Columns.indexOf("GlobalId")]
             val builder = AlertDialog.Builder(this)
             builder.setTitle("GE : " + existingEvents.Rows[i][1])
-            builder.setMessage(
-                "\n\nउपसेवाए:\n" + existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString()
-                    .replace(',', '\n')
-            )
-            if (!existingEvents.Rows[i][13].equals("1") && !existingEvents.Rows[i][13].equals("0")) {
-
-                if (existingEvents.Rows[i][13].equals("1") && existingEvents.Rows[i][13].equals("1")) {
-                    // TODO: Create refund logic for 50%
-                } else {
-                    builder.setNegativeButton(
-                        "Delete",
-                        DialogInterface.OnClickListener { dialogInterface, i123 ->
-                            Thread(Runnable {
-                                APICalls.setContext(this)
-                                APICalls.cookies = mapOf<String, String>(
-                                    Pair(
-                                        "token",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("token", "").toString()
-                                    ),
-                                    Pair(
-                                        "expires",
-                                        getSharedPreferences(
-                                            Database.SHAREDFILE,
-                                            MODE_PRIVATE
-                                        ).getString("expires", "").toString()
-                                    )
-                                )
-                                if (APICalls.sendDeleteEventRequest(
-                                        existingEvents.Rows[i][1],
-                                        "0",
-                                        "Deleted By Client"
-                                    )
-                                ) {
-                                    RefreshData()
-                                } else {
-                                    runOnUiThread {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            APICalls.lastCallMessage,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                }
-                            }).start()
-                        })
+            var product_Input = ""
+            val fieldData = Database.getInputFiledsForEvents(existingEvents.Rows[i][1])
+            if (fieldData.Rows.size > 0 && fieldData.Columns.size > 1) {
+                for (fli in fieldData.Rows) {
+                    product_Input += "\n" + fli[0] + " -> " + fli[1]
                 }
+                product_Input = "\n\nInput Fields:" + product_Input
             }
-            if (existingEvents.Rows[i][14].toShort() != 2.toShort()) {
+            builder.setMessage(
+                "उपसेवाए:\n" + existingEvents.Rows[i][existingEvents.Rows[i].size - 1].toString()
+                    .replace(',', '\n') + product_Input
+            )
+            val approvallist = mutableListOf<Int>()
+            for (i3 in 0..existingEvents.Rows[i][2].split(',').size-1){
+                approvallist.add(1)
+            }
+            if (existingEvents.Rows[i][13].equals("0")) {
+                builder.setNegativeButton(
+                    "Delete",
+                    DialogInterface.OnClickListener { dialogInterface, i123 ->
+                        Thread(Runnable {
+                            APICalls.setContext(this)
+                            APICalls.cookies = mapOf<String, String>(
+                                Pair(
+                                    "token",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("token", "").toString()
+                                ),
+                                Pair(
+                                    "expires",
+                                    getSharedPreferences(
+                                        Database.SHAREDFILE,
+                                        MODE_PRIVATE
+                                    ).getString("expires", "").toString()
+                                )
+                            )
+                            if (APICalls.sendDeleteEventRequest(
+                                    existingEvents.Rows[i][1],
+                                    approvallist.joinToString(","),
+                                    "Deleted By Client"
+                                )
+                            ) {
+                                RefreshData()
+                            } else {
+                                runOnUiThread {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        APICalls.lastCallMessage,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }).start()
+                    })
+            }
+            var approval_status = false
+            for (ap_st in existingEvents.Rows[i][7].split(',')){
+                if(ap_st.toInt()!=1)
+                    approval_status = true
+            }
+            if (approval_status && existingEvents.Rows[i][14].toShort() != 2.toShort()) {
                 var prices = 0.0F
                 for (pri in existingEvents.Rows[i][6].split(',')) {
                     prices += pri.trim().toFloat()
@@ -228,14 +240,19 @@ internal class EventEdit : AppCompatActivity() {
                                 val cv1 = ContentValues()
                                 var nul_field1 = "Id"
                                 cv1.put("Event_Global_Id", res[i].EventGlobalId)
-                                val eventId = Database.getRowCount("Select Id from EVENTS where GlobalId='${res[i].EventGlobalId}'")
+                                val eventId =
+                                    Database.getRowCount("Select Id from EVENTS where GlobalId='${res[i].EventGlobalId}'")
                                 if (eventId != 0)
                                     cv1.put("Event_Id", eventId)
                                 else
                                     nul_field1 += ",Event_Id"
                                 cv1.put("Product_Global_Id", res[i].InputFields.keys.elementAt(j))
 
-                                val productId = Database.getRowCount("Select Id from Service_Product where GlobalId='${res[i].InputFields.keys.elementAt(j)}'")
+                                val productId = Database.getRowCount(
+                                    "Select Id from Service_Product where GlobalId='${
+                                        res[i].InputFields.keys.elementAt(j)
+                                    }'"
+                                )
                                 if (productId != 0)
                                     cv1.put("Product_Id", productId)
                                 else
@@ -245,7 +262,11 @@ internal class EventEdit : AppCompatActivity() {
                                     "SPD_Global_Id",
                                     res[i].InputFields.values.elementAt(j).keys.elementAt(k)
                                 )
-                                val SPDId = Database.getRowCount("Select Id from Service_Product_Detail where GlobalId='${res[i].InputFields.values.elementAt(j).keys.elementAt(k)}'")
+                                val SPDId = Database.getRowCount(
+                                    "Select Id from Service_Product_Detail where GlobalId='${
+                                        res[i].InputFields.values.elementAt(j).keys.elementAt(k)
+                                    }'"
+                                )
                                 if (SPDId != 0)
                                     cv1.put("SPD_Id", SPDId)
                                 else

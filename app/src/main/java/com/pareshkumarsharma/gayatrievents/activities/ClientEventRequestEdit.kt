@@ -48,9 +48,17 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
         listViewClientEventRequests.setOnItemClickListener { adapterView, view, i, l ->
             val builder = AlertDialog.Builder(this)
             builder.setTitle("GE : " + existingClientRequests.Rows[i][1])
+            var product_Input = ""
+            val fieldData = Database.getInputFiledsForEvents(existingClientRequests.Rows[i][1])
+            if (fieldData.Rows.size>0 && fieldData.Columns.size>1) {
+                for (fli in fieldData.Rows) {
+                    product_Input += "\n" + fli[0] + " -> " + fli[1]
+                }
+                product_Input = "\n\nInput Fields:" + product_Input
+            }
             builder.setMessage(
-                "\n\nउपसेवाए:\n" + existingClientRequests.Rows[i][existingClientRequests.Rows[i].size - 1].toString()
-                    .replace(',', '\n')
+                "उपसेवाए:\n" + existingClientRequests.Rows[i][existingClientRequests.Rows[i].size - 1].toString()
+                    .replace(',', '\n') + product_Input
             )
             val product_Col = existingClientRequests.Columns.indexOf("ProductName")
             val products = existingClientRequests.Rows[i][product_Col]
@@ -105,7 +113,7 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                                             ).getString("expires", "").toString()
                                         )
                                     )
-                                    for (i2 in 0..approval_list.size-1) {
+                                    for (i2 in 0..approval_list.size - 1) {
                                         if (selectedProductList.contains(i2))
                                             approval_list[i2] = 1
                                         else

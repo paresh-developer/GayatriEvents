@@ -102,7 +102,9 @@ internal class PSBSArrayAdapterServiceProductForEvent(
                 Product_Input.PRODUCT_GLOBAL_ID = data[position][1]
                 Product_Input.PRODUCT_NAME = data[position][2]
                 Product_Input.INPUT_FIELDS = Database.getServicesProductInputDetails(data[position][1])
-                context.startActivity(Intent(context, Product_Input::class.java))
+                if(Product_Input.INPUT_FIELDS!=null&&Product_Input.INPUT_FIELDS.Rows.size>0){
+                    context.startActivity(Intent(context, Product_Input::class.java))
+                }
             }
             else{
                 if(SelectedProductId.contains(data[position][1])) {

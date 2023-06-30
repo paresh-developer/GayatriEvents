@@ -45,6 +45,11 @@ internal class PSBSArrayAdapterClientRequest(
             )
         }
 
+        if(position%2==0)
+            currentItemView?.setBackgroundColor(Color.LTGRAY)
+        else
+            currentItemView?.setBackgroundColor(Color.WHITE)
+
         val txtEventRegisteredOn =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventRegisteredOn)
         val txtApproval =
@@ -87,14 +92,22 @@ internal class PSBSArrayAdapterClientRequest(
 
             txtApproval?.setTextColor(Color.BLACK)
 
-            txtPayment?.setTextColor(Color.BLACK)
-            var paymentStatus = "मुल्य चुकाना बाकी है"
-            if (data[position][14] == "2") {
-                paymentStatus = "मुल्य चुका दिया गया है"
-                txtPayment?.setTextColor(Color.BLUE)
+            var approval_status = false
+            for (ap_st in data[position][7].split(',')){
+                if(ap_st.toInt()!=1)
+                    approval_status = true
             }
 
-            txtPayment?.text = paymentStatus
+            txtPayment?.visibility = View.GONE
+            if(approval_status) {
+                var paymentStatus = "मुल्य चुकाना बाकी है"
+                if (data[position][14] == "2") {
+                    paymentStatus = "मुल्य चुका दिया गया है"
+                    txtPayment?.setTextColor(Color.BLUE)
+                }
+                txtPayment?.visibility = View.VISIBLE
+                txtPayment?.text = paymentStatus
+            }
 
 //            txtApproval?.text = "Sts: " + data[position][13] + " Apr: " + data[position][7]
             if (data[position][13] == "0")
