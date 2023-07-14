@@ -1129,12 +1129,12 @@ internal class Database {
                 openConnection(1)
                 val c = sqlite.query(
                     "Table1",
-                    listOf("id", "F03").toTypedArray(),
+                    listOf("id", "f03").toTypedArray(),
+                    "Id != 10",
                     null,
+                    "f03",
                     null,
-                    "F03",
-                    null,
-                    "id"
+                    "f05"
                 )
                 tbl = getDataTableFromCursor(c)
                 c.close()

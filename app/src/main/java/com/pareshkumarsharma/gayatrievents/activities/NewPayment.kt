@@ -1,5 +1,8 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,7 +16,6 @@ import com.pareshkumarsharma.gayatrievents.api.model.PaymentRequest
 import com.pareshkumarsharma.gayatrievents.api.model.PaymentUpdateModel
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
-import com.pareshkumarsharma.gayatrievents.utilities.PaymentManager
 
 
 class NewPayment : AppCompatActivity() {
@@ -75,6 +77,19 @@ class NewPayment : AppCompatActivity() {
         findViewById<Button>(R.id.btn_cash_pay_request).setOnClickListener {
             requestPayment(RefName, RefId, RefAmount, 0, RefCode)
             findViewById<Button>(R.id.btn_cash_pay_request).isEnabled = false
+        }
+
+        findViewById<Button>(R.id.btn_upi_pay_request).setOnClickListener {
+            requestPayment(RefName, RefId, RefAmount, 1, RefCode)
+            findViewById<Button>(R.id.btn_upi_pay_request).isEnabled = false
+        }
+
+        findViewById<Button>(R.id.btn_copyUpi).setOnClickListener {
+            val clipboard: ClipboardManager =
+                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("Copy","pareshsharma98000@okhdfcbank")
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this,"UPI Id Copied",Toast.LENGTH_SHORT).show()
         }
 
         PaymentActivityResultLauncher =
@@ -154,38 +169,38 @@ class NewPayment : AppCompatActivity() {
                     APICalls.lastCallMessage.split("Id:")[1].trim()
                         .trim('"')
 
-                when (selectedPaymentMethod) {
-                    1 -> openPayment(
-                        PaymentManager.Paytm(
-                            this,
-                            RefCode + " " + RefId,
-                            Payment_Global_Id,
-                            "For " + RefName + " ($RefId)",
-                            RefAmount
-                        )
-                    )
-                    2 -> openPayment(
-                        PaymentManager.GooglePay(
-                            this,
-                            RefCode + " " + RefId,
-                            Payment_Global_Id,
-                            "For " + RefName + " ($RefId)",
-                            RefAmount
-                        )
-                    )
-                    3 -> openPayment(
-                        PaymentManager.PhonePe(
-                            this,
-                            RefCode + " " + RefId,
-                            Payment_Global_Id,
-                            "For " + RefName + " ($RefId)",
-                            RefAmount
-                        )
-                    )
-                }
+//                when (selectedPaymentMethod) {
+//                    1 -> openPayment(
+//                        PaymentManager.Paytm(
+//                            this,
+//                            "Cat1",
+//                            Payment_Global_Id,
+//                            refId,
+//                            RefAmount
+//                        )
+//                    )
+//                    2 -> openPayment(
+//                        PaymentManager.GooglePay(
+//                            this,
+//                            "Cat1",
+//                            Payment_Global_Id,
+//                            refId,
+//                            RefAmount
+//                        )
+//                    )
+//                    3 -> openPayment(
+//                        PaymentManager.PhonePe(
+//                            this,
+//                            "Cat1",
+//                            Payment_Global_Id,
+//                            refId,
+//                            RefAmount
+//                        )
+//                    )
+//                }
             }
         }).start()
-        if(selectedPaymentMethod == 0)
+//        if(selectedPaymentMethod == 0)
             finish()
     }
 

@@ -18,6 +18,7 @@ class PaymentManager {
         private val AMAZON_PACKAGE_NAME = "in.amazon.mShop.android.shopping"
 
         private val UPI_ID = "pareshsharma98000@okhdfcbank"
+        private val PAYTM_UPI_ID = "8128611138@paytm"
 
         internal fun GooglePay(activity: Activity,categoryCode:String, tranId:String,tranNote:String, amount:Float):Intent {
             // Google Pay Payment info
@@ -25,14 +26,14 @@ class PaymentManager {
             val uri = Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
+                .appendQueryParameter("pa", PAYTM_UPI_ID) // Payee address or business virtual payment address (VPA).
                 .appendQueryParameter("pn", "Gayatri Event") // Payee name or business name.
                 .appendQueryParameter("mc", categoryCode) // Business retailer category code.
                 .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
                 .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
                 .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
+                .appendQueryParameter("url", APICalls.HOST+"payment?id="+tranId)  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
@@ -46,14 +47,14 @@ class PaymentManager {
             val uri = Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
-                .appendQueryParameter("pn", "Pareshkumar Sharma") // Payee name or business name.
+                .appendQueryParameter("pa", PAYTM_UPI_ID) // Payee address or business virtual payment address (VPA).
+                .appendQueryParameter("pn", "Gayatry Event") // Payee name or business name.
                 .appendQueryParameter("mc", categoryCode) // Business retailer category code.
                 .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
                 .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
                 .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
+                .appendQueryParameter("url", APICalls.HOST+"payment?id="+tranId)  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri
@@ -67,14 +68,14 @@ class PaymentManager {
             val uri = Uri.Builder()
                 .scheme("upi")
                 .authority("pay")
-                .appendQueryParameter("pa", UPI_ID) // Payee address or business virtual payment address (VPA).
-                .appendQueryParameter("pn", "Pareshkumar Sharma") // Payee name or business name.
+                .appendQueryParameter("pa", PAYTM_UPI_ID) // Payee address or business virtual payment address (VPA).
+                .appendQueryParameter("pn", "Gayatry Event") // Payee name or business name.
                 .appendQueryParameter("mc", categoryCode) // Business retailer category code.
                 .appendQueryParameter("tr", tranId) // Transaction reference ID. (Business specific ID. Must be unique for each request.)
                 .appendQueryParameter("tn", tranNote) // Transaction note. It is the description appearing in the Google Pay payflow. (Maximum length is 80 characters)
                 .appendQueryParameter("am", amount.toString()) // Transaction amount. (Up to two decimal digits are allowed. This should be set in the details object instead of the supportedInstruments object.)
                 .appendQueryParameter("cu", "INR") // Currency code. (This should be set in the details object instead of supportedInstruments object. Only the Indian rupee (INR) is currently supported.)
-                .appendQueryParameter("url", "http://localhost/GayatriEvents")  // Transaction reference URL.
+                .appendQueryParameter("url", APICalls.HOST+"payment?id="+tranId)  // Transaction reference URL.
                 .build()
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = uri

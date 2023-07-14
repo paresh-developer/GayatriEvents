@@ -111,18 +111,20 @@ internal class EventEdit : AppCompatActivity() {
                 for (pri in existingEvents.Rows[i][6].split(',')) {
                     prices += pri.trim().toFloat()
                 }
-                val refId = existingEvents.Rows[i][1]
-                val refName = existingEvents.Rows[i][1]
-                builder.setPositiveButton(
-                    "मुल्य चुकायें",
-                    DialogInterface.OnClickListener { dialogInterface, i ->
-                        NewPayment.RefCode = 'E'
-                        NewPayment.RefAmount = prices
-                        NewPayment.RefId = refId
-                        NewPayment.RefName = refName
-                        startActivity(Intent(this, NewPayment::class.java))
-                        dialogInterface.dismiss()
-                    })
+                // region payment
+//                val refId = existingEvents.Rows[i][1]
+//                val refName = existingEvents.Rows[i][1]
+//                builder.setPositiveButton(
+//                    "मुल्य चुकायें",
+//                    DialogInterface.OnClickListener { dialogInterface, i ->
+//                        NewPayment.RefCode = 'E'
+//                        NewPayment.RefAmount = prices
+//                        NewPayment.RefId = refId
+//                        NewPayment.RefName = refName
+//                        startActivity(Intent(this, NewPayment::class.java))
+//                        dialogInterface.dismiss()
+//                    })
+                // endregion
             }
 
             builder.setNeutralButton(

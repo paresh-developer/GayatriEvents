@@ -62,7 +62,8 @@
             android:id="@+id/lyt_online"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -74,6 +75,7 @@
                 android:textStyle="italic" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -101,15 +103,65 @@
                     android:src="@drawable/phonepe_new_1"
                     android:tooltipText="PhonePe" />
             </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:text="Google Pay / Paytm / Phone Pay "
+                    />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="pareshsharma98000@okhdfcbank"
+                />
+                <Button
+                    android:id="@+id/btn_copyUpi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Copy"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="8128611138"
+                    />
+                <Button
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/btn_copyMbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Copy"
+                    />
+            </LinearLayout>
+            <Button
+                    android:id="@+id/btn_upi_pay_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Request (दर्ज करें)" />
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/lyt_cash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
@@ -131,8 +183,7 @@
                 android:id="@+id/btn_cash_pay_request"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Request (दर्ज करें)"
-                />
+                android:text="Request (दर्ज करें)" />
         </LinearLayout>
     </LinearLayout>
 
