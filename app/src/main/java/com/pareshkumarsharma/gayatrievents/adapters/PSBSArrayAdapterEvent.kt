@@ -58,8 +58,8 @@ internal class PSBSArrayAdapterEvent(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventPrice)
         val txtEventId =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtEventId)
-        val txtPayment =
-            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtPayment)
+//        val txtPayment =
+//            currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtPayment)
 
         try {
             var product_status = "\n"
@@ -96,16 +96,16 @@ internal class PSBSArrayAdapterEvent(
                     approval_status = true
             }
 
-            txtPayment?.visibility = View.GONE
-            if(approval_status) {
-                var paymentStatus = "मुल्य चुकाना बाकी है"
-                if (data[position][14] == "2") {
-                    paymentStatus = "मुल्य चुका दिया गया है"
-                    txtPayment?.setTextColor(Color.BLUE)
-                }
-                txtPayment?.visibility = View.VISIBLE
-                txtPayment?.text = paymentStatus
-            }
+//            txtPayment?.visibility = View.GONE
+//            if(approval_status) {
+//                var paymentStatus = "मुल्य चुकाना बाकी है"
+//                if (data[position][14] == "2") {
+//                    paymentStatus = "मुल्य चुका दिया गया है"
+//                    txtPayment?.setTextColor(Color.BLUE)
+//                }
+//                txtPayment?.visibility = View.VISIBLE
+//                txtPayment?.text = paymentStatus
+//            }
 
             if (data[position][13] == "0")
                 txtApproval?.text = "- Pending - " + data[position][12]

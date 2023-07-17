@@ -228,12 +228,12 @@ internal class ClientEventRequestEdit : AppCompatActivity() {
                     intent.data = Uri.parse("tel:${existingClientRequests.Rows[i][17]}")
                     startActivity(intent)
                 })
-            if (existingClientRequests.Rows[i][13].toInt() == 1) {
-                builder.setNegativeButton(
-                    "ओर्डर तैयार है",
-                    DialogInterface.OnClickListener { dialogInterface, j ->
-                    })
-            }
+//            if (existingClientRequests.Rows[i][13].toInt() == 1) {
+//                builder.setNegativeButton(
+//                    "ओर्डर तैयार है",
+//                    DialogInterface.OnClickListener { dialogInterface, j ->
+//                    })
+//            }
             builder.show()
         }
     }
