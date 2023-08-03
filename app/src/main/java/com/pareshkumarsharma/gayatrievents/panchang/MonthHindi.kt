@@ -13,7 +13,7 @@ internal enum class MonthHindi(val m:Int) {
     Pausha(10),
     Magha(11),
     Phalguna(12),
-    Adik(13);
+    Adikmas(0);
     companion object {
         fun get(obj: Int): String {
             var str = ""
@@ -30,7 +30,7 @@ internal enum class MonthHindi(val m:Int) {
                 10 -> str = "पौष"
                 11 -> str = "माघ"
                 12 -> str = "फाल्गुन"
-                13 -> str = "श्रावण (अधिक)"
+                0 -> str = "अधिकमास"
             }
             return str
         }

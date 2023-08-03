@@ -18,27 +18,18 @@
             android:layout_margin="5dp"
             android:gravity="top"
             android:orientation="horizontal">
-
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="पंचांग पेज"
                 android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/txtNavigation"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
+                android:layout_height="match_parent"
                 android:text="पंचांग पेज"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_margin="5sp"
+                android:gravity="center"
+                />
         </LinearLayout>
 
         <TextView

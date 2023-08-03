@@ -389,7 +389,7 @@ internal class Database {
             try {
                 openConnection(1)
                 var c = sqlite.rawQuery(
-                    "Select Weekday,Tithi,Paksha,AmantMonth,Festivals,Sunrise,SunSet,Nakshatra,Moonsign,Sunsign,Yoga,Karan,Moonrise,Moonset,VikramSamvat,ShakSamvat " +
+                    "Select Festivals,Weekday,Tithi,Paksha,AmantMonth,Sunrise,SunSet,Nakshatra,Moonsign,Sunsign,Yoga,Karan,Moonrise,Moonset,VikramSamvat,ShakSamvat " +
                             "from DKP$yr where EventDate = \"${dt}\"", null
                 )
                 tbl = getDataTableFromCursor(c)
@@ -407,10 +407,13 @@ internal class Database {
                             adikmas = rCnt; break
                         }
                     }
-                    if (adikmas == -1 || adikmas == tmpTbl.Rows.size - 1) {
-                        adikmas = tmpTbl.Rows.first()[0].toString().toInt()
-                    } else {
-                        adikmas = tmpTbl.Rows[adikmas + 1][0].toString().toInt()
+                    if(adikmas == tmpTbl.Rows.size-1){
+                        // take 1st one
+                        adikmas = tmpTbl.Rows[0].toString().toInt()
+                    }
+                    else{
+                        // take next month
+                        adikmas = tmpTbl.Rows[adikmas+1][0].toInt()
                     }
                     tbl.Rows[0][tbl.Columns.indexOf("AmantMonth")] = (adikmas + 12).toString()
                 }

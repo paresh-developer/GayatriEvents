@@ -6,7 +6,7 @@
     tools:context=".activities.MainActivity"
     android:id="@+id/mainActivityLayout"
     android:orientation="vertical"
-    android:layout_margin="5sp">
+    android:layout_margin="2sp">
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -47,7 +47,6 @@
         android:id="@+id/ListviewBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:orientation="vertical"
         >
         <TextView
@@ -67,19 +66,19 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnPanchang"
-                android:layout_width="140sp"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
                 android:text="@string/btn_Panchang"
-                android:layout_margin="5sp"
                 android:textSize="25sp"
+                android:layout_margin="1sp"
                 />
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnMuhurat"
-                android:layout_width="140sp"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Muhurat"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -91,19 +90,19 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnEvent"
-                android:layout_width="130sp"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Event"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnService"
-                android:layout_width="140sp"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Service"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -115,19 +114,19 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnSaleRequests"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Client_Request"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnDonate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Donate"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -138,21 +137,20 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnSetting"
-                android:layout_width="wrap_content"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="@string/btn_Setting"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
             <Button
-                android:visibility="visible"
                 android:layout_weight="1"
                 android:id="@+id/btnLogScreen"
-                android:layout_width="wrap_content"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="Logs"
-                android:layout_margin="5sp"
-                android:textSize="20sp"
+                android:layout_margin="1sp"
+                android:textSize="25sp"
                 />
         </LinearLayout>
         <LinearLayout
@@ -163,10 +161,10 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnPartnership"
-                android:layout_width="wrap_content"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="साझेंदारी"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>
@@ -177,10 +175,10 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btnSamagri"
-                android:layout_width="wrap_content"
-                android:layout_height="60sp"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
                 android:text="GE सामग्री"
-                android:layout_margin="5sp"
+                android:layout_margin="1sp"
                 android:textSize="25sp"
                 />
         </LinearLayout>

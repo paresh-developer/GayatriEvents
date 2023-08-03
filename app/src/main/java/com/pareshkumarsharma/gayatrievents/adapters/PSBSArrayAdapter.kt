@@ -56,7 +56,7 @@ internal class PSBSArrayAdapter(
         txt2?.text = data[0][position].toString().replace("#~#", "\n").replace(", "," ")
 
         if (txt2?.text.toString().trim().length == 0)
-            txt2?.text = "no data"
+            txt2?.text = "--"
 
         when(colNames[position]){
             "Tithi" -> txt1?.text = "तिथी : "
@@ -79,7 +79,16 @@ internal class PSBSArrayAdapter(
 
         when (colNames[position]) {
             "Paksha" -> txt2?.text = PakshaHindi.get(txt2?.text.toString().toInt())
-            "AmantMonth" -> txt2?.text = MonthHindi.get(txt2?.text.toString().toInt())
+            "AmantMonth" -> {
+                var monthInt = txt2?.text.toString().toInt()
+                var monthStr = ""
+                if (monthInt > 12) {
+                    monthStr = MonthHindi.get(0) + " "
+                    monthInt -= 12
+                }
+                monthStr += MonthHindi.get(monthInt)
+                txt2?.setText(monthStr)
+            }
             "Weekday" -> txt2?.text = WeekDayHindi.get(txt2?.text.toString().toInt())
             "Festivals" -> txt2?.text = txt2?.text.toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("//","")
         }
