@@ -3,12 +3,10 @@ package com.pareshkumarsharma.gayatrievents.activities
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.api.model.PartnershipDisplayModel
 import com.pareshkumarsharma.gayatrievents.api.model.ServiceDisplayModel
@@ -18,6 +16,8 @@ import com.pareshkumarsharma.gayatrievents.services.PanchangNotification
 import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import com.pareshkumarsharma.gayatrievents.utilities.GlobalData
+import java.io.File
+import java.io.FileOutputStream
 
 
 internal class MainActivity : AppCompatActivity() {
@@ -55,37 +55,37 @@ internal class MainActivity : AppCompatActivity() {
                 .apply()
         }
 
-        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone", false))
-            startActivity(Intent(this, LoginActivity::class.java))
-        else {
-            IsLoginDone = 2
-            UserName =
-                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("LLName", "")
-                    .toString()
-        }
+//        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean("LLDone", false))
+//            startActivity(Intent(this, LoginActivity::class.java))
+//        else {
+//            IsLoginDone = 2
+//            UserName =
+//                getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getString("LLName", "")
+//                    .toString()
+//        }
 
         GlobalData.setUserGlobalId(getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE))
 
-        txtHellow = findViewById(R.id.txtHellow)
-        val btnLogout = findViewById<Button>(R.id.btnLogout)
+//        txtHellow = findViewById(R.id.txtHellow)
+//        val btnLogout = findViewById<Button>(R.id.btnLogout)
 
-        txtHellow.movementMethod = ScrollingMovementMethod()
-        btnLogout.setOnClickListener {
-            IsLoginDone = 0
-
-            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
-                .edit()
-                .putString("token", "")
-                .putString("expires", "")
-                .putString("LLUname", "")
-                .putString("LLMobile", "")
-                .putString("LLPassword", "")
-                .putBoolean("LLDone", false)
-                .apply()
-
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
+//        txtHellow.movementMethod = ScrollingMovementMethod()
+//        btnLogout.setOnClickListener {
+//            IsLoginDone = 0
+//
+//            getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+//                .edit()
+//                .putString("token", "")
+//                .putString("expires", "")
+//                .putString("LLUname", "")
+//                .putString("LLMobile", "")
+//                .putString("LLPassword", "")
+//                .putBoolean("LLDone", false)
+//                .apply()
+//
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
+//        }
 
         val btnSetting = findViewById<Button>(R.id.btnSetting)
         btnPanchang = findViewById<Button>(R.id.btnPanchang)
@@ -99,86 +99,86 @@ internal class MainActivity : AppCompatActivity() {
             IsLoginDone = 2
         }
 
-        findViewById<Button>(R.id.btnService).setOnClickListener {
-            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                    "F002",
-                    false
-                ) && !Panchang.downloadStarted
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "पहले पंचाग डाऊनलोड करें",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
+//        findViewById<Button>(R.id.btnService).setOnClickListener {
+//            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                    "F002",
+//                    false
+//                ) && !Panchang.downloadStarted
+//            ) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "पहले पंचाग डाऊनलोड करें",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+//
+//            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
+//                startActivity(Intent(this, ServiceEdit::class.java))
+//            } else
+//                Toast.makeText(applicationContext, "You cannot access Services", Toast.LENGTH_LONG)
+//                    .show()
+//        }
 
-            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
-                startActivity(Intent(this, ServiceEdit::class.java))
-            } else
-                Toast.makeText(applicationContext, "You cannot access Services", Toast.LENGTH_LONG)
-                    .show()
-        }
+//        findViewById<Button>(R.id.btnEvent).setOnClickListener {
+//            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                    "F002",
+//                    false
+//                ) && !Panchang.downloadStarted
+//            ) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "पहले पंचाग डाऊनलोड करें",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+//
+//            startActivity(Intent(this, EventEdit::class.java))
+//        }
 
-        findViewById<Button>(R.id.btnEvent).setOnClickListener {
-            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                    "F002",
-                    false
-                ) && !Panchang.downloadStarted
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "पहले पंचाग डाऊनलोड करें",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            startActivity(Intent(this, EventEdit::class.java))
-        }
-
-        findViewById<Button>(R.id.btnSaleRequests).setOnClickListener {
-
-            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                    "F002",
-                    false
-                ) && !Panchang.downloadStarted
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "पहले पंचाग डाऊनलोड करें",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
-                startActivity(Intent(this, ClientEventRequestEdit::class.java))
-            } else
-                Toast.makeText(
-                    applicationContext,
-                    "You cannot access Client Requests",
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-        }
+//        findViewById<Button>(R.id.btnSaleRequests).setOnClickListener {
+//
+//            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                    "F002",
+//                    false
+//                ) && !Panchang.downloadStarted
+//            ) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "पहले पंचाग डाऊनलोड करें",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+//
+//            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) == 2) {
+//                startActivity(Intent(this, ClientEventRequestEdit::class.java))
+//            } else
+//                Toast.makeText(
+//                    applicationContext,
+//                    "You cannot access Client Requests",
+//                    Toast.LENGTH_LONG
+//                )
+//                    .show()
+//        }
 
         findViewById<Button>(R.id.btnDonate).setOnClickListener {
             startActivity(Intent(this, DonationEdit::class.java))
         }
 
-        findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
-            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
-                Toast.makeText(
-                    applicationContext,
-                    "You cannot access Client Requests",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
-
-            startActivity(Intent(this, LogActivity::class.java))
-        }
+//        findViewById<Button>(R.id.btnLogScreen).setOnClickListener {
+//            if (getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getInt("LLUType", 0) != 2) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "You cannot access Client Requests",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
+//
+//            startActivity(Intent(this, LogActivity::class.java))
+//        }
 
         findViewById<Button>(R.id.btnMuhurat).setOnClickListener {
             if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
@@ -231,31 +231,35 @@ internal class MainActivity : AppCompatActivity() {
 //            startActivity(Intent(this, Patnership::class.java))
         }
 
-        RefreshServiceData()
-        RefreshPartnershipData()
+//        RefreshServiceData()
+//        RefreshPartnershipData()
+
+        if (!File("/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db").exists())
+            applicationContext.assets.open("dkp_hindi_city_samagri1.db")
+                .copyTo(FileOutputStream("/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db"),(8*1024))
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (IsLoginDone != 1) {
-            var snakmsg = ""
-            if (IsLoginDone == 0) {
-                snakmsg = "स्वागत है! 😎"
-                IsLoginDone = 100
-            } else if (IsLoginDone == 2) {
-                snakmsg = "प्रवेश हो गया!...👍"
-                txtHellow.text = "नमस्ते! $UserName"
-                IsLoginDone = 100
-            } else if (IsLoginDone == 4) {
-                snakmsg = "प्रवेश हो गया!...👍"
-            }
-            if (IsLoginDone != 0 && snakmsg.trim().length > 0)
-                Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
-                    .show()
-        } else {
-            finish()
-        }
+//        if (IsLoginDone != 1) {
+//            var snakmsg = ""
+//            if (IsLoginDone == 0) {
+//                snakmsg = "स्वागत है! 😎"
+//                IsLoginDone = 100
+//            } else if (IsLoginDone == 2) {
+//                snakmsg = "प्रवेश हो गया!...👍"
+////                txtHellow.text = "नमस्ते! $UserName"
+//                IsLoginDone = 100
+//            } else if (IsLoginDone == 4) {
+//                snakmsg = "प्रवेश हो गया!...👍"
+//            }
+//            if (IsLoginDone != 0 && snakmsg.trim().length > 0)
+//                Snackbar.make(findViewById(R.id.mainActivityLayout), snakmsg, Snackbar.LENGTH_LONG)
+//                    .show()
+//        } else {
+//            finish()
+//        }
 //        sendTomorrowNotification()
     }
 

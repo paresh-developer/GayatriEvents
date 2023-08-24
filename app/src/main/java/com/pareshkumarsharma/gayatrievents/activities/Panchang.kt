@@ -9,10 +9,8 @@ import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSFestivalArrayAdapter
 import com.pareshkumarsharma.gayatrievents.panchang.MonthHindi
 import com.pareshkumarsharma.gayatrievents.panchang.PakshaHindi
-import com.pareshkumarsharma.gayatrievents.utilities.APICalls
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,69 +68,69 @@ internal class Panchang : AppCompatActivity() {
         listView.adapter = psbArrayAdadaper
         listView_festival.adapter = psbFestivalArrayAdadaper
 
-        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                "F002",
-                false
-            ) && !downloadStarted
-        ) {
-            listView.isEnabled = false
-            listView_festival.isEnabled = false
-            nmDay.isEnabled = false
-            nmMonth.isEnabled = false
-            nmYear.isEnabled = false
-            calendar.visibility = View.GONE
-            Thread {
-                downloadStarted = true
-                APICalls.setContext(applicationContext)
-                APICalls.cookies = mapOf<String, String>(
-                    Pair(
-                        "token",
-                        getSharedPreferences(
-                            Database.SHAREDFILE,
-                            MODE_PRIVATE
-                        ).getString("token", "").toString()
-                    ),
-                    Pair(
-                        "expires",
-                        getSharedPreferences(
-                            Database.SHAREDFILE,
-                            MODE_PRIVATE
-                        ).getString("expires", "").toString()
-                    )
-                )
-                if (APICalls.downloadPanchang()) {
-                    val data = APICalls.lastCallObject as ByteArray
-                    val f = File("/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db")
-                    if (f.exists())
-                        f.delete()
-                    f.createNewFile()
-                    f.writeBytes(data)
-                    runOnUiThread {
-                        downloadComplete = true
-                        getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
-                            .edit()
-                            .putBoolean("F002", true)
-                            .apply()
-                        downloadStarted = false
-                        listView.isEnabled = true
-                        nmDay.isEnabled = true
-                        nmMonth.isEnabled = true
-                        nmYear.isEnabled = true
-                        calendar.visibility = View.VISIBLE
-
-                        setPanchang(Calendar.getInstance())
-                    }
-                } else {
-                    downloadComplete = true
-                    runOnUiThread {
-                        Toast.makeText(this, APICalls.lastCallMessage, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }.start()
-        } else {
-            downloadComplete = true
-            setPanchang(Calendar.getInstance())
-        }
+//        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                "F002",
+//                false
+//            ) && !downloadStarted
+//        ) {
+//            listView.isEnabled = false
+//            listView_festival.isEnabled = false
+//            nmDay.isEnabled = false
+//            nmMonth.isEnabled = false
+//            nmYear.isEnabled = false
+//            calendar.visibility = View.GONE
+//            Thread {
+//                downloadStarted = true
+//                APICalls.setContext(applicationContext)
+//                APICalls.cookies = mapOf<String, String>(
+//                    Pair(
+//                        "token",
+//                        getSharedPreferences(
+//                            Database.SHAREDFILE,
+//                            MODE_PRIVATE
+//                        ).getString("token", "").toString()
+//                    ),
+//                    Pair(
+//                        "expires",
+//                        getSharedPreferences(
+//                            Database.SHAREDFILE,
+//                            MODE_PRIVATE
+//                        ).getString("expires", "").toString()
+//                    )
+//                )
+//                if (APICalls.downloadPanchang()) {
+//                    val data = APICalls.lastCallObject as ByteArray
+//                    val f = File("/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db")
+//                    if (f.exists())
+//                        f.delete()
+//                    f.createNewFile()
+//                    f.writeBytes(data)
+//                    runOnUiThread {
+//                        downloadComplete = true
+//                        getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE)
+//                            .edit()
+//                            .putBoolean("F002", true)
+//                            .apply()
+//                        downloadStarted = false
+//                        listView.isEnabled = true
+//                        nmDay.isEnabled = true
+//                        nmMonth.isEnabled = true
+//                        nmYear.isEnabled = true
+//                        calendar.visibility = View.VISIBLE
+//
+//                        setPanchang(Calendar.getInstance())
+//                    }
+//                } else {
+//                    downloadComplete = true
+//                    runOnUiThread {
+//                        Toast.makeText(this, APICalls.lastCallMessage, Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//            }.start()
+//        } else {
+//            downloadComplete = true
+//            setPanchang(Calendar.getInstance())
+//        }
 
         nmDay.minValue = 1
         nmMonth.minValue = 1
@@ -186,25 +184,25 @@ internal class Panchang : AppCompatActivity() {
             setPanchang(c)
         }
 
-        if (!downloadComplete)
-            Thread {
-                var disStr = "Downloading"
-                while (!downloadComplete) {
-                    Thread.sleep(600)
-                    if (countDot == 4) {
-                        disStr = "पंचांग प्राप्त किया जा रहा है..."
-                        countDot = 0
-                    } else
-                        disStr = "पंचांग प्राप्त किया जा रहा है..." + ".".repeat(countDot)
-                    runOnUiThread {
-                        findViewById<TextView>(R.id.txtNavigation).text = disStr
-                    }
-                    countDot++
-                }
-                runOnUiThread {
-                    findViewById<TextView>(R.id.txtNavigation).text = monthStr
-                }
-            }.start()
+//        if (!downloadComplete)
+//            Thread {
+//                var disStr = "Downloading"
+//                while (!downloadComplete) {
+//                    Thread.sleep(600)
+//                    if (countDot == 4) {
+//                        disStr = "पंचांग प्राप्त किया जा रहा है..."
+//                        countDot = 0
+//                    } else
+//                        disStr = "पंचांग प्राप्त किया जा रहा है..." + ".".repeat(countDot)
+//                    runOnUiThread {
+//                        findViewById<TextView>(R.id.txtNavigation).text = disStr
+//                    }
+//                    countDot++
+//                }
+//                runOnUiThread {
+//                    findViewById<TextView>(R.id.txtNavigation).text = monthStr
+//                }
+//            }.start()
 
         val rdo_group = findViewById<RadioGroup>(R.id.rdo_grp_panchang)
         val rdo_daily_panchang = findViewById<RadioButton>(R.id.rdo_daily_panchang)

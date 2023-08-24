@@ -131,12 +131,12 @@ class Muhurat : AppCompatActivity() {
 
         val monthStr =
             MonthHindi.get(monthInt) + ", " + PakshaHindi.get(
-                PanchangData.Rows[0][2].toInt()
+                PanchangData.Rows[0][3].toInt()
             ) + " पक्ष"
 
         sunrise = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunrise")]
         sunset = PanchangData.Rows[0][PanchangData.Columns.indexOf("Sunset")]
-        weekDay = PanchangData.Rows[0][0].toInt()
+        weekDay = PanchangData.Rows[0][1].toInt()
 
         txtMonth.text = "महिना : - " + monthStr + " | "
         txtWeekDay.text = "वार :- " + WeekDayHindi.get(weekDay)

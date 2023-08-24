@@ -10,6 +10,7 @@ internal class Database {
     internal companion object {
         internal val DBPATH = "/data/data/com.pareshkumarsharma.gayatrievents/main.db"
         internal val DBPATH_PANCHANG = "/data/data/com.pareshkumarsharma.gayatrievents/Panchang.db"
+//        internal val DBPATH_PANCHANG = "file:///android_res/raw/dkp_hindi_city_samagri1.sqlite"
         private lateinit var sqlite: SQLiteDatabase
         private lateinit var cur: Cursor
         internal var lastError = ""
