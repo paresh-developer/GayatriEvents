@@ -181,35 +181,35 @@ internal class MainActivity : AppCompatActivity() {
 //        }
 
         findViewById<Button>(R.id.btnMuhurat).setOnClickListener {
-            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                    "F002",
-                    false
-                ) && !Panchang.downloadStarted
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "पहले पंचाग डाऊनलोड करें",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
+//            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                    "F002",
+//                    false
+//                ) && !Panchang.downloadStarted
+//            ) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "पहले पंचाग डाऊनलोड करें",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
 
             startActivity(Intent(this, Muhurat::class.java))
         }
 
         findViewById<Button>(R.id.btnSamagri).setOnClickListener {
-            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
-                    "F002",
-                    false
-                ) && !Panchang.downloadStarted
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "पहले पंचाग डाऊनलोड करें",
-                    Toast.LENGTH_LONG
-                ).show()
-                return@setOnClickListener
-            }
+//            if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
+//                    "F002",
+//                    false
+//                ) && !Panchang.downloadStarted
+//            ) {
+//                Toast.makeText(
+//                    applicationContext,
+//                    "पहले पंचाग डाऊनलोड करें",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                return@setOnClickListener
+//            }
 
             startActivity(Intent(this, SamagriScrollingActivity::class.java))
         }
