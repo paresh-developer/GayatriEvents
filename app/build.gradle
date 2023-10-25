@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace 'com.pareshkumarsharma.gayatrievents'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.pareshkumarsharma.gayatrievents"
         minSdk 21
-        targetSdk 32
-        versionCode 15
-        versionName "15"
+        targetSdk 33
+        versionCode 16
+        versionName "16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

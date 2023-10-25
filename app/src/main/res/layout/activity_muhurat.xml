@@ -81,7 +81,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" android:layout_margin="5dp">
         <TableRow>
+            <LinearLayout
+                android:orientation="horizontal">
             <TextView
+                android:layout_weight="1"
                 android:id="@+id/month"
                 android:textColor="@color/black"
                 android:textSize="15dp"
@@ -89,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:id="@+id/weekday"
                 android:textColor="@color/black"
@@ -96,9 +100,13 @@
                 android:text="वार :- "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            </LinearLayout>
         </TableRow>
         <TableRow>
+            <LinearLayout
+                android:orientation="horizontal">
             <TextView
+                android:layout_weight="1"
                 android:id="@+id/sunrise"
                 android:textColor="@color/black"
                 android:textSize="15dp"
@@ -106,6 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:id="@+id/sunset"
                 android:textColor="@color/black"
@@ -113,6 +122,40 @@
                 android:text="सुर्योस्त :- "
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="10sp"
+            >
+            <LinearLayout
+                android:orientation="horizontal"
+                >
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8EFF7B"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : - शुभ मुहुर्त"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="#FF5050"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" : - अशुभ मुहुर्त"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+            </LinearLayout>
         </TableRow>
     </TableLayout>
     <ListView

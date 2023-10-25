@@ -1,6 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,8 +52,20 @@ internal class PSBSArrayAdapter_Chogadiya(
         val txt2 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2)
 
-        txt2?.text = SimpleDateFormat("hh:mm a").format(time_data[position]) + " से " +SimpleDateFormat("hh:mm a").format(time_data[position+1]) +" तक"
-        txt1?.text = chogadiya_data[position]
+        txt2?.text =
+            SimpleDateFormat("hh:mm a").format(time_data[position]) + " से " + SimpleDateFormat("hh:mm a").format(
+                time_data[position + 1]
+            ) + " तक"
+        val chogadiya_str = chogadiya_data[position]
+        txt1?.text = chogadiya_str
+
+        if (chogadiya_str == "अमृत" || chogadiya_str == "चल" || chogadiya_str == "लाभ" || chogadiya_str == "शुभ")
+        {
+            currentItemView?.setBackgroundColor(Color.rgb(255,80,80))
+        }
+        else {
+            currentItemView?.setBackgroundColor(Color.rgb(142, 255, 123))
+        }
 
         return currentItemView!!
     }

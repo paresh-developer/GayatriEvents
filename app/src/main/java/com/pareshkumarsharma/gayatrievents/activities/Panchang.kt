@@ -144,7 +144,7 @@ internal class Panchang : AppCompatActivity() {
         nmYear.value = SimpleDateFormat("yyyy").format(Date()).toInt()
 
         val c = Calendar.getInstance()
-
+        setPanchang(c)
         nmDay.setOnValueChangedListener { numberPicker, i, i2 ->
             c.set(nmYear.value, nmMonth.value - 1, i2)
             calendar.date = c.time.time
