@@ -9,10 +9,10 @@ android {
 
     defaultConfig {
         applicationId "com.pareshkumarsharma.gayatrievents"
-        minSdk 21
+        minSdk 33
         targetSdk 33
-        versionCode 16
-        versionName "16"
+        versionCode 17
+        versionName "17"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
