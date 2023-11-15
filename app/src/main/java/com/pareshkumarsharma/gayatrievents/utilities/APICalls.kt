@@ -13,6 +13,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.security.Key
+import java.util.Date
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -20,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec
 internal class APICalls {
     companion object {
 
-        private val key = "KLJFIQACWDMBYTVURZONSHXPEG298573"
+        private val key = "KLJFIQACWDMBYTVURZONSHXPEG298573"+ Date().time
 
         // region URLS
         internal fun updatePath(hostPath: String) {
