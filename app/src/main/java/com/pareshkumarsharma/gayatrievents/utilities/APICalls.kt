@@ -32,7 +32,7 @@ internal class APICalls {
 //       internal var HOST = "http://geparesh.ddns.net/GayatriEvents/api/"
 //        internal var HOST = "http://geparesh.ddns.net/GayatriEventsDemo/api/"
 //        var HOST = "http://192.168.1.5/GayatriEvents/api/"
-       internal var HOST = "http://10.0.2.2/GayatriEventsDemo/api/"
+       internal var HOST = "https://paresh98000.wordpress.com/"
 
         private var LOGIN_URL = "MobileApp/Login"
         private var REGISTER_URL = "MobileApp/Register"

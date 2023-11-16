@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 
 internal class PSBSArrayAdapter_Chogadiya(
@@ -60,12 +60,9 @@ internal class PSBSArrayAdapter_Chogadiya(
         txt1?.text = chogadiya_str
 
         if (chogadiya_str == "अमृत" || chogadiya_str == "चल" || chogadiya_str == "लाभ" || chogadiya_str == "शुभ")
-        {
+            currentItemView?.setBackgroundColor(Color.rgb(144, 238, 144))
+         else
             currentItemView?.setBackgroundColor(Color.rgb(255,80,80))
-        }
-        else {
-            currentItemView?.setBackgroundColor(Color.rgb(142, 255, 123))
-        }
 
         return currentItemView!!
     }
