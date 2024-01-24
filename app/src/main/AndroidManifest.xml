@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -28,6 +27,15 @@
             android:theme="@style/Theme.GayatriEvents.NoActionBar" />
         <activity
             android:name=".activities.PrivacyPolicy"
+            android:exported="false" />
+        <activity
+            android:name=".activities.YajamanAppointment"
+            android:exported="false" />
+        <activity
+            android:name=".activities.YajamanRegistration"
+            android:exported="false" />
+        <activity
+            android:name=".activities.YajamanDelete"
             android:exported="false" />
         <activity
             android:name=".activities.Patnership"

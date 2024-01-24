@@ -83,6 +83,16 @@ internal class Setting : AppCompatActivity() {
             startActivity(Intent(this, PrivacyPolicy::class.java))
         }
 
+        findViewById<TextView>(R.id.btn_link_yajamanRegistration).setOnClickListener {
+            PrivacyPolicy.Browser = 0
+            startActivity(Intent(this, YajamanRegistration::class.java))
+        }
+
+        findViewById<TextView>(R.id.btn_link_yajamanAppointment).setOnClickListener {
+            PrivacyPolicy.Browser = 0
+            startActivity(Intent(this, YajamanAppointment::class.java))
+        }
+
 //        findViewById<TextView>(R.id.tv_link_deleteUser).setOnClickListener {
 //            PrivacyPolicy.Browser = 1
 //            startActivity(Intent(this, PrivacyPolicy::class.java))

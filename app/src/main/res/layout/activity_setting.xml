@@ -3,96 +3,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Setting"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.Setting">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Settings"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_weight="20"
             android:layout_margin="5dp"
+            android:layout_weight="20"
             android:gravity="center"
+            android:text="@string/btn_Setting"
             android:textColor="@color/black"
-            />
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-<!--        <Button-->
-<!--            android:id="@+id/btnChangeRequest_UserType"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:minWidth="150dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Request for Change User Type (1)"-->
-<!--            android:textSize="10dp"-->
-<!--            />-->
+        <!--        <Button-->
+        <!--            android:id="@+id/btnChangeRequest_UserType"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:minWidth="150dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:text="Request for Change User Type (1)"-->
+        <!--            android:textSize="10dp"-->
+        <!--            />-->
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Location"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="20"
             android:layout_margin="5dp"
-            android:textColor="@color/black"
+            android:layout_weight="20"
             android:gravity="left"
-            />
+            android:text="स्थलः- "
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Bhavnagar"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_weight="20"
             android:layout_margin="5dp"
+            android:layout_weight="20"
             android:gravity="right"
-            />
+            android:text="भावनगर, गुजरात"
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_link_yajamanRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="यजमान रजीस्ट्रेशन" />
+
+    <Button
+        android:id="@+id/btn_link_yajamanAppointment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ब्राहनजीसे मुलाकात की अरजी" />
 
     <TextView
-        android:padding="5dp"
-        android:id="@+id/tv_link_privacyPolice"
-        android:layout_marginTop="50dp"
-        android:textStyle="italic"
+        android:id="@+id/tv_link_yajamanDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Check Privacy Policy"
-        android:gravity="bottom"
-        android:textColor="@color/black"
-        />
+        android:text="यजमान डेटा Delete करें"
+        android:padding="5dp"
+        android:textColor="#E91E63"
+        android:textStyle="italic" />
 
-<!--    <TextView-->
-<!--        android:padding="5dp"-->
-<!--        android:id="@+id/tv_link_deleteUser"-->
-<!--        android:textStyle="italic"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Delete account"-->
-<!--        android:gravity="bottom"-->
-<!--        android:textColor="@color/black"-->
-<!--        />-->
+    <TextView
+        android:id="@+id/tv_link_privacyPolice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="bottom"
+        android:padding="5dp"
+        android:text=" देंखे गोपनीयता नीति"
+        android:textColor="@color/black"
+        android:textStyle="italic" />
+
+    <!--    <TextView-->
+    <!--        android:padding="5dp"-->
+    <!--        android:id="@+id/tv_link_deleteUser"-->
+    <!--        android:textStyle="italic"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Delete account"-->
+    <!--        android:gravity="bottom"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        />-->
 </LinearLayout>

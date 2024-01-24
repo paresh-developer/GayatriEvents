@@ -17,7 +17,6 @@
         android:gravity="top"
         android:orientation="horizontal"
         >
-
         <TextView
             android:textColor="@color/black"
             android:id="@+id/txtNavigation"
