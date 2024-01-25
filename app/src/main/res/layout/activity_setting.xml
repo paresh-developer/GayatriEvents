@@ -80,6 +80,12 @@
         android:layout_height="wrap_content"
         android:text="ब्राहनजीसे मुलाकात की अरजी" />
 
+    <Button
+        android:id="@+id/btn_link_yajamanFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="अपनी प्रतिक्रिया साजा करें" />
+
     <TextView
         android:id="@+id/tv_link_yajamanDelete"
         android:layout_width="match_parent"

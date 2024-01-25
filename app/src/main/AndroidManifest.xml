@@ -38,6 +38,9 @@
             android:name=".activities.YajamanDelete"
             android:exported="false" />
         <activity
+            android:name=".activities.YajamanFeedback"
+            android:exported="false" />
+        <activity
             android:name=".activities.Patnership"
             android:exported="false" />
         <activity
