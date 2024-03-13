@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:orientation="vertical"
-            android:background="@android:color/holo_blue_dark">
+            android:background="@drawable/spinner_border">
     <TextView
         android:textStyle="bold"
         android:id="@+id/txt1OfListViewItem"
