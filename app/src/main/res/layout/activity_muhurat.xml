@@ -15,7 +15,7 @@
         >
 
         <TextView
-            android:textColor="@color/black"
+
             android:id="@+id/txtNavigation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -86,7 +86,7 @@
             <TextView
                 android:layout_weight="1"
                 android:id="@+id/month"
-                android:textColor="@color/black"
+
                 android:textSize="15dp"
                 android:text="महिना : - "
                 android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:id="@+id/weekday"
-                android:textColor="@color/black"
+
                 android:textSize="15dp"
                 android:text="वार :- "
                 android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
             <TextView
                 android:layout_weight="1"
                 android:id="@+id/sunrise"
-                android:textColor="@color/black"
+
                 android:textSize="15dp"
                 android:text="सुर्योदय : - "
                 android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:id="@+id/sunset"
-                android:textColor="@color/black"
+
                 android:textSize="15dp"
                 android:text="सुर्योस्त :- "
                 android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : - शुभ मुहुर्त"
-                android:textColor="@color/black"
+
                 android:textStyle="bold"
                 />
             <Button
@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" : - अशुभ मुहुर्त"
-                android:textColor="@color/black"
+
                 android:textStyle="bold"
                 />
             </LinearLayout>

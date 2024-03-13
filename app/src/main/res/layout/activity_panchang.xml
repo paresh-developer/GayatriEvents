@@ -19,7 +19,7 @@
             android:gravity="top"
             android:orientation="horizontal">
             <TextView
-                android:textColor="@color/black"
+                
                 android:id="@+id/txtNavigation"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="एकादशी - 06:14 पी एम तक"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            
             android:textSize="18dp" />
 
         <TableLayout
@@ -50,75 +50,75 @@
 
                 <TextView
                     android:text="विक्रम सं."
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_panchang_v_s"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
 
                 <TextView
                     android:text="शक सं."
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_panchang_s_s"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
             </TableRow>
 
             <TableRow>
 
                 <TextView
                     android:text="सुर्योदय"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_suryodhay"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
 
                 <TextView
                     android:text="सुर्यास्त"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_suryast"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
             </TableRow>
 
             <TableRow>
 
                 <TextView
                     android:text="चंद्रोदय"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrodhay"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
 
                 <TextView
                     android:text="चंद्रास्त"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrast"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
 
             </TableRow>
 
@@ -126,25 +126,25 @@
 
                 <TextView
                     android:text="सुर्य राशी"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_surya_rashi"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
 
                 <TextView
                     android:text="चंद्र राशी"
-                    android:textColor="@color/black"
+                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandra_rashi"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textColor="@color/black" />
+                     />
             </TableRow>
         </TableLayout>
 

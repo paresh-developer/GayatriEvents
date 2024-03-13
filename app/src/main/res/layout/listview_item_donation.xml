@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         >
     <TextView
-        android:textColor="@color/black"
+
         android:id="@+id/txtDonationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/txtDonationId"
             android:textSize="10dp"
-            android:textColor="@color/black"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Id: - GLB0001"
@@ -36,7 +36,7 @@
         <TextView
             android:id="@+id/txtDonationCreatedOn"
             android:textSize="10dp"
-            android:textColor="@color/black"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="By: Owner At: "
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:maxHeight="30dp"
             android:textSize="12dp"
-            android:textColor="@color/black"
+
             android:text="Description\n123"
             />
     </LinearLayout>

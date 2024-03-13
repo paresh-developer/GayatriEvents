@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="2dp"
     android:textSize="25dp"
-    android:textColor="@color/black"
+
     android:id="@+id/txt1OfListViewItem"
     android:text="hellow:"
     android:background="@drawable/spinner_border"

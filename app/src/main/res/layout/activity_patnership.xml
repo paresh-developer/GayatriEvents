@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="साझेदारी"
-            android:textColor="@color/black"
+
             android:textSize="20sp"
             android:textStyle="bold" />
         <Button
@@ -40,7 +40,7 @@
         <TextView
             android:id="@+id/txt_goprevious_arrow"
             android:visibility="invisible"
-            android:textColor="@color/black"
+
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
 
         <TextView
             android:id="@+id/txt_gonext_arrow"
-            android:textColor="@color/black"
+
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="सा़झेदार चुनें"
-            android:textColor="@color/black"
+
             android:textSize="20dp" />
 
         <ListView
@@ -105,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="सा़झेदारीत सेवायें चुनें"
-            android:textColor="@color/black"
+
             android:textSize="20dp" />
 
         <ListView
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="सा़झेदारीत उपसेवायें चुनें"
-            android:textColor="@color/black"
+
             android:textSize="20dp" />
 
         <ListView
@@ -144,14 +144,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="उपसेवों की अगली बारी चुनें"
-            android:textColor="@color/black"
+
             android:textSize="20dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="उपसेवा चुनें"
-            android:textColor="@color/black"
+
             android:textSize="15dp" />
         <Spinner
             android:id="@+id/product_spinner"
@@ -162,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="अगली बारी चुनें"
-            android:textColor="@color/black"
+
             android:textSize="15dp" />
         <Spinner
             android:id="@+id/user_spinner"
@@ -180,7 +180,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="चुनाव यहा अंकीत होगा"
-            android:textColor="@color/black"
+
             android:textSize="15dp" />
     </LinearLayout>
 </LinearLayout>

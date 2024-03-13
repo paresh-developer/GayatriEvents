@@ -20,7 +20,7 @@
             android:layout_weight="20"
             android:gravity="center"
             android:text="New Service Request"
-            android:textColor="@color/black"
+
             android:textSize="20dp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Service Type: "
                 android:textAlignment="textStart"
-                android:textColor="@color/black" />
+                 />
 
             <Spinner
                 android:id="@+id/spinner_ServiceTypelist"
@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="City: "
-                android:textColor="@color/black" />
+                 />
 
             <Spinner
                 android:id="@+id/spinner_City"

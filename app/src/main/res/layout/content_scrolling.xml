@@ -17,10 +17,10 @@
         <Spinner
             android:id="@+id/spn_samagri_eve"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
         <TextView
-            android:textColor="@color/black"
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

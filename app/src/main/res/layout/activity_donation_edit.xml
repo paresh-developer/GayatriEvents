@@ -29,7 +29,7 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="दान पेज"
-            android:textColor="@color/black"
+
             android:textSize="20sp"
             android:textStyle="bold" />
 

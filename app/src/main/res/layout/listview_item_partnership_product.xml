@@ -20,7 +20,7 @@
     <TextView
         android:textStyle="bold"
         android:id="@+id/userName"
-        android:textColor="@color/black"
+
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/userGlobalId"
-        android:textColor="@color/black"
+
         android:textAlignment="textEnd"
         android:layout_weight="1"
         android:layout_width="wrap_content"

@@ -11,7 +11,7 @@
         android:orientation="horizontal"
         >
     <TextView
-        android:textColor="@color/black"
+
         android:id="@+id/txtServiceTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/txtServiceAp"
             android:textSize="10dp"
-            android:textColor="@color/black"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="By: Owner At: "
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:maxHeight="30dp"
             android:textSize="12dp"
-            android:textColor="@color/black"
+
             android:text="Description\n123"
             />
     </LinearLayout>
