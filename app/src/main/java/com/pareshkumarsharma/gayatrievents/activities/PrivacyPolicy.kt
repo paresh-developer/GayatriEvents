@@ -17,6 +17,7 @@ class PrivacyPolicy : AppCompatActivity() {
         if(Browser== 0) {
             try {
                 wv.loadUrl("https://paresh98000.wordpress.com/privacy-policy/")
+                wv.settings.javaScriptEnabled = true
             }
             catch (ex : Exception){
                 wv.loadUrl("file:///android_res/raw/privacy_policy.htm")

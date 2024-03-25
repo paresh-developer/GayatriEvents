@@ -26,7 +26,7 @@ class DonationEdit : AppCompatActivity() {
 //            startActivity(Intent(this,Donate::class.java))
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText("UPI Donation","pareshsharma98000@okhdfcbank")
+            val clip: ClipData = ClipData.newPlainText("UPI Donation","pareshmotorolae40-1@okhdfcbank")
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this,"UPI ID is Copied",Toast.LENGTH_LONG).show()
         }

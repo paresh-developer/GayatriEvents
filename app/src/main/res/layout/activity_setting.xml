@@ -72,19 +72,22 @@
         android:id="@+id/btn_link_yajamanRegistration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="यजमान रजीस्ट्रेशन" />
+        android:textSize="22dp"
+        android:text="यजमान Registration" />
 
     <Button
         android:id="@+id/btn_link_yajamanAppointment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ब्राहनजीसे मुलाकात की अरजी" />
+        android:textSize="22dp"
+        android:text="Appointment" />
 
     <Button
         android:id="@+id/btn_link_yajamanFeedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="अपनी प्रतिक्रिया साजा करें" />
+        android:textSize="22dp"
+        android:text="Feedback Form" />
 
     <TextView
         android:id="@+id/tv_link_yajamanDelete"
