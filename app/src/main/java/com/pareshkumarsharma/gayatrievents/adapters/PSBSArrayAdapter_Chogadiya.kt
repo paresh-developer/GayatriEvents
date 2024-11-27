@@ -60,9 +60,9 @@ internal class PSBSArrayAdapter_Chogadiya(
         txt1?.text = chogadiya_str
 
         if (chogadiya_str == "अमृत" || chogadiya_str == "चल" || chogadiya_str == "लाभ" || chogadiya_str == "शुभ")
-            currentItemView?.setBackgroundColor(Color.rgb(144, 238, 144))
+            currentItemView?.setBackgroundColor(Color.parseColor("#A5D6A7"))
          else
-            currentItemView?.setBackgroundColor(Color.rgb(255,80,80))
+            currentItemView?.setBackgroundColor(Color.parseColor("#FFEF9A9A")) //FFEF9A9A
 
         return currentItemView!!
     }

@@ -56,6 +56,7 @@ class SamagriScrollingActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+                binding.toolbarLayout.title = "GE: " + sm_ev[position]
                 val event_id = db_eve.Rows[id.toInt()][0].toInt()
                 db_samagri = Database.getSamagriEventsWise(event_id)
                 val samagri = mutableListOf<String>()

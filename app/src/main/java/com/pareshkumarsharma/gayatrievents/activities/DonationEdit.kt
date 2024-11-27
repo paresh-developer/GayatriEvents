@@ -3,6 +3,8 @@ package com.pareshkumarsharma.gayatrievents.activities
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ListView
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapterDonation
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
+import java.util.Date
 
 class DonationEdit : AppCompatActivity() {
 
@@ -24,11 +27,33 @@ class DonationEdit : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.imageButton).setOnClickListener {
 //            startActivity(Intent(this,Donate::class.java))
+//            val clipboard: ClipboardManager =
+//                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+//            val clip: ClipData = ClipData.newPlainText("UPI Donation","8128611138@paytm")
+//            clipboard.setPrimaryClip(clip)
+            //Toast.makeText(this,"UPI ID is Copied",Toast.LENGTH_LONG).show()
+
+//            val uri = Uri.parse("upi://pay").buildUpon()
+//                .appendQueryParameter("pa", "paytmqr1uat5ar7qc@paytm")
+//                .appendQueryParameter("pn", "Mr. PARESH LAXMICHAN")
+//                .appendQueryParameter("mc", "") // Business retailer category code.
+//                .appendQueryParameter("tr", "9988") // Transaction reference ID. (Business specific ID. Must be unique for each request.)
+////                .appendQueryParameter("tn", "GE")
+//                .appendQueryParameter("cu", "INR")
+//                .build()
+//            val intent = Intent(Intent.ACTION_VIEW)
+//            intent.data = uri
             val clipboard: ClipboardManager =
                 getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip: ClipData = ClipData.newPlainText("UPI Donation","pareshmotorolae40-1@okhdfcbank")
+            val clip: ClipData = ClipData.newPlainText("Gayatry Event UPI Donation","paytmqr5za7xg@ptys")
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(this,"UPI ID is Copied",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,"GE UPI ID is Copied",Toast.LENGTH_LONG).show()
+
+            val uri =
+                Uri.parse("upi://pay?mc=Gayatri_Events&tr=${Date().time}&pa=paytmqr5za7xg@ptys&pn=Mr.%20PARESH%20LAXMICHAN&tn=Gayatry%20Event%20Donation&cu=INR")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            startActivityForResult(intent, 1421)
+            startActivity(intent)
         }
 
 //        listView = findViewById(R.id.listview_ExistingDonation)
