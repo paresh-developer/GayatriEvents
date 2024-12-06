@@ -21,6 +21,9 @@
             />
 
         <TextView
+            android:layout_marginTop="10sp"
+            android:padding="10sp"
+            android:background="@drawable/samagry_border"
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
