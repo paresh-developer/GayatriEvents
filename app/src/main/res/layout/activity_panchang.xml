@@ -50,23 +50,26 @@
 
                 <TextView
                     android:text="विक्रम सं."
-                    
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_panchang_v_s"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
+                    android:textSize="20sp"
                      />
 
                 <TextView
                     android:text="शक सं."
-                    
+                    android:textSize="20sp"
+
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_panchang_s_s"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
             </TableRow>
@@ -75,23 +78,27 @@
 
                 <TextView
                     android:text="सुर्योदय"
-                    
+                    android:textSize="20sp"
+
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_suryodhay"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
 
                 <TextView
                     android:text="सुर्यास्त"
-                    
+                    android:textSize="20sp"
+
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_suryast"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
             </TableRow>
@@ -99,24 +106,26 @@
             <TableRow>
 
                 <TextView
+                    android:textSize="20sp"
                     android:text="चंद्रोदय"
-                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrodhay"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
 
                 <TextView
+                    android:textSize="20sp"
                     android:text="चंद्रास्त"
-                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrast"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
 
@@ -125,24 +134,26 @@
             <TableRow>
 
                 <TextView
+                    android:textSize="20sp"
                     android:text="सुर्य राशी"
-                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_surya_rashi"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
 
                 <TextView
+                    android:textSize="20sp"
                     android:text="चंद्र राशी"
-                    
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandra_rashi"
                     android:layout_marginEnd="10dp"
+                    android:textSize="20sp"
                     android:text=" : 1988"
                      />
             </TableRow>
@@ -189,18 +200,21 @@
                     android:id="@+id/rdo_daily_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="दैनिक पंचांग"
                     />
                 <RadioButton
                     android:id="@+id/rdo_monthly_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="मासिक तहेवार"
                     />
                 <RadioButton
                     android:id="@+id/rdo_calendar_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="केलेंडर"
                     />
             </RadioGroup>
@@ -208,7 +222,9 @@
             <ListView
                 android:id="@+id/monthFestivalList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                />
 
             <ListView
                 android:id="@+id/panchangListView"
