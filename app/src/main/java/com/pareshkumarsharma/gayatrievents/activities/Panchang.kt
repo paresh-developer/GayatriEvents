@@ -2,7 +2,12 @@ package com.pareshkumarsharma.gayatrievents.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.CalendarView
+import android.widget.ListView
+import android.widget.NumberPicker
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
@@ -12,7 +17,8 @@ import com.pareshkumarsharma.gayatrievents.panchang.PakshaHindi
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 internal class Panchang : AppCompatActivity() {
 
@@ -224,7 +230,7 @@ internal class Panchang : AppCompatActivity() {
                 listView.visibility = View.GONE
             }
         }
-        rdo_daily_panchang.isChecked = true
+        rdo_monthly_panchang.isChecked = true
     }
 
     fun setPanchang(c:Calendar){
