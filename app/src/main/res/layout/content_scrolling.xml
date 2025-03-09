@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrolling_activity_content_activity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +12,7 @@
     <LinearLayout
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <Spinner
@@ -20,14 +21,13 @@
             android:layout_height="wrap_content"
             />
 
-        <TextView
+        <ListView
             android:layout_marginTop="10sp"
             android:padding="10sp"
             android:background="@drawable/samagry_border"
-            android:id="@+id/txt_content"
+            android:id="@+id/lst_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
             />
 
     </LinearLayout>

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import com.pareshkumarsharma.gayatrievents.R
+import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter_Samagri_Selection
 import com.pareshkumarsharma.gayatrievents.databinding.ActivitySamagriScrollingBinding
 import com.pareshkumarsharma.gayatrievents.utilities.DataTable
 import com.pareshkumarsharma.gayatrievents.utilities.Database
@@ -19,6 +21,7 @@ class SamagriScrollingActivity : AppCompatActivity() {
     private lateinit var db_eve: DataTable
     private lateinit var db_samagri: DataTable
     private lateinit var adapter_samagri: ArrayAdapter<String>
+    private lateinit var adapter_samagri_item: PSBSArrayAdapter_Samagri_Selection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,9 @@ class SamagriScrollingActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         binding.toolbarLayout.title = "GE सामग्री"
 
+        val layout_main = findViewById<NestedScrollView>(R.id.scrolling_activity_content_activity)
         val spiner_samagri = findViewById<Spinner>(R.id.spn_samagri_eve)
-        val txt_content = findViewById<TextView>(R.id.txt_content)
+        val lst_content = findViewById<ListView>(R.id.lst_content)
 
         db_eve = Database.getSamagriEvents()
 
@@ -49,6 +53,8 @@ class SamagriScrollingActivity : AppCompatActivity() {
 //        adapter_samagri = ArrayAdapter(this, R.layout.spinnerview_item_for_samagri_eve, mutableListOf())
 //        lstView.adapter = adapter_samagri
 
+        adapter_samagri_item = PSBSArrayAdapter_Samagri_Selection(application.baseContext,R.layout.listview_item_samagri_selection, mutableListOf<String>("",""))
+        lst_content.adapter = adapter_samagri_item
         spiner_samagri.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -63,7 +69,14 @@ class SamagriScrollingActivity : AppCompatActivity() {
                 for (r in db_samagri.Rows) {
                     samagri.add(r[3])
                 }
-                txt_content.setText(samagri.joinToString("\n"))
+                //samagri.joinToString("\n")
+                adapter_samagri_item.clear()
+                adapter_samagri_item.addAll(samagri)
+                adapter_samagri_item.notifyDataSetChanged()
+                lst_content.deferNotifyDataSetChanged()
+                val params = lst_content.layoutParams
+                params.height = (75 * samagri.size) + 10
+                lst_content.layoutParams = params
 //                adapter_samagri.clear()
 //                adapter_samagri.addAll(samagri)
 //                adapter_samagri.notifyDataSetChanged()
