@@ -9,6 +9,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.pareshkumarsharma.gayatrievents.R
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSArrayAdapter
 import com.pareshkumarsharma.gayatrievents.adapters.PSBSFestivalArrayAdapter
@@ -30,8 +31,8 @@ internal class Panchang : AppCompatActivity() {
 
     lateinit var PanchangData: DataTable
     lateinit var FestivalPanchangData: DataTable
-    lateinit var listView:ListView
-    lateinit var listView_festival:ListView
+    lateinit var listView: ListView
+    lateinit var listView_festival: ListView
     lateinit var psbArrayAdadaper: PSBSArrayAdapter
     lateinit var psbFestivalArrayAdadaper: PSBSFestivalArrayAdapter
     var monthStr: String = ""
@@ -73,7 +74,6 @@ internal class Panchang : AppCompatActivity() {
 
         listView.adapter = psbArrayAdadaper
         listView_festival.adapter = psbFestivalArrayAdadaper
-
 //        if (!getSharedPreferences(Database.SHAREDFILE, MODE_PRIVATE).getBoolean(
 //                "F002",
 //                false
@@ -155,7 +155,7 @@ internal class Panchang : AppCompatActivity() {
             c.set(nmYear.value, nmMonth.value - 1, i2)
             calendar.date = c.time.time
             nmDay.value = SimpleDateFormat("d").format(c.time).toInt()
-           setPanchang(c)
+            setPanchang(c)
         }
 
         nmMonth.setOnValueChangedListener { numberPicker, i, i2 ->
@@ -233,7 +233,7 @@ internal class Panchang : AppCompatActivity() {
         rdo_monthly_panchang.isChecked = true
     }
 
-    fun setPanchang(c:Calendar){
+    fun setPanchang(c: Calendar) {
         PanchangData = Database.getPanchangOf(
             SimpleDateFormat("dd-MM-yyyy").format(c.time),
             SimpleDateFormat("yyyy").format(c.time).toInt()
@@ -289,5 +289,13 @@ internal class Panchang : AppCompatActivity() {
         findViewById<TextView>(R.id.txt_chandrast).text = " : " + chandrast
         findViewById<TextView>(R.id.txt_surya_rashi).text = " : " + sunsign
         findViewById<TextView>(R.id.txt_chandra_rashi).text = " : " + moonsign
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(listView_festival.childCount>0 && listView_festival.childCount >= PSBSFestivalArrayAdapter.FocusablePosition) {
+            listView_festival.children.elementAt(PSBSFestivalArrayAdapter.FocusablePosition)
+                .requestFocus()
+        }
     }
 }

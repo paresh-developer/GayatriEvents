@@ -38,4 +38,8 @@
     <style name="CustomParesh" parent="Theme.GayatriEvents">
         <item name="android:background">#C51162</item>
     </style>
+    
+    <style name="Theme.GayatriEvents.Picker">
+        <item name="android:textSize">30dp</item>
+    </style>
 </resources>

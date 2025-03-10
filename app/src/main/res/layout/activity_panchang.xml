@@ -18,18 +18,18 @@
             android:layout_margin="5dp"
             android:gravity="top"
             android:orientation="horizontal">
+
             <TextView
-                
+
                 android:id="@+id/txtNavigation"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="पंचांग पेज"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_weight="1"
                 android:layout_margin="5sp"
+                android:layout_weight="1"
                 android:gravity="center"
-                />
+                android:text="पंचांग पेज"
+                android:textSize="25sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <TextView
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:text="एकादशी - 06:14 पी एम तक"
             android:textAlignment="center"
-            
-            android:textSize="18dp" />
+
+            android:textSize="30dp" />
 
         <TableLayout
             android:layout_width="wrap_content"
@@ -57,8 +57,7 @@
                     android:id="@+id/txt_panchang_v_s"
                     android:layout_marginEnd="10dp"
                     android:text=" : 1988"
-                    android:textSize="20sp"
-                     />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:text="शक सं."
@@ -69,9 +68,8 @@
                 <TextView
                     android:id="@+id/txt_panchang_s_s"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
             </TableRow>
 
             <TableRow>
@@ -85,9 +83,8 @@
                 <TextView
                     android:id="@+id/txt_suryodhay"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:text="सुर्यास्त"
@@ -98,70 +95,65 @@
                 <TextView
                     android:id="@+id/txt_suryast"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
             </TableRow>
 
             <TableRow>
 
                 <TextView
-                    android:textSize="20sp"
                     android:text="चंद्रोदय"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrodhay"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
 
                 <TextView
-                    android:textSize="20sp"
                     android:text="चंद्रास्त"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandrast"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
 
             </TableRow>
 
             <TableRow>
 
                 <TextView
-                    android:textSize="20sp"
                     android:text="सुर्य राशी"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_surya_rashi"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
 
                 <TextView
-                    android:textSize="20sp"
                     android:text="चंद्र राशी"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txt_chandra_rashi"
                     android:layout_marginEnd="10dp"
-                    android:textSize="20sp"
                     android:text=" : 1988"
-                     />
+                    android:textSize="20sp" />
             </TableRow>
         </TableLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="200dp"
             android:gravity="top"
             android:orientation="horizontal">
 
@@ -170,19 +162,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:focusedByDefault="false" />
+                android:focusedByDefault="false"
+                android:theme="@style/Theme.GayatriEvents.Picker" />
 
             <NumberPicker
                 android:id="@+id/nmMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:theme="@style/Theme.GayatriEvents.Picker" />
 
             <NumberPicker
                 android:id="@+id/nmYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3" />
+                android:layout_weight="3"
+                android:theme="@style/Theme.GayatriEvents.Picker" />
         </LinearLayout>
 
         <LinearLayout
@@ -194,37 +189,35 @@
                 android:id="@+id/rdo_grp_panchang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="vertical">
+
                 <RadioButton
                     android:id="@+id/rdo_daily_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:text="दैनिक पंचांग"
-                    />
+                    android:textSize="25sp" />
+
                 <RadioButton
                     android:id="@+id/rdo_monthly_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:text="मासिक तहेवार"
-                    />
+                    android:textSize="25sp" />
+
                 <RadioButton
                     android:id="@+id/rdo_calendar_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:text="केलेंडर"
-                    />
+                    android:textSize="25sp" />
             </RadioGroup>
 
             <ListView
                 android:id="@+id/monthFestivalList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
             <ListView
                 android:id="@+id/panchangListView"
@@ -233,11 +226,12 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <CalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
             </ScrollView>
         </LinearLayout>
 

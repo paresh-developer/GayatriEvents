@@ -7,15 +7,19 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.pareshkumarsharma.gayatrievents.panchang.WeekDayHindi
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 internal class PSBSFestivalArrayAdapter(
     val c: Context,
     val r: Int,
-    var data: Array<List<String>>, var colNames: List<String>,
+    var data: Array<List<String>>, var colNames: List<String>
 ) : ArrayAdapter<List<String>>(c, r, data) {
     //var Identity = 0 // for panchang 1 for festivals
-
+    public companion object{
+        var FocusablePosition = 0
+    }
     override fun isEmpty(): Boolean {
         return data.isEmpty()
     }
@@ -51,7 +55,12 @@ internal class PSBSFestivalArrayAdapter(
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txt2OfListViewItem)
         val txt3 =
             currentItemView?.findViewById<TextView>(com.pareshkumarsharma.gayatrievents.R.id.txtWeekday)
-
+        if (FocusablePosition == 0){
+            if(data[position][0].substring(0,2).toInt() >= SimpleDateFormat("dd").format(Date()).toInt()){
+                FocusablePosition = position
+                currentItemView!!.requestFocus()
+            }
+        }
         txt1?.text = data[position][0].toString().substring(0,2) + " " + WeekDayHindi.get(data[position][3].toInt())
         txt2?.text = data[position][1].toString().replace(Regex("goo.gl/[a-zA-Z0-9]+"),"").replace("#~#", "\n").replace("//","")
         txt3?.text = data[position][2].replace("#~#","\n").replace("upto ","")
