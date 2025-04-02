@@ -42,6 +42,7 @@
             android:textSize="30dp" />
 
         <TableLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
@@ -189,28 +190,29 @@
                 android:id="@+id/rdo_grp_panchang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@drawable/spinner_border"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rdo_daily_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="दैनिक पंचांग"
-                    android:textSize="25sp" />
+                    android:text="दैनिक"
+                    android:textSize="20sp" />
 
                 <RadioButton
                     android:id="@+id/rdo_monthly_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="मासिक तहेवार"
-                    android:textSize="25sp" />
+                    android:text="मासिक"
+                    android:textSize="20sp" />
 
                 <RadioButton
                     android:id="@+id/rdo_calendar_panchang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="केलेंडर"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
             </RadioGroup>
 
             <ListView

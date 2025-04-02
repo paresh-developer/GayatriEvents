@@ -11,8 +11,8 @@ android {
         applicationId "com.pareshkumarsharma.gayatrievents"
         minSdk 21
         targetSdk 34
-        versionCode 38
-        versionName "38"
+        versionCode 39
+        versionName "39"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
