@@ -1,7 +1,7 @@
 package com.pareshkumarsharma.gayatrievents.activities
 
+import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -113,8 +113,12 @@ class SamagriScrollingActivity : AppCompatActivity() {
                     }else{
                         itemNameTextView.text = "${r[3]}"
                     }
-                    itemNameTextView.typeface = Typeface.DEFAULT_BOLD
-                    itemNameTextView.setTextColor(Color.BLACK)
+//                    itemNameTextView.typeface = Typeface.DEFAULT_BOLD
+                    if(resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
+                        itemNameTextView.setTextColor(Color.WHITE)
+                    }else{
+                        itemNameTextView.setTextColor(Color.BLACK)
+                    }
                     itemCheckBox.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
                     itemNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
                     if(!r[3].startsWith("--")) {
